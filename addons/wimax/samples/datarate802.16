@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# Bash file to run datarate simulations for different modulation and cyclic prefix
+# @author rouil
+
+if [ "$1" == "clean" ]; then
+    rm -r res_datarate
+else
+    mkdir res_datarate
+    cd res_datarate
+    #for modulation in "OFDM_BPSK_1_2" "OFDM_QPSK_1_2" "OFDM_QPSK_3_4" "OFDM_16QAM_1_2" "OFDM_16QAM_3_4" "OFDM_64QAM_2_3" "OFDM_64QAM_3_4" ; do
+    for modulation in "1" "2" "3" "4" "5" "6" "7" ; do
+	
+	if [ "$1" != "" ]; then
+	    modulation=$1
+	fi
+	mkdir $modulation
+	cd $modulation
+
+	for cp in "0" "0.03125" "0.0625" "0.125" "0.25"; do
+	    mkdir cp_$cp
+	    cd cp_$cp
+	    echo -n "Running for profile " $modulation 
+	    if [ $modulation == "1" ]; then
+		echo -n " (OFDM_BPSK_1_2)"
+	    fi
+	    if [ $modulation == "2" ]; then
+		echo -n " (OFDM_QPSK_1_2)"
+	    fi
+	    if [ $modulation == "3" ]; then
+		echo -n " (OFDM_QPSK_3_4)"
+	    fi
+	    if [ $modulation == "4" ]; then
+		echo -n " (OFDM_16QAM_1_2)"
+	    fi
+	    if [ $modulation == "5" ]; then
+		echo -n " (OFDM_16QAM_3_4)"
+	    fi
+	    if [ $modulation == "6" ]; then
+		echo -n " (OFDM_64QAM_2_3)"
+	    fi
+	    if [ $modulation == "7" ]; then
+		echo -n " (OFDM_64QAM_3_4)"
+	    fi
+
+	    echo -n " and CP="$cp
+	    ns ../../../datarate.tcl $modulation $cp &> log.t
+	
+	    DATARATE=`grep ^r out.res| grep -v BIN | grep CBR | grep '0 SNK_IPIF'|awk 'BEGIN{first=-1; last=-1} {if (first==-1) {first=$2}; last=$2; i+=$8-0;} END {print (8*i/(last-first))}'`
+	    echo " datarate = " $DATARATE
+	    echo $modulation $cp $DATARATE >>../../result$modulation.dat
+	    echo $modulation $cp $DATARATE >>../../result.dat
+	    rm out.res
+	    rm log.t
+	    cd ..
+	done
+	cd ..
+	if [ "$1" != "" ]; then
+	    break
+	fi
+    done
+    cd ..
+    gnuplot plot-datarate
+    echo "Simulation results in ./res_test_be/result.dat and plotted in ./datarate802_16_miracle_wimax.eps"
+fi
+

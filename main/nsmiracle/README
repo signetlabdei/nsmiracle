@@ -1,0 +1,64 @@
+
+
+Tutorial for building the ns-Miracle modules from the signet svn distribution
+
+-------------
+ Quick start
+-------------
+
+1) run  './autogen.sh'
+
+2) assuming that you have ns-allinone installed in PATH, 
+   run './configure  --with-ns-allinone=PATH', optionally using
+   something like '--prefix=/locale/username' if you 
+   intend to run 'make install'
+
+3) run 'make'
+
+4) if you configured with --prefix, or if you are allowed to su root, you can type 'make install'
+
+
+
+--------------
+ More details
+--------------
+
+1) ns-allinone
+
+ns-allinone is required to build the ns-Miracle library. 
+You are expected to specify the path to the ns-allinone installation
+using the --with-ns-allinone options to './configure'.
+
+Current version was tested with ns-2.29 with patches by Federico
+Maguolo (maguolof@dei.unipd.it). Please note that you must not only
+unpack the ns-allinone source and patch it, but also run 'install'.  
+This is because the install process places some header files in
+'ns-allinone-2.29/include' which are needed to build the ns-Miracle
+library.
+
+
+
+2) I just built the module with 'make'. Where the hell is it???
+
+After you run 'make', you can find both static (.a) and shared (.so)
+libraries in 'lib/.libs' (the .libs subdir is automatically added by
+libtool). 
+If you run 'make install', all libraries are by default installed in
+/usr/local/lib. Since in many systems installing in that path requires
+root privileges, you might want to specify a different path, by using
+either the '--prefix' or '--libdir' switch. Please run './configure
+--help' for further info
+.
+
+3) Test suites
+
+Some test routines are provided, which can be built and run routines
+with 'make check'. 
+
+
+
+
+
+
+
+

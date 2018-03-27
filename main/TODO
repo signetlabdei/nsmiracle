@@ -1,0 +1,60 @@
+
+TODO LIST
+
+- Put VoIP functionality currently in CBR module into a new VoIP
+module which inherits from CBR module
+
+- UMTS PHY SIRtarget_ at the BS is per-phy but should actually be per-user. 
+
+- UMTS outer loop power control should be implemented to cope with PC
+  granularity and eventual PC inefficacy with high mobility
+
+- UMTS PowerControl table should be indexed by code_id and not by rlc_id
+
+
+- Should find a default interface for CBR and TCP module to set
+destination address and port. Currently, CBR uses "$module set
+destAddr_", while tcp modules requires "tcpagent set dst_addr_".
+
+- Check broadcast address in IpRouting and IpInterface
+
+- Should fix "defaultGateway" command in iprouting, it somehow causes
+the actual gateway to consider packets as being destinated to itself
+(which is not true if it's a gateway which is supposed to forward
+them).
+
+- merge IP module implementations by Nicola and Federico
+
+- Module/WirelessCh has a bug in getting influenced nodes. 
+This can be reproduced running e.g. 
+complex_mixed_wireless_wired_static_routing.tcl 
+using Module/WirelessCh instead of Module/DumbWirelessCh
+The bug is that some endless loop occurs while getting the list of
+influenced nodes using even fixed node positions.
+Do we *really* need to send messages only to nodes within a range
+determined by CSTresh? This breaks how interference is calculated in
+dei80211mr. 
+Temporary fix: don't use Module/WirelessCh, use Module/DumbWirelessCh
+instead, it requires a higher computational load since even
+transmissions from very far nodes are considered for reception,
+however 1) it works and 2) it probides correct interference calculation
+NOTE: WirelessCh implementation in dei80211mr has fixed this issue, we
+should update also Module/WirelessCh accordingly
+
+- ARP for "high" IP addresses (e.g., 192.168.1.1) causes some bit/byte
+to be dropped in the sender address, check it out
+
+- Check default values for 802.11 (both standard ns 802.11 and
+dei80211mr), such as:
+- antenna height for two-ray-ground
+- noise power
+- CSthreshold
+- CWmin/CWmax
+- Retry Limit
+
+
+
+
+
+
+

@@ -1,0 +1,18 @@
+reset
+set terminal post eps
+set output "datarate802_16_miracle_wimax.eps"
+set nogrid
+#set logscale y
+set xlabel "Cyclic prefix" 
+set ylabel "Datarate (Mbps)"
+set xrange [0:0.25]
+set yrange [0:12]
+#set key 45,0.45
+set title "(MrclWimax) Exprerimental datarate using Best-Effort scheduler (DLratio=0.2, frame duration=5ms)"
+plot "res_datarate/result1.dat" using 2:($3/(1024*1024)) title "BPSK_1_2" with lp, \
+"res_datarate/result2.dat" using 2:($3/(1024*1024)) title "QPSK_1_2" with lp, \
+"res_datarate/result3.dat" using 2:($3/(1024*1024)) title "QPSK_3_4" with lp, \
+"res_datarate/result4.dat" using 2:($3/(1024*1024)) title "16QAM_1_2" with lp, \
+"res_datarate/result5.dat" using 2:($3/(1024*1024)) title "16QAM_3_4" with lp, \
+"res_datarate/result6.dat" using 2:($3/(1024*1024)) title "64QAM_2_3" with lp, \
+"res_datarate/result7.dat" using 2:($3/(1024*1024)) title "64QAM_3_4" with lp

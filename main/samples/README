@@ -1,0 +1,16 @@
+
+
+This directory contains sample tcl scripts to be used with nsmiracle. 
+These scripts are to be executed as standard ns tcl scripts 
+(e.g., 'ns test.tcl')
+
+A few notes:
+
+- some scripts require command line arguments. In this case, if you
+run the script without arguments a brief message will tell you which
+arguments must be provided
+
+- some scripts require the dei80211mr package to be run. This must be
+installed separately, and the libdei80211mr.so library must be in your
+library search path (e.g., installed in a standard location or - more
+likely - in a directory which you added to the variable LD_LIBRARY_PATH)

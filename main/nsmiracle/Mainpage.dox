@@ -1,0 +1,648 @@
+/**
+ * \mainpage NS-MIRACLE Library: Multi InteRfAce Cross Layer Extension for NS
+ *
+ *  
+ * MIRACLE ns2 library is developed by the SIGNET Lab @ the University of Padova, 
+ * it is  designed to allow interlayer communication and flexible multi-layer design 
+ * in the ns2 simulator. For instance, using this library, e.g., multiple PHY layers 
+ * can cohexist in the simulator. This allows to simulate, e.g., wireless nodes with 
+ * multiple radio interfaces. We note that is in general possible to define multiple 
+ * MAC/ARQ at layer 2 and so on for any other layer of the protocol stack. Additionally,
+ * the library contains a set of classes and methods for inter-layer/inter-protocol 
+ * design and communication. As an example, these primitives allows for the exchange 
+ * of any type of message/structure/command among modules/protocols. The library is 
+ * intended to help researcher in implementing any type of cross-layer and 
+ * multi-technology solution.<p>
+ * 
+ * 
+ *
+ * \section Motivation
+ * \subsection mot_intro Introduction
+ * 
+ * The main motivation that drove us to develop this library is to define
+ * a standard procedure to generate a multi-layer architecture which also give to us 
+ * cross layer communication functionalities. In fact, there are already 
+ * several temptatives to give to ns2 a more flexible structure, i.e., 
+ * to manage simultaneously multiple technologies at the same time, but
+ * all uncoordinated. The results is that now we have different projects
+ * that have developed interesting extensions of ns2 but we can not
+ * integrate them. Therefore, starting from some primitive ns classes, we define
+ * some new classes that are the basic blocks to model heterogeneous architectures.
+ * This allows to us to partially reuse the code developed for ns-2 with 
+ * slight modifications. Moreover, we introduce a standardization in the cross
+ * layer messaging in order to give to all the modules/algorithms the 
+ * possibility of communicating to each others by means of ad hoc structured
+ * messages. All these features are introduced in a dynamic fashion, in fact
+ * we are developed a <b>dynamic library</b> for ns instead of a classical patch.
+ * This allows us to work in very efficient manner, since it not necessary to
+ * make any change to the standard ns installation, with the only exception 
+ * that you have to pacth the first time it in order to give to ns the 
+ * possibility of managing dynamic library. With such a kind of approach,
+ * we would start a new way to developed code for ns. In fact, this method
+ * allows to each programmer to developed his onw library with its own new
+ * funcionalities/extensions to the standard ns. The standard ns installation 
+ * should becomes only a skeleton with some basic blocks useful to define the 
+ * architecture. This will help the diffusion of the several extensions will be
+ * developed in all over the world, that nowadays are usually incompatible to 
+ * each others. Programmers may also take advatage during the debug process, 
+ * cause the compiling phase of a single library is usually faster than the one 
+ * in which are involved all the ns packages.
+ * 
+ * \subsection module Module
+ *
+ * \image html module_stack.jpg "Example of architecture achievable"
+ * \image latex module_stack.eps "Example of architecture achievable"
+ *
+ * One of the main basic block of this stucture is rapresented by the class
+ * <i>Module</i>. Module is a class designed to contain any protocols or 
+ * modules that we usually place in stack in order to follow the OSI model in 
+ * the designing process of the structure, an example of a possible architecture achievable is 
+ * given in figure above. Since it has to be placed in a stack,
+ * its main function is to communicate with the other Modules placed in the 
+ * above and bottom layers. Therefore we implemented a channel for the 
+ * communication between module of adjacent layers such as defined in OSI structure,
+ * the <i>Service Access Point</i> (SAP). Thanks to the flexibility of the library,
+ * it is possible to define any number of modules in any layer and connect them
+ * to each other, by means of SAP. This help us in the design of architecture in 
+ * which are involved multiple techologies for example. SAP are also used to 
+ * implement the tracing of simulation activity, in fact, thanks to their strategic
+ * position, it is possible to trace with an ad hoc format all the packets exchanged
+ * between modules at each desidered level. Due to its own nature, we set up an ad hoc
+ * module for the channel, in fact it has to be common for all the nodes and have
+ * to store some knowledges about all of them (i.e., their spatial position). In order to gives to it
+ * such a kind of functionalities we have also to define an ad hoc channel to connect it
+ * to all the nodes, that we called <i>Channel SAP</i> (ChSAP). Regarding cross 
+ * layer communication, we introduce a in each module a new specific type of channel, 
+ * since OSI does not plan any cross layer messaging in its standard, called 
+ * <i>Cross-Layer SAP</i> (ClSAP), which is in charge of the delivering of the cross 
+ * layer messages, this functionality is described in detail in the following section.
+ *
+ * \subsection clmessage Cross Layer Message and Node-Core
+ *
+ * \image html nodecore.jpg "NodeCore within the architecture"
+ * \image latex nodecore.eps "NodeCore within the architecture"
+ *
+ * Another important novelty introduced in this library is the communication between 
+ * modules by means of Cross Layer Messages, defined in the <i>ClMessage</i> class.
+ * These messages are exchanged through the <i>Cross-Layer SAP</i> (ClSAP) and,
+ * since all modules are connetected to each others with them, we may use 
+ * ClMessage as cross layer message. In fact, as mentioned in Module Section,
+ * each Module is equipped with a ClSAP and this gives to it the connection to the 
+ * NodeCore, which is the structure in charge to dispatch all the CLMessage, 
+ * i.e., we can consider NodeCore as the cross layer bus which also has all the functionalities 
+ * to manage it. By extending the ClMessage class, it is possible to obtain each ad 
+ * hoc cross layer message is needed, i.e., it is possible to define new ClMessage
+ * with any parameter (structured or not) desiders in order to implement the
+ * communication required. To improve the versatility of this structure, we
+ * introduce two different types of communication: asynchronous and synchronous.
+ * In the first one is not requested any direct answer, the response is not mandatory
+ * and, if needed, it may be sent in another ClMessage when it is ready. While, in 
+ * synchronous ClMessages, it is needed that the recipient answers directly in the 
+ * same istance of the ClMessage received. This technique gives also to the programmer
+ * another important feature: the possibilty to have variables shared by different 
+ * modules. In fact, when a module receives a syncronous ClMessage, it is sharing the
+ * same instance of the ClMessage class with the source, so it may stores this instance 
+ * and use it as a variable to manage the state of common resources or to exchange 
+ * information about the current module status.
+ * 
+ * \subsection plugin Plug-In
+ *
+ * \image html plugin.jpg "PlugIn within the architecture"
+ * \image latex plugin.eps "PlugIn within the architecture" width=\textwidth
+ *
+ * PlugIn class is another novelty introduced to gives more versatility to the
+ * structures and so model new architecture. In fact, PlugIn is the father class of
+ * Module and it is designed to attach any module direct to the NodeCore external
+ * from the stack of modules. In PlugIn are defined only the cross layers communication
+ * functionalities of a Module, so it is equipped with the ClSAP in order to be connected
+ * to the cross layer bus, placed in NodeCore. This allows to PlugIn to contain all that 
+ * features that is difficult to put in a fixed position of the stack. We introduced this 
+ * class in order to give to the programmer the possibilty to place external intelligence
+ * that has to collaborate with several modules in the stack and so manage cross-layer
+ * functionalities. It is clear that the potentiality of PlugIn are not restricted
+ * to the one described above, we may put in this structure for example all the
+ * behaviours typical of the whole node (i.e., physical mobility model, energy
+ * expenditure model, etc.).
+ * 
+ * \subsection bin Bin
+ *
+ * Bin class is a structure implemented for enhanced tracing. In fact, it is in charge
+ * to trace all the drops occurrences during the simulation. It is a child class both of
+ * SAP and ClSAP, so it inherits all the functions to trace both packets and cross layer
+ * messages dropping. Thanks to Bin, a programmer can understand also specific failure 
+ * situations that normally are not covered by the trace of the sent messages. We design
+ * only one instance of Bin for each node in the simulation and then it is provided a 
+ * connection to it from all the modules/plugins within the architecture.
+ *
+**/
+ 
+/**
+ * \page installation Installation
+ * \section  ns-Miracle How to install the ns-Miracle library:
+ * 
+ * <OL>
+ * <LI> Download ns2.29 </LI>
+ * <LI> Uncompress the ns2 simulator </LI>
+ * <LI> Enter the main ns2 directory (the one containing ns-allinone) </LI>
+ * <LI> Download the Dynamic Library patch (you can find it in the same web page of 
+ * the ns-Miracle library) and put it in the same directory of point 3 </LI>
+ * <LI> Patch ns2 by using the following command: <i> patch -p0 \< patch-dl-ns-2.29</i> </LI>
+ * <LI> Install ns2 as explained in its documentation </LI>
+ * <LI> Uncompress the Miracle library </LI>
+ * <LI> Launch the <i> configure </i> command with the <i>--with-ns-allinone=&lt;NS-PATH&gt;</i> parameter, 
+ * where <i>&lt;NS-PATH&gt;</i> is the path of your ns-allinone installation </LI>
+ * <LI> Launch <i>make</i></LI>
+ * <LI>  Now you are ready to load it</LI>
+ * 
+ * </OL>
+ *
+ * \section extensions How to install any ns-Miracle support/extension libraries:
+ * (i.e., the <i>tracer</i>,<i>cltracer</i> and <i>sandbox</i> library)
+ * <OL>
+ * <LI> Download the library </LI>
+ * <LI> Uncompress it </LI>
+ * <LI> Enter in the directory in which the library is uncompressed </LI>
+ * <LI> Launch the <i> configure </i> command with the <i>--with-ns-allinone=&lt;NS-PATH&gt; 
+ *  --with-ns-miracle=&lt;M-PATH&gt;</i> parameters, where <i>&lt;NS-PATH&gt;</i> is the path of your 
+ * ns-allinone installation and <i>&lt;M-PATH&gt;</i> is the pathof your ns-Miracle library
+ * installation</LI>
+ * <LI> Launch <i>make</i></LI>
+ * <LI>  Now you are ready to load it</LI>
+ * 
+ * </OL>
+ *
+**/
+
+/**
+ * \page uml_class_diagram UML Class Diagram
+ *
+ * In this page we give the UML class diagram of this framework. Due to its dimension, we firts give
+ * two subpart of it and then the whole diagram. In the two splitted figures you can find, respectively,
+ * the classes used to set up the stack and then the classes involved in the communication.
+ * 
+ * \section uml_stack UML Class Diagram of Stack Classes
+ *
+ * \image html module_uml_an_architecture.png
+ * \image latex module_uml_an_architecture.eps "UML Class Diagram of stack classes" width=\textwidth
+ *
+ * \section uml_comm UML Class Diagram of Communication Classes
+ *
+ * \image html com_uml_an_architecture.png
+ * \image latex com_uml_an_architecture.eps "UML Class Diagram of communication classes" width=\textwidth
+ *
+ * \section uml_global Global UML Class Diagram
+ *
+ * \image html uml_an_architecture.jpg "Global UML Class Diagram"
+ * \image latex uml_an_architecture_vert.eps "Global UML Class Diagram" width=8cm
+ *
+ *
+**/
+
+/** 
+ * \page Tcl Tcl Interface
+ * \section tcl_interface Introduction
+ * 
+ * When this library is loaded in the simulator (with the Tcl command 'load'),
+ * it adds some Tcl commands in order to create your scenario. In this section 
+ * we will describe these commands.
+ * 
+ * 
+ * First af all, two methods are added to the Simulator object:
+ * <UL>
+ * <LI> use-Miracle </LI>
+ * <LI> create-M_Node </LI>
+ * </UL>
+ * 
+ * The <i>use-Miracle</i> method must be invoked before begin to use any 
+ * functionalities of this library. It initializes some internal variables and
+ * it does not have input parameter.
+ * 
+ * The <i>create-M_Node</i> returns an instance of a M_Node (we describe 
+ * this class in the follow). It has an input parameter, i.e. the number
+ * of layers which can be made in this node.
+ * 
+ * A N_Node instance (which is returned by the 
+ * <i>create-M_node</i> method) is similar to a box, in which all 
+ * the modules are inserted. Modules normally represent items in the protocol stack, and therefore can be connected among themselves 
+ * (with the method <i>setConnection</i>).
+ * In the follow we describe the class M_Node and its methods and properties.
+ * 
+ * \section M_Node The class M_Node
+ * 
+ * This is a pure Tcl class (i.e., it does not have a C++ implementation) used to 
+ * contain all the modules which can be plugged in the simulation nodes.
+ * 
+ * \subsection addModule addModule
+ * 
+ * This method adds a module into the M_Node. It has three input parameters:
+ * <UL>
+ * <LI><STRONG>layer</STRONG> The number of the layer where the module has 
+ * to be placed</LI>
+ * <LI><STRONG>module</STRONG> The instance of the module which has to be 
+ * plugged</LI>
+ * <LI><STRONG>ClDepth</STRONG> The maximum depth of the ClMessage which can be 
+ * traced</LI>
+ * </UL>
+ * It returns an id which is unique inside the given layer.
+ * 
+ * \subsection addPlugin addPlugin
+ * 
+ * This method adds a plugin into the M_Node. It has two input parameters:
+ * <UL>
+ * <LI><STRONG>plugin</STRONG> The instance of the plugin which has to be 
+ * plugged</LI>
+ * <LI><STRONG>ClDepth</STRONG> The max depth of the ClMessage which can be 
+ * traced</LI>
+ * </UL>
+ * It returns an id which is unique among the Plugins.
+ * 
+ * \subsection addPosition addPosition
+ * 
+ * This method insert a Position instance into the M_Node. It has only one
+ * input parameters, that is the instance of the Postion object.
+ * 
+ * \subsection addToChannel addToChannel
+ * 
+ * This method connects a module of the M_Node to a channel. It has four input
+ * parameters:
+ * <UL>
+ * <LI><STRONG>channel</STRONG> Instance of the channel at which the module 
+ * has to be connect</LI>
+ * <LI><STRONG>layer</STRONG> The number of the layer where the above module is</LI>
+ * <LI><STRONG>module</STRONG> The id of the module in the given layer (which 
+ * is returned by the addModule method)</LI>
+ * <LI><STRONG>trace</STRONG> If 0 the packets which come from the module and 
+ * go to the channel an viceversa, will not be traced. If 1 the packets will
+ * be traced</LI>
+ * </UL>
+ * 
+ * \subsection position position
+ * 
+ * This method returns the instance of the Position object of the M_Node.
+ * 
+ * \subsection setConnection setConnection
+ * 
+ * This method notifies the build of a connection between two modules which
+ * are in two adjacent layer. It has four input parameters:
+ * <UL>
+ * <LI><STRONG>layer</STRONG> The number of the layer where the upper module is
+ * (it must be grater than 1)</LI>
+ * <LI><STRONG>upModule</STRONG> The id of the upper module in the layer (which 
+ * is returned by the addModule method)</LI>
+ * <LI><STRONG>downModule</STRONG> The id of the lower module in the layer (which 
+ * is returned by the addModule method)</LI>
+ * <LI><STRONG>trace</STRONG> If 0 the packets will not be traced, otherwise, if 1,
+ * the packets will be traced</LI>
+ * </UL>
+ * 
+ **/
+ 
+ 
+/**
+ * \page basic_samples Basic Samples
+ * 
+ * In this section we want to introduce all the user to the usage of the Miracle
+ * library. All the samples mentioned are distributed within the Miracle-Sandbox
+ * library, therefore, if you want to test directly its behavior, you have to
+ * install all the libraries necessary (Miracle, Trace, ClTrace and Miracle-Sandbox),
+ * all of them are available at the following link:<p>
+ * <a href= http://www.dei.unipd.it/wdyn/?IDsezione=3965>
+ * http://www.dei.unipd.it/wdyn/?IDsezione=3965</a>.
+ *
+ * \section sample1 Sample 1: How to generate a node
+ *
+ * This a very basic example in which are created two nodes with only one
+ * module per layer. The node 1 is the node in charge to send periodically
+ * a packet through the channel. While, node 2 has only to receive packets
+ * and discard them, by means of the Bin instance. With this sample we want
+ * to give only a preliminary idea about the procedure to instantiate
+ * a node, so it has to be viewed as a tutorial to understand the Tcl prodecure
+ * described \link Tcl \htmlonly here \endhtmlonly \latexonly previous 
+ * \endlatexonly \endlink. In the following figure it is drawn the architecture
+ * designed in this sample.
+ * 
+ * 
+ * \image html sample1.jpg "Architecture designed in sample 1"
+ * \image latex sample1.eps "Architecture designed in sample 1" width=\textwidth
+ *
+ * Now we analize what is done in samnple 1.<p>
+ * First of all you have to load the libraries needed in this sample (i.e., Miracle,
+ * Trace and Sandbox library):<p>
+ * <tt>
+ * load \<path of your Miracle library main folder\>/.libs/libMiracle.so.0.0.0<p>
+ * load \<path of your Trace library main folder\>/.libs/libTrace.so.0.0.0<p>
+ * load \<path of your Sandbox library main folder\>/.libs/libMiracleSandbox.so.0.0.0<p>
+ * </tt>
+ *
+ * Then, it is declared the <tt>finish</tt> procedure in which are defined all
+ * the operations to be done at the end of the simulation (i.e., flushing the
+ * trace), in fact this procedure will be called at the end of the simulation
+ * as we will see in the sequel.
+ *
+ * <tt>
+ * proc finish {} {
+ * global ns tf 
+ * puts "---> SIMULATION DONE."
+ * $ns flush-trace
+ * close $tf
+ * }
+ * </tt>
+ *
+ * Next step consists on the initialization of all the classes variables binded in TCL,
+ * in detail:
+ *
+ * <tt>
+ * Module/SendModule set period_ 0.1<p>
+ * Module/SendModule set destPort_ 0<p>
+ * Module/SendModule set destAddr_ 0<p>
+ * ChannelTest set debug_ 0<p>
+ * Module/SendModule set debug_ 0<p>
+ * Module/ReceiveModule set debug_ 0<p>
+ * ConnectorTrace/ChSAP set debug_ 0<p>
+ * ConnectorTrace/Bin set debug_ 0<p>
+ * </tt>
+ * where <tt>period_</tt> is the period between two consecutive packets transmissions
+ * of ModuleSend, <tt>destPort_</tt> <tt>destAddr_</tt> define, respectively, the TCP destination
+ * port and address to be specified in the TCP header of the packet and finally all
+ * the <tt>debug_</tt> variables specifies the level of the video output tracing of 
+ * detailed simulation activity usually used in the debug phase.
+ * 
+ * Then it is necessary to initialize the global instance of the simulator (<tt>ns</tt>
+ * and all the internal variables of the Miracle library (<tt>use-Miracle</tt> TCL
+ * command):<p>
+ * <tt>
+ * set ns [new Simulator]<p>
+ * $ns use-Miracle<p>
+ * </tt>
+ * 
+ * Here we define the name of the output file of tracing and the we give its configuration:<p>
+ * <tt>
+ * set tf [open out_sample3.tr w]<p>
+ * $ns trace-all $tf<p>
+ * </tt>
+ *
+ * We have now to define the type of channel to use (<tt>ChannelTest</tt> is the one 
+ * within the Sandbox library):<p>
+ * <tt>set channel [new ChannelTest]</tt><p>
+ * 
+ * Now we may begin the procedure to generate a node, the fisrt one is Node 1, the one
+ * that has the SendModule. Firts of all you have to initializate all the variables
+ * of the node and define the number of layer you are going to use (1 in this example):<p>
+ * <tt>set node1 [$ns create-M_Node 1]</tt><p>
+ * then you have to instantiate a new module of the class ModuleSend<p>
+ * <tt>set sm [new Module/SendModule]</tt><p>
+ * now you can place the module (referenced by <tt>$sm</tt>)in the stack thanks to 
+ * the <tt>addModule</tt> TCL command, where you have also to define the layer in which
+ * you want to put the module (1) and the trace level of the ClSAP (0 in this sample).
+ * The command returns the position of the module (<tt>i</tt>) in its layer, used later 
+ * on to define the connections:<p>
+ * <tt>set i [$node1 addModule 1 $sm 0]</tt><p>
+ * Command <tt>addToChannel</tt> attaches the channel defined above (<tt>$channel</tt>) to 
+ * the module(s) in layer 1 and set depth at level 2 in the ChSAP(s)<p>
+ * <tt>$node1 addToChannel $channel 1 $i 2</tt><p>
+ * The node architecture is now defined, thanks <tt>setup-M_Node</tt> you can instantiate 
+ * all the structures involved:<p>
+ * <tt>$ns setup-M_Node $node1</tt><p>
+ * The same operations are repeated for node 2:<p>
+ * <tt>
+ * set node2 [$ns create-M_Node 1]<p>
+ * set i [$node2 addModule 1 [new Module/ReceiveModule] 0]<p>
+ * $node2 addToChannel $channel 1 $i 1<p>
+ * $ns setup-M_Node $node2<p>
+ * </tt>
+ * Now we define the steps to be done during simulation. First, <tt>start</tt> TCL SendModule
+ * command begins the generation of packets and their transmissions:<p>
+ * <tt>$ns at 0 "$sm start"</tt><p>
+ * <tt>stop</tt> stops the packets generation at 50 secs:<p>
+ * <tt>$ns at 50 "$sm stop"</tt><p>
+ * At 51 secs it is scheduled to run the finish procedure and the simulation is stopped (
+ * <tt>halt</tt> command):<p>
+ * <tt>$ns at 51 "finish; $ns halt"</tt><p>
+ * Finally, run the simulation:<p>
+ * <tt>$ns run</tt><p>
+ * Try this sample by typing <tt>ns sample1.tcl</tt> in command line.<p>
+ * For a detail description of the classes used in Sandbox library see the comments
+ * inline. Regarding the format of the trace in output see the documentation of the
+ * \htmlonly \link Trace \endlink \endhtmlonly \latexonly Trace \endlatexonly class.
+ *
+ * \section sample2 Sample 2: How to use cross layer messages
+ *
+ * In this sample we want to introduce you to the cross layer messaging functionality
+ * of this library. First of all its interesting to note that by extending the ClMessage
+ * class you can generate your ad hoc cross layer message with the specific parameters
+ * you need to exchange and also note that you can define the format to be used for
+ * its tracing (over-riding the <tt>format</tt> method). In order to use your cross
+ * layer message in the simulation you have to invoke the <tt>addClMessege</tt> of the
+ * ClMessage class, then it returns the unique identifier during the simulation of the
+ * cross layer message. Then, if you had defined a specific tracer for it, you have to
+ * load it in the cross layer tracer instance of the simulation, yuo can do this thanks
+ * to the <tt>addTracer</tt> method of the ClTracer class. In this sample all these
+ * operations are done during the initialization phase of the Sandbox library (i.e.,
+ * in the <tt>Miraclesandbox_Init</tt> method defined in the <tt>module-send.cc</tt> file).
+ * Next figure gives the scheme of the architecture implemented in this sample.
+ * 
+ * \image html sample2.jpg "Architecture designed in sample 2"
+ * \image latex sample2.eps "Architecture designed in sample 2" width=\textwidth
+ *
+ * In this sample we consider two layers with one module per layer for both the nodes. 
+ * At the top of each stack there are the SendModule and the ReceiveModule (the same 
+ * described in sample 1), which are in charge to generate and receive packet respectively.
+ * At layer 1, there are in both stacks a module called ModuleMiddle, which has essentially
+ * to forward the packet received to the module(s) of the bottom layer.
+ * Now SendModule, each times it receives the TCL command <tt>changeiface</tt>, it has to
+ * change the interface selection at layer 1 operated by ModuleMiddle by means of the
+ * cross layer message called <tt>SANDBOXMSG</tt>.
+ * 
+ * In the following we analize what we have done in sample 2, we describe only the procedures
+ * introduced with this new scenario, so please refers to description of sample 1 to all the
+ * details omitted in this one.<p>
+ *
+ *<tt>
+ * load \<path of your Miracle library main folder\>/.libs/libMiracle.so.0.0.0<p>
+ * load \<path of your Trace library main folder\>/.libs/libTrace.so.0.0.0<p>
+ * load \<path of your Sandbox library main folder\>/.libs/libClTrace.so.0.0.0<p>
+ * load \<path of your Sandbox library main folder\>/.libs/libMiracleSandbox.so.0.0.0<p>
+ * <p>
+ * proc finish {} {<p>
+ * 	global ns tf <p>
+ * 	puts "---> SIMULATION DONE."<p>
+ * 	$ns flush-trace<p>
+ * 	close $tf<p>
+ * }<p>
+ * <p>
+ * Module/SendModule set period_ 0.1<p>
+ * Module/SendModule set destPort_ 0<p>
+ * Module/SendModule set destAddr_ 0<p>
+ * ChannelTest set debug_ 0<p>
+ * Module/SendModule set debug_ 0<p>
+ * Module/MiddleModule set debug_ 0<p>
+ * Module/ReceiveModule set debug_ 0<p>
+ * ConnectorTrace/ChSAP set debug_ 0<p>
+ * ConnectorTrace/Bin set debug_ 0<p>
+ * <p>
+ * set ns [new Simulator]<p>
+ * $ns use-Miracle<p>
+ * <p>
+ * set tf [open out_sample3.tr w]<p>
+ * $ns trace-all $tf<p>
+ * <p>
+ * set channel [new ChannelTest]<p>
+ * <p>
+ * set node1 [$ns create-M_Node 2]<p>
+ * set sm [new Module/SendModule]<p>
+ * set mm [new Module/MiddleModule]<p>
+ * set i [$node1 addModule 2 $sm 3]<p>
+ * set j [$node1 addModule 1 $mm 3]<p>
+ * <p>
+ * $node1 setConnection 2 $i $j 1<p>
+ * $node1 addToChannel $channel 1 $j 1<p>
+ * $ns setup-M_Node $node1<p>
+ * <p>
+ * set node2 [$ns create-M_Node 2]<p>
+ * set i [$node2 addModule 2 [new Module/ReceiveModule] 0]<p>
+ * set j [$node2 addModule 1 [new Module/MiddleModule] 0]<p>
+ * $node2 setConnection 2 $i $j 1<p>
+ * $node2 addToChannel $channel 1 $j 1<p>
+ * $ns setup-M_Node $node2<p>
+ * puts "Node 2 is generated."<p>
+ * <p>
+ * puts "---> BEGIN SIMULATION"<p>
+ * $ns at 0 "$sm start"<p>
+ * $ns at 5 "$sm changeiface 1 [expr rand()]"<p>
+ * $ns at 10 "$sm changeiface 2 [expr rand()]"<p>
+ * $ns at 20 "$sm changeiface 3 [expr rand()]"<p>
+ * $ns at 30 "$sm changeiface 4 [expr rand()]"<p>
+ * $ns at 40 "$sm changeiface 5 [expr rand()]"<p>
+ * $ns at 50 "$sm stop"<p>
+ * $ns at 51 "finish; $ns halt"<p>
+ * $ns run<p>
+ * </tt>
+ * Command <tt>setConnection</tt> adds a SAP below level 2 between module refereced 
+ * by <tt>$i</tt> and <tt>$j</tt>, where <tt>$i</tt> has to be the one in the above layer 
+ * (2 in this case) and sets the depth of tracing to level 1. In the scheduled actions,
+ * note that <tt>changeiface</tt> TCL command of the <tt>ModuleSend</tt> class is the
+ * trigger that tells to the module to send the cross layer message (<tt>SANDBOXMSG</tt>)
+ * to each <tt>ModuleMiddle</tt> placed in layer 1 after a random time.<p>
+ * Please refers to commnents inline in the source files for further explanations. 
+ * 
+ * \section sample4 Sample 4: How to install PlugIn
+ *
+ * In this example we define a structure pretty mutch similar as the one presented in
+ * sample 2, with the exception that we install in node 1 a PlugIn. In this basic example
+ * the PlugIn called <tt>SandboxPlugIn1</tt> has to discover all the <tt>ModuleSend</tt>
+ * instances presented in the whole node stack. This is a two phases process:
+ * <OL>
+ * <LI><tt>SandboxPlugIn1</tt> has to broadcast a cross layer message in order to reach
+ * any <tt>ModuleSend</tt> present in the stack thanks to the <tt>SANDBOXPLG1MSG</tt> ClMessage.</LI>
+ * <LI><tt>ModuleSend</tt> answers to the source of this message, so <tt>SandboxPlugIn1</tt>
+ * will have in the source field of the message received the id of the <tt>ModuleSend</tt>.</LI>
+ * </OL>
+ * After discovered the address of the <tt>ModuleSend</tt>, <tt>SandboxPlugIn1</tt> sends 
+ * another cross layer message, <tt>SANDBOXPLG1MSGS</tt>, in which it requires to 
+ * <tt>ModuleSend</tt> to change the size of the packets generated with the value indicated in
+ * the <tt>SANDBOXPLG1MSGS</tt>. The structure obtained is shown in the following figure.
+ * 
+ * \image html sample4.jpg "Architecture designed in sample 4"
+ * \image latex sample4.eps "Architecture designed in sample 4" width=\textwidth
+ *
+ * In the following we propose the simulation script of this sample.<p>
+ * <tt>
+ * load \<path of your Miracle library main folder\>/.libs/libMiracle.so.0.0.0<p>
+ * load \<path of your Trace library main folder\>/.libs/libTrace.so.0.0.0<p>
+ * load \<path of your Sandbox library main folder\>/.libs/libClTrace.so.0.0.0<p>
+ * load \<path of your Sandbox library main folder\>/.libs/libMiracleSandbox.so.0.0.0<p>
+ * <p>
+ * proc finish {} {<p>
+ * global ns tf <p>
+ * puts "---> SIMULATION DONE."<p>
+ * $ns flush-trace<p>
+ * close $tf<p>
+ * }<p>
+ * <p>
+ * Module/SendModule set period_ 0.1<p>
+ * Module/SendModule set destPort_ 0<p>
+ * Module/SendModule set destAddr_ 0<p>
+ * ChannelTest set debug_ 0<p>
+ * Module/SendModule set debug_ 10<p>
+ * Module/MiddleModule set debug_ 0<p>
+ * Module/ReceiveModule set debug_ 0<p>
+ * SandboxPlugIn1 set debug_ 10<p>
+ * ConnectorTrace/ChSAP set debug_ 0<p>
+ * ConnectorTrace/Bin set debug_ 0<p>
+ * <p>
+ * set ns [new Simulator]<p>
+ * $ns use-Miracle<p>
+ * <p>
+ * set tf [open out_sample4.tr w]<p>
+ * $ns trace-all $tf<p>
+ * <p>
+ * set channel [new ChannelTest]<p>
+ * <p>
+ * set node1 [$ns create-M_Node 2]<p>
+ * set sm [new Module/SendModule]<p>
+ * set mm [new Module/MiddleModule]<p>
+ * set plg1 [new SandboxPlugIn1]<p>
+ * set i [$node1 addModule 2 $sm 3]<p>
+ * set j [$node1 addModule 1 $mm 3]<p>
+ * set p1 [$node1 addPlugin $plg1 3]<p>
+ * $node1 setConnection 2 $i $j 1<p>
+ * $node1 addToChannel $channel 1 $j 1<p>
+ * $ns setup-M_Node $node1<p>
+ * puts "Node 1 is generated."<p>
+ * <p>
+ * set node2 [$ns create-M_Node 2]<p>
+ * set i [$node2 addModule 2 [new Module/ReceiveModule] 0]<p>
+ * set j [$node2 addModule 1 [new Module/MiddleModule] 0]<p>
+ * $node2 setConnection 2 $i $j 1<p>
+ * $node2 addToChannel $channel 1 $j 1<p>
+ * $ns setup-M_Node $node2<p>
+ * puts "Node 2 is generated."<p>
+ * <p>
+ * puts "---> BEGIN SIMULATION"<p>
+ * <p>
+ * $ns at 0 "$sm start"<p>
+ * $ns at 1 "$plg1 discover"<p>
+ * $ns at 20 "$sm stop"<p>
+ * $ns at 21 "finish; $ns halt"<p>
+ * $ns run<p>
+ * </tt>
+ * Thanks to the <tt>addPlugin</tt> TCL command, we add the <tt>SandboxPlugIn1</tt> PlugIn
+ * to the structure instantiated before (variable <tt>p1</tt>), also we set to 3 the depth
+ * value of tracing of the ChSAP that will connect the PlugiIn to the NodeCore. After 1 second
+ * of simulation, with the TCL command <tt>discover</tt>, <tt>SandboxPlugIn1</tt> starts the 
+ * procedure of discovery decribed above and sets the new value of packet size.
+ * Please refers to commnents inline in the source files for further explanations.
+**/
+
+
+/**
+ * \page License License terms
+ * 
+ * Copyright (c) 2006 Regents of the SIGNET lab, University of Padova.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:<OL>
+ * <LI> Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.</LI>
+ * <LI> Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.</LI>
+ * <LI> Neither the name of the University of Padova (SIGNET lab) nor the 
+ *    names of its contributors may be used to endorse or promote products 
+ *    derived from this software without specific prior written permission.</LI>
+ * </OL>
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED 
+ * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ **/
