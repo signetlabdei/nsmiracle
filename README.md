@@ -16,7 +16,8 @@ Its main features are:
  - to provide support for improved modeling and simulation of wireless
    communications with respect to the well-known shortcomings of the
    current NS release (2.31 at the time of this writing)
-
+ - further info and documentation can be found at
+   http://telecom.dei.unipd.it/pages/read/58/
 
 ------------------
  Contents
@@ -44,13 +45,20 @@ The nsmiracle distribution contains the following software:
  Authors
 ----------------------
 
-The nsmiracle library for the Network Simulator 2 has been developed
-by (in alfabetical order):
+The nsmiracle library has been developed in 2007 by 
+(in alfabetical order):
 
-Nicola Baldo         (baldo@dei.unipd.it)
-Federico Maguolo     (maguolof@dei.unipd.it)
-Marco Miozzo         (miozzo@dei.unipd.it)
+Nicola Baldo         (baldo@dei.unipd.it)  
+Federico Maguolo     (maguolof@dei.unipd.it)  
+Marco Miozzo         (miozzo@dei.unipd.it)  
 
-At the time of this release (April 2007), all authors are with the
+At that time, all authors were with the
 Department of Information Engineering, University of Padova, Italy.
+
+Further contributions and improvements have been developed 
+through the years by (in alfabetical order):
+
+Federico Guerra      (federico@guerra-tlc.com)  
+Andrea Mior          (andrmior@dei.unipd.it)  
+Michele Rossi        (michele.rossi@dei.unipd.it)  
 
