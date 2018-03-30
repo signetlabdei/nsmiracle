@@ -209,17 +209,17 @@ void ConnectorTrace::annotate(const char* s)
 {
 	if (pt_->tagged()) {
 		sprintf(pt_->buffer(),
-			"v "TIME_FORMAT" -e {sim_annotation %g %s}",
+			"v " TIME_FORMAT " -e {sim_annotation %g %s}",
 			Scheduler::instance().clock(), 
 			Scheduler::instance().clock(), s);
 	} else {
 		sprintf(pt_->buffer(),
-			"v "TIME_FORMAT" eval {set sim_annotation {%s}}", 
+			"v " TIME_FORMAT " eval {set sim_annotation {%s}}", 
 			pt_->round(Scheduler::instance().clock()), s);
 	}
 	pt_->dump();
 	//callback();
-	sprintf(pt_->nbuffer(), "v -t "TIME_FORMAT" -e sim_annotation %g %s", 
+	sprintf(pt_->nbuffer(), "v -t " TIME_FORMAT " -e sim_annotation %g %s", 
 		Scheduler::instance().clock(), 
 		Scheduler::instance().clock(), s);
 	pt_->namdump();

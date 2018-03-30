@@ -402,7 +402,7 @@ void MrclMac802_11::trace_event(char *eventtype, Packet *p)
         //struct hdr_cmn *ch = HDR_CMN(p);
 	
 	if(wrk != 0) {
-		sprintf(wrk, "E -t "TIME_FORMAT" %s %2x ",
+		sprintf(wrk, "E -t " TIME_FORMAT " %s %2x ",
 			et_->round(Scheduler::instance().clock()),
                         eventtype,
                         //ETHER_ADDR(dh->dh_sa)
@@ -410,7 +410,7 @@ void MrclMac802_11::trace_event(char *eventtype, Packet *p)
                         );
         }
         if(nwrk != 0) {
-                sprintf(nwrk, "E -t "TIME_FORMAT" %s %2x ",
+                sprintf(nwrk, "E -t " TIME_FORMAT " %s %2x ",
                         et_->round(Scheduler::instance().clock()),
                         eventtype,
                         //ETHER_ADDR(dh->dh_sa)
