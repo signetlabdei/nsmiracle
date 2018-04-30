@@ -48,27 +48,30 @@ void UpdatePosTimer::expire(Event *e)
 	module->update(Scheduler::instance().clock());
 }
 
-
-
 GroupMobPosition::GroupMobPosition() : 
 	Position(),
 	xFieldWidth_(0),
 	yFieldWidth_(0),
-	alpha_(0),
+	xprec_(),
+	yprec_(),
 	speedMean_(0),
 	sigmaSpeed_(0),
 	speedM_(0),
 	speedS_(0),
 	eta_(0),
+	alpha_(0),
 	charge_(0),
-	memoryM_(0),
-	memoryS_(0),
+	steps_(),
 	bound_(REBOUNCE),
 	updateTime_(0),
-	debug_(0),
+	updateTmr_(this),
 	speed_(0),
-	leader_(0),
-	updateTmr_(this)
+	gammaOld_(),
+	memoryM_(0),
+	memoryS_(0),
+	thetaMax_(),
+	debug_(0),
+	leader_(0)
 {
 	bind("xFieldWidth_", &xFieldWidth_);
 	bind("yFieldWidth_", &yFieldWidth_);
@@ -93,7 +96,6 @@ GroupMobPosition::~GroupMobPosition()
 
 int GroupMobPosition::command(int argc, const char*const* argv)
 {
-	Tcl& tcl = Tcl::instance();
 	if (argc == 2)
 	{
 		if(strcasecmp(argv[1], "move") == 0)
@@ -168,7 +170,6 @@ double GroupMobPosition::getY()
 double GroupMobPosition::distance(Position* pos1, Position* pos2)
 {
 	double xdiff,ydiff;
-	double dist;
     
 	xdiff = pos1->getX() - pos2->getX();
 	ydiff = pos1->getY() - pos2->getY();
@@ -281,10 +282,9 @@ double GroupMobPosition::MobGaussian(double avrg, double sigma)
 void GroupMobPosition::update(double now)
 {
 	if (debug_>10) printf("old pos (%f,%f)...", getX(), getY());
-	double alpha,speed,gamma,rho,delta;
+	double gamma,rho,delta;
 	int rmem;
 	double newx,newy,xPrec,yPrec;
-	double ro;
 
 	speed_ = speed_*(1.-eta_) + 
 			eta_*MobGaussian(speedMean_, sigmaSpeed_);
@@ -312,8 +312,6 @@ void GroupMobPosition::update(double now)
 	if (leader_!=0)
 	{
 		double cx,cy,dist;
-		double charge_g=0.8;
-		double charge_l=0.8;
 
 		cx = mirror_posx(x_,leader_->getX());
 		cy = mirror_posy(y_,leader_->getY());

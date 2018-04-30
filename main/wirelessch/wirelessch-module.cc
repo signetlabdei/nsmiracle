@@ -128,7 +128,7 @@ int* WirelessChModule::getInfluencedNodes(Position *p, double radius,  int *numI
 	ymax = p->getY() + radius;
 	
 	double xpos,ypos;
-	double yprec, xprec = 0;
+	double xprec = 0;
 	
 	// First allocate as much as possible needed
 	int* tmpList = new int[nodesNum];
@@ -158,7 +158,6 @@ int* WirelessChModule::getInfluencedNodes(Position *p, double radius,  int *numI
 			break;				// end of the inteference area
 
 		xprec = xpos;
-		yprec = xpos;
 	}
 	
 	

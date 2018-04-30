@@ -129,13 +129,13 @@ double  MPhy_Bpsk::getTxDuration(Packet* p)
 void MPhy_Bpsk::startTx(Packet* p)
 {
   // we abort any ongoing rx activity
-
+#if 0
   if (PktRx != 0) {
     hdr_MPhy* ph = HDR_MPHY(PktRx);
-    double rx_time = ph->rxtime;
-   
-//     drp_rsn_map[ph->txtime][ph->rxtime] = BPSK_DROPPED_REASON_TX_PENDING;
+    double rx_time = ph->rxtime;  
+    drp_rsn_map[ph->txtime][ph->rxtime] = BPSK_DROPPED_REASON_TX_PENDING;
   }
+#endif 
   PktRx = 0;
   txPending = true;
   sendDown(p);
@@ -162,8 +162,8 @@ void MPhy_Bpsk::startRx(Packet* p)
   }
   
   hdr_MPhy* ph = HDR_MPHY(p);
-  double rx_time = ph->rxtime;
-  double tx_time = ph->txtime;
+//  double rx_time = ph->rxtime;
+//  double tx_time = ph->txtime;
   /* ideal synchronization */
 //printf("(%12.12f Node:%d MPhy_Bpsk::startRx\n", NOW, mac_addr);
   if ( (PktRx == 0) && (txPending == false) )

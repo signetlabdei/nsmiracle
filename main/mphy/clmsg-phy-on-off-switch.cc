@@ -49,12 +49,14 @@ ClMessage_t CLMSG_PHY_ON_OFF_SWITCH;
 ClMessage_t CLMSG_PHY_ON_OFF_SWITCH_STATUS;
 
 ClMsgPhyOnOffSwitch::ClMsgPhyOnOffSwitch()
-  : turnOn(true), ClMessage(CLMSG_PHY_ON_OFF_SWITCH_VERBOSITY, CLMSG_PHY_ON_OFF_SWITCH)
+  : ClMessage(CLMSG_PHY_ON_OFF_SWITCH_VERBOSITY, CLMSG_PHY_ON_OFF_SWITCH),
+    turnOn(true)
 {
 }
 
 ClMsgPhyOnOffSwitch::ClMsgPhyOnOffSwitch(int destination)
-  : turnOn(true), ClMessage(CLMSG_PHY_ON_OFF_SWITCH_VERBOSITY, CLMSG_PHY_ON_OFF_SWITCH, UNICAST, destination)
+  : ClMessage(CLMSG_PHY_ON_OFF_SWITCH_VERBOSITY, CLMSG_PHY_ON_OFF_SWITCH, UNICAST, destination),
+    turnOn(true)
 {
 }
 
@@ -82,12 +84,14 @@ bool ClMsgPhyOnOffSwitch::isOn()
 }
 
 ClMsgPhyOnOffSwitchStatus::ClMsgPhyOnOffSwitchStatus()
-  : isOn_status(false), ClMessage(CLMSG_PHY_ON_OFF_SWITCH_STATUS_VERBOSITY, CLMSG_PHY_ON_OFF_SWITCH_STATUS)
+  : ClMessage(CLMSG_PHY_ON_OFF_SWITCH_STATUS_VERBOSITY, CLMSG_PHY_ON_OFF_SWITCH_STATUS),
+    isOn_status(false)
 {
 }
 
 ClMsgPhyOnOffSwitchStatus::ClMsgPhyOnOffSwitchStatus(int destination)
-  : isOn_status(false), ClMessage(CLMSG_PHY_ON_OFF_SWITCH_STATUS_VERBOSITY, CLMSG_PHY_ON_OFF_SWITCH_STATUS, UNICAST, destination)
+  : ClMessage(CLMSG_PHY_ON_OFF_SWITCH_STATUS_VERBOSITY, CLMSG_PHY_ON_OFF_SWITCH_STATUS, UNICAST, destination),
+    isOn_status(false) 
 {
 }
 

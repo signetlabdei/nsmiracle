@@ -47,9 +47,9 @@ void TcpTracer::format(Packet *p, SAP *sap)
   //  hdr_ip* iph = hdr_ip::access(p);
 
 
-  writeTrace(sap, " id=%d %s sn=%d chts=%f ts=%f ts_echo=%f RTT=%f sz=%d",
+  writeTrace(sap, (char*)" id=%d %s sn=%d chts=%f ts=%f ts_echo=%f RTT=%f sz=%d",
 	     ch->uid_,
-	     ch->ptype() == PT_TCP ? "TCP" : "ACK",
+	     ch->ptype() == PT_TCP ? (char*)"TCP" : (char*)"ACK",
 	     tcph->seqno_,
 	     ch->ts_,
 	     tcph->ts(),
@@ -67,7 +67,7 @@ extern "C" int Tcptracer_Init()
 }
 extern "C" int  Cygtcptracer_Init()
 {
-  Tcptracer_Init();
+  return Tcptracer_Init();
 }
 
 

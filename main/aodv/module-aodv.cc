@@ -118,22 +118,24 @@ void MrclLocalRepairTimer::handle(Event* p)
 	Packet::free((Packet *)p);
 }
 
-AodvModule::AodvModule() : 
-	bcache_(0),
+AodvModule::AodvModule() 
+  : 
+  m_(),
 	ncache_(0),
+	bcache_(0),
 	rqueue_(this),
+	ifqueue_(0),
+	broadcastAddr_(0),  
 	bid_(1),
+	AODV_LINK_LAYER_DETECTION(TRUE),		// standardly disabled in ns2 (actived thanks to "AodvLinkLayerDetection" Tcl command)
+	AODV_LOCAL_REPAIR(TRUE),
+	AODV_MIRACLE_ROUTING(TRUE),
 	btimer(this),
 	htimer(this),
 	ntimer(this),
 	rtimer(this),
 	lrtimer(this),
-	AODV_LINK_LAYER_DETECTION(TRUE),		// standardly disabled in ns2 (actived thanks to "AodvLinkLayerDetection" Tcl command)
-	AODV_LOCAL_REPAIR(TRUE),
-	AODV_MIRACLE_ROUTING(TRUE),
-	ifqueue_(0),
-	debugout(1),
-	broadcastAddr_(0)
+	debugout(1)
 {
 	seqno_ = 2;
 	bind_bool("RREQ_GRAT_RREP", &RREQ_GRAT_RREP);
@@ -325,7 +327,7 @@ void AodvModule::handle_link_failure(char* id)
 		assert((rt->getSeqno()%2) == 0);
 		rt->incrSeqno();
 		MrclAddress::storeAddr(&(re->unreachable_dst[re->DestCount * MRCL_ADDRESS_MAX_LEN]), rt->getDst());
-		re->unreachable_dst_seqno[re->DestCount] = rt->getSeqno();
+		re->unreachable_dst_seqno[(int)re->DestCount] = rt->getSeqno();
 // 	if (debug_)
 // 	{
 // 		fprintf(stderr, "[AodvModule::handle_link_failure] %s(%f): %d\t(%d\t%u\t%d)\n", __FUNCTION__, CURRENT_TIME,
@@ -356,7 +358,7 @@ void AodvModule::local_rt_repair(Aodv_rt_entry *rt, Packet *p)
 {
 	if (debug_)
 	{
-		fprintf(stderr,"[AodvModule::local_rt_repair] %s: Dst - %d\n", __FUNCTION__, (char *)(rt->getDst()+ sizeof(int)));
+		fprintf(stderr,"[AodvModule::local_rt_repair] %s: Dst - %s\n", __FUNCTION__, (char *)(rt->getDst()+ sizeof(int)));
 	}
   // Buffer the packet 
   rqueue_.enque(p);
@@ -506,9 +508,9 @@ void AodvModule::forward(Packet *p)
 	strcat(saddr,"\0");
 	char daddr[MRCL_ADDRESS_MAX_LEN] = "";
 	int daddrLen;
+	memcpy(&daddrLen, rhdr->daddr(), sizeof(int));
 	if (daddrLen>0)
 	{
-		memcpy(&daddrLen, rhdr->daddr(), sizeof(int));
 		strcpy(temp,"");
 		for(int i=daddrLen-1; i>=0; i--)
 		{
@@ -525,9 +527,9 @@ void AodvModule::forward(Packet *p)
 	assert(nAddresses() > 0);
 	assert(broadcastAddr_);
 		
-	if (ch->ptype() != PT_AODV && ch->direction() == hdr_cmn::UP &&
-		(broadcastAddr_->isEqual(rhdr->daddr()))
-		|| isMyAddress(rhdr->daddr())) 
+	if ((ch->ptype() != PT_AODV) && (ch->direction() == hdr_cmn::UP) &&
+		((broadcastAddr_->isEqual(rhdr->daddr()))
+		|| isMyAddress(rhdr->daddr()))) 
 	{
 		// packet for me (unicast or broadcast)
 		//dmux_->recv(p,0);
@@ -568,9 +570,9 @@ void AodvModule::forward(Packet *p)
 	strcat(saddr1,"\0");
 	char daddr1[MRCL_ADDRESS_MAX_LEN] = "";
 	int daddrLen1;
+	memcpy(&daddrLen1, rhdr->daddr(), sizeof(int));
 	if (daddrLen1>0)
 	{
-		memcpy(&daddrLen1, rhdr->daddr(), sizeof(int));
 		strcpy(temp1,"");
 		for(int i=daddrLen1-1; i>=0; i--)
 		{
@@ -738,7 +740,7 @@ void AodvModule::resolve(Packet *p)
 			assert(rt->getFlags() == RTF_DOWN);
 			re->DestCount = 0;
 			MrclAddress::storeAddr(&(re->unreachable_dst[re->DestCount * MRCL_ADDRESS_MAX_LEN]), rt->getDst());
-			re->unreachable_dst_seqno[re->DestCount] = rt->getSeqno();
+			re->unreachable_dst_seqno[(int)re->DestCount] = rt->getSeqno();
 			re->DestCount += 1;
 			if (debug_)
 			{
@@ -1024,9 +1026,9 @@ void AodvModule::recvRequest(Packet *p)
 	char daddr[MRCL_ADDRESS_MAX_LEN] = "";
 	int daddrLen;
 	char temp[10];
+	memcpy(&daddrLen, rhdr->daddr(), sizeof(int));
 	if (daddrLen>0)
 	{
-		memcpy(&daddrLen, rhdr->daddr(), sizeof(int));
 		strcpy(temp,"");
 		for(int ki=daddrLen-1; ki>=0; ki--)
 		{
@@ -1228,9 +1230,9 @@ RoutingHdr* h = HDR_ROUTING(buf_pkt);
 	strcat(saddr,"\0");
 	char daddr[MRCL_ADDRESS_MAX_LEN] = "";
 	int daddrLen;
+	memcpy(&daddrLen, h->daddr(), sizeof(int));
 	if (daddrLen>0)
 	{
-		memcpy(&daddrLen, h->daddr(), sizeof(int));
 		strcpy(temp,"");
 		for(int i=daddrLen-1; i>=0; i--)
 		{
@@ -1379,7 +1381,7 @@ void AodvModule::recvError(Packet *p)
 			if (!rt->pc_empty()) 
 			{
 				MrclAddress::storeAddr(&(nre->unreachable_dst[nre->DestCount * MRCL_ADDRESS_MAX_LEN]), rt->getDst());
- 				nre->unreachable_dst_seqno[nre->DestCount] = rt->getSeqno();
+ 				nre->unreachable_dst_seqno[(int)nre->DestCount] = rt->getSeqno();
 				nre->DestCount += 1;
 				rt->pc_delete();
 			}
@@ -1475,7 +1477,6 @@ void AodvModule::sendRequest(char *dst)
 		int ip;
 		memcpy(&ip, dst + sizeof(int), sizeof(int));
 		sprintf(addr,"%d.%d.%d.%d", (ip & 0xff000000)>>24,(ip & 0x00ff0000)>>16, (ip & 0x0000ff00)>>8, (ip & 0x000000ff));
-		Position *pos = getPosition();
 		printf("[AodvModule::sendRequest] to %s\n", addr);
 	}
 	// Allocate a RREQ packet 
@@ -1848,7 +1849,6 @@ double AodvModule::perHopTime(Aodv_rt_entry *rt)
 
 char *AodvModule::getNextHop(Packet *p)
 {
-	hdr_cmn *ch = HDR_CMN(p);
 	RoutingHdr *rhdr = HDR_ROUTING(p);
 	Aodv_rt_entry *rt = rtable_.rt_lookup(rhdr->daddr());
 
@@ -1883,7 +1883,6 @@ int AodvModule::canIReach(char *a, Metric ***m)
 		fake[0] = new HopCountMetric();
 		fake[0]->setHopCount(DBL_MAX);
 		*m = (Metric **) fake;
-		Packet* p;
 		return -1;
 	}
 	if ((rt->getFlags() == RTF_DOWN) || (rt->getFlags() == RTF_IN_REPAIR))
@@ -1893,7 +1892,6 @@ int AodvModule::canIReach(char *a, Metric ***m)
 		fake[0] = new HopCountMetric();
 		fake[0]->setHopCount(DBL_MAX);
 		*m = (Metric **) fake;
-		Packet* p;
 		return -1;
 	}	
 	m_[0]->setHopCount(rt->getHops());

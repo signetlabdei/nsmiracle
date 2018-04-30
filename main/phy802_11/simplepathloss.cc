@@ -88,7 +88,6 @@ double SimplePathLoss::Pr(Packet *p, PacketStamp *t, PacketStamp *r, double L, d
 	double rX, rY, rZ;		// location of receiver
 	double tX, tY, tZ;		// location of transmitter
 	double d;				// distance
-	double hr, ht;		// height of recv and xmit antennas
 	double Pr;			// received signal power
 
 
@@ -130,7 +129,7 @@ double SimplePathLoss::Pr(Packet *p, PacketStamp *t, PacketStamp *r, double L, d
 
 /*double MrclTwoRayGround::getDist(double Pr, double Pt, double Gt, double Gr, double hr, double ht, double L, double lambda)
 {
-       /* Get quartic root * /
+       // Get quartic root
        return sqrt(sqrt(Pt * Gt * Gr * (hr * hr * ht * ht) / Pr));
 }*/
 

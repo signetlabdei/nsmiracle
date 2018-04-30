@@ -45,7 +45,7 @@ extern "C" int Miracleport_Init()
 }
 extern "C" int  Cygmiracleport_Init()
 {
-  Miracleport_Init();
+  return Miracleport_Init();
 }
 
 

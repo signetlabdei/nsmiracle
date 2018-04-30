@@ -155,6 +155,8 @@ int MetricList::find(const char *name)
 	{
 		return min + 1;
 	}
+	
+	return 0;
 }
 
 int MetricList::length()
@@ -214,6 +216,8 @@ int Metric::command(int argc, const char *const* argv)
 			return TCL_OK;
 		}
 	}
+	
+	return TclObject::command(argc, argv);
 }
 
 void Metric::insertParam(MetricList *m)
@@ -233,9 +237,15 @@ void Metric::clearParam()
  *	\_______________________________________/
  */
 
-RouteInfo::RouteInfo() : nChild_(0), father_(0), list_(), lengthChild_(0)
+RouteInfo::RouteInfo() 
+  : father_(0), 
+    child_(0), 
+    nChild_(0), 
+    lengthChild_(0),
+    reachability_(ROUTEINFO_DEFAULT_REACHABILITY),
+    list_(), 
+    moduleId_()
 {
-	reachability_ = ROUTEINFO_DEFAULT_REACHABILITY;
 }
 
 RouteInfo::~RouteInfo()

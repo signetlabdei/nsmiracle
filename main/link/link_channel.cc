@@ -56,9 +56,6 @@ LinkChannelModule::~LinkChannelModule()
 
 int LinkChannelModule::command(int argc, const char*const* argv)
 {
-
-  Tcl& tcl = Tcl::instance();
-  
     if(argc == 3)
     {
 

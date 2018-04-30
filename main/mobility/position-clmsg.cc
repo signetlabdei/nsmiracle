@@ -36,11 +36,12 @@ ClMessage_t CLMSG_POSITION_GET_DIST;
 
 
 ClMsgPositionGetDist::ClMsgPositionGetDist(nsaddr_t i, nsaddr_t j)
-  : dist(0), 
+  :     
+    ClMessage(CLMSG_POSITION_VERBOSITY, CLMSG_POSITION_GET_DIST),
+    dist(0), 
     valid(false), 
     id1(i), 
-    id2(j),
-    ClMessage(CLMSG_POSITION_VERBOSITY, CLMSG_POSITION_GET_DIST)
+    id2(j)
 {
 //   std::cerr << __PRETTY_FUNCTION__ 
 // 	    << " id1=" <<id1

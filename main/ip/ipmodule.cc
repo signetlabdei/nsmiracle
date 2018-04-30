@@ -102,7 +102,7 @@ void IPModule::recv(Packet *p)
 	hdr_cmn *ch = HDR_CMN(p);
 	if(ch->direction() == hdr_cmn::UP)
 	{
-		if(iph->daddr() == ipAddr_ || iph->daddr() == IP_BROADCAST)
+		if(iph->daddr() == ipAddr_ || iph->daddr() == (nsaddr_t)IP_BROADCAST)
 		{
 			ch->size() -= IP_HDR_LEN;
 			sendUp(p);
@@ -192,9 +192,6 @@ nsaddr_t IPModule::get_subnetaddr(nsaddr_t addr)
 	else
 		c = 5;
 	
-	if (c > 3)
-		return 0;
-	
 	switch(c)
 	{
 		case 1:
@@ -203,6 +200,8 @@ nsaddr_t IPModule::get_subnetaddr(nsaddr_t addr)
 			return (nsaddr_t)0xffff0000;
 		case 3:
 			return (nsaddr_t)0xffffff00;
+		default:
+			return (nsaddr_t)0;
 	}
 }
 

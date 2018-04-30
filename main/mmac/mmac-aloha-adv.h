@@ -124,7 +124,9 @@ class MMacAlohaAdv : public MMac {
     
     
     virtual void freeze() { assert(timer_status == ALOHA_RUNNING); left_duration -= (NOW - start_time); 
-                            if (left_duration <= 0.0) left_duration = module->mac2phy_delay_; force_cancel();
+                            if (left_duration <= 0.0) 
+                              left_duration = module->mac2phy_delay_; 
+                            force_cancel();
                             timer_status = ALOHA_FROZEN; }
     
     virtual void unFreeze() { assert(timer_status == ALOHA_FROZEN); start_time = NOW; assert(left_duration > 0);
@@ -325,8 +327,7 @@ class MMacAlohaAdv : public MMac {
   bool has_buffer_queue;
 
   double start_tx_time;        
-  double srtt;       /**< Smoothed Round Trip Time, calculated as for
-			TCP */
+  double srtt;       /**< Smoothed Round Trip Time, calculated as for TCP */
   double sumrtt;       /**< sum of RTT samples */
   double sumrtt2;      /**< sum of (RTT^2) */
   int rttsamples;      /**< num of RTT samples */  

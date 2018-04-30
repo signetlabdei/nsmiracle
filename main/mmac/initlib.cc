@@ -44,7 +44,7 @@ extern EmbeddedTcl MMacInitTclCode;
 extern "C" int Mmac_Init()
 {
 	MAC_CLMSG_GET_ADDR = ClMessage::addClMessage();
-	PT_MMAC_ACK = p_info::addPacket("MMAC_ACK");
+	PT_MMAC_ACK = p_info::addPacket((char*)"MMAC_ACK");
    MMacInitTclCode.load();
 	return 0;
 }

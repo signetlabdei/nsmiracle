@@ -44,7 +44,7 @@ extern "C" int Miraclewirelessch_Init()
 }
 extern "C" int  Cygmiraclewirelessch_Init()
 {
-  Miraclewirelessch_Init();
+  return Miraclewirelessch_Init();
 }
 
 

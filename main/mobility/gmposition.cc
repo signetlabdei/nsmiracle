@@ -51,11 +51,11 @@ GMPosition::GMPosition() :
 	directionMean_(0),
 	bound_(REBOUNCE),
 	updateTime_(0),
-	debug_(0),
+	nextUpdateTime_(0.0),
 	speed_(0),
 	direction_(0),
-	nextUpdateTime_(0.0)
-{
+	debug_(0)
+	{
 	bind("xFieldWidth_", &xFieldWidth_);
 	bind("yFieldWidth_", &yFieldWidth_);
 	bind("alpha_", &alpha_);
@@ -70,7 +70,6 @@ GMPosition::~GMPosition()
 
 int GMPosition::command(int argc, const char*const* argv)
 {
-	Tcl& tcl = Tcl::instance();
 	if(argc == 3)
 	{
 		if(strcasecmp(argv[1], "bound") == 0)

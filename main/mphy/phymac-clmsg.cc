@@ -54,8 +54,8 @@ ClMessage_t CLMSG_PHY2MAC_ADDR;
 ClMessage_t CLMSG_MAC2PHY_GETISIDLE;
 
 ClMsgPhy2MacEndTx::ClMsgPhy2MacEndTx(const Packet* p)
-  : pkt(p),
-    ClMessage(CLMSG_PHY2MAC_VERBOSITY, CLMSG_PHY2MAC_ENDTX)
+  : ClMessage(CLMSG_PHY2MAC_VERBOSITY, CLMSG_PHY2MAC_ENDTX),
+  pkt(p)
 {
 }
 
@@ -69,8 +69,8 @@ ClMessage* ClMsgPhy2MacEndTx::copy()
 
 
 ClMsgPhy2MacStartRx::ClMsgPhy2MacStartRx(const Packet* p)
-  : pkt(p),
-    ClMessage(CLMSG_PHY2MAC_VERBOSITY, CLMSG_PHY2MAC_STARTRX)
+  : ClMessage(CLMSG_PHY2MAC_VERBOSITY, CLMSG_PHY2MAC_STARTRX),
+    pkt(p)
 {
 }
 
@@ -83,8 +83,8 @@ ClMessage* ClMsgPhy2MacStartRx::copy()
 
 
 ClMsgPhy2MacCCA::ClMsgPhy2MacCCA(bool new_cca)
-  : CCA(new_cca),
-    ClMessage(CLMSG_PHY2MAC_VERBOSITY, CLMSG_PHY2MAC_CCA)
+  : ClMessage(CLMSG_PHY2MAC_VERBOSITY, CLMSG_PHY2MAC_CCA),
+    CCA(new_cca)
 {
 }
 
@@ -98,13 +98,14 @@ ClMessage* ClMsgPhy2MacCCA::copy()
 
 //pkt tx duration 
 ClMsgMac2PhyGetTxDuration::ClMsgMac2PhyGetTxDuration(Packet* p)
-  : pkt(p),
-    ClMessage(CLMSG_MAC2PHY_VERBOSITY, CLMSG_MAC2PHY_GETTXDURATION)
+  : ClMessage(CLMSG_MAC2PHY_VERBOSITY, CLMSG_MAC2PHY_GETTXDURATION),
+    pkt(p)
 {
 }
 
 ClMsgMac2PhyGetTxDuration::ClMsgMac2PhyGetTxDuration(int moduleId, Packet*p)
-  : pkt(p), ClMessage(CLMSG_MAC2PHY_VERBOSITY, CLMSG_MAC2PHY_GETTXDURATION, UNICAST, moduleId)
+  : ClMessage(CLMSG_MAC2PHY_VERBOSITY, CLMSG_MAC2PHY_GETTXDURATION, UNICAST, moduleId),
+    pkt(p)
 {
 }
 

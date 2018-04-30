@@ -41,9 +41,7 @@ void MLLTracer::format(Packet *p, SAP *sap)
 
 	if(t == PT_ARP)
 	{
-		hdr_ll	*lh = HDR_LL(p);
 		hdr_arp	*ah = HDR_ARP(p);
-		hdr_mac *mh = HDR_MAC(p);
 
 		if(ah->arp_op  == ARPOP_REQUEST)
 		{
@@ -69,7 +67,7 @@ void MLLTracer::format(Packet *p, SAP *sap)
 		
 
 	if(descrstream.str().length() > 0)
-		writeTrace(sap, "%s", descrstream.str().c_str());
+		writeTrace(sap, (char*)"%s", descrstream.str().c_str());
 }
 
 extern "C" int Mlltracer_Init()
@@ -79,5 +77,5 @@ extern "C" int Mlltracer_Init()
 }
 extern "C" int  Cygmlltracer_Init()
 {
-	Mlltracer_Init();
+	return Mlltracer_Init();
 }

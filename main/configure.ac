@@ -49,8 +49,8 @@ AC_CHECK_DEI80211MR(AC_MSG_NOTICE([Tracer for dei80211mr will be built]),
 		    AC_MSG_WARN([Tracer for dei80211mr will NOT be built]))
 
 
-
-NSMIRACLE_CPPFLAGS='-I$(top_srcdir)/nsmiracle'
+NSMIRACLE_CPPFLAGS='-Wall -Werror'
+NSMIRACLE_CPPFLAGS="$NSMIRACLE_CPPFLAGS "'-I$(top_srcdir)/nsmiracle'
 NSMIRACLE_CPPFLAGS="$NSMIRACLE_CPPFLAGS "'-I$(top_srcdir)/ip'
 NSMIRACLE_CPPFLAGS="$NSMIRACLE_CPPFLAGS "'-I$(top_srcdir)/mphy'
 NSMIRACLE_CPPFLAGS="$NSMIRACLE_CPPFLAGS "'-I$(top_srcdir)/mmac'

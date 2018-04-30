@@ -72,7 +72,7 @@ void Bin::drop(Packet*p, int depth,const char *reason)
 		printf("Bin::drop(%p,%i,%s) --- preamble_='%s'\n", p, depth, reason, preamble_);
 	if(depth <= depth_)
 	{
-		writeTrace("D %.9f %s %s", Scheduler::instance().clock(), preamble_, reason);
+		writeTrace((char*)"D %.9f %s %s", Scheduler::instance().clock(), preamble_, reason);
 		if(pktTr_)
 			pktTr_->trace(p,this);
 		dump();
@@ -83,7 +83,7 @@ void Bin::drop(Packet*p, int depth,const char *reason)
 // write down the trace for a dropping of a message event
 void Bin::drop(ClMessage* m, const char* reason)
 {
-	writeTrace("D %.9f %s %s", Scheduler::instance().clock(), preamble_, reason);
+	writeTrace((char*)"D %.9f %s %s", Scheduler::instance().clock(), preamble_, reason);
 	if(clTr_)
 		clTr_->trace(m,this);
 	dump();

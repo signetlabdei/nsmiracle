@@ -42,21 +42,23 @@ void VerboseClCmnTracer::format(ClMessage *m, ConnectorTrace *sap)
   switch (m->direction())
     {
     case TONODECORE:
-      dir = "ToNC  ";
+      dir = (char*)"ToNC  ";
       break;
     case TOMODULE:
-      dir = "ToMod ";
+      dir = (char*)"ToMod ";
       break;
     case UP:
-      dir = "Up    ";
+      dir = (char*)"Up    ";
       break;
     case DOWN:
-      dir = "Down  ";
+      dir = (char*)"Down  ";
       break;
+    default:
+      dir = (char*)"Err   ";
     }
 	
 	
-  writeTrace(sap, " %s %s src: %2d  dst: %2d  uid: %2d  ",
+  writeTrace(sap, (char*)" %s %s src: %2d  dst: %2d  uid: %2d  ",
 	     dir,
 	     (m->getDestType() == UNICAST) ? "UNICAST " : "BROADCAST",
 	     m->getSource(),

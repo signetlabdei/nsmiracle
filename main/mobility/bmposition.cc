@@ -43,7 +43,16 @@ public:
 	}
 } class_bmposition;
 
-BMPosition::BMPosition() : Position(), trgTime_(-1), Xsorg_(0), Ysorg_(0), Xdest_(0), Ydest_(0), speed_(0), lastUpdateTime_(0)
+BMPosition::BMPosition() 
+  : Position(),
+  trgTime_(-1),
+  lastUpdateTime_(0),
+  Xdest_(0),
+  Ydest_(0),
+  Xsorg_(0),
+  Ysorg_(0),
+  speed_(0),
+  debug_()
 {
 	bind("debug_", &debug_);
 }
@@ -54,7 +63,6 @@ BMPosition::~BMPosition()
 
 int BMPosition::command(int argc, const char*const* argv)
 {
-	Tcl& tcl = Tcl::instance();
 	if(argc == 5)
 	{
 		if(strcasecmp(argv[1], "setdest") == 0)

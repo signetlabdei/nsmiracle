@@ -59,30 +59,41 @@ int CbrModule::uidcnt_;		// unique id of the packet generated
 
 
 CbrModule::CbrModule() 
-  : sendTmr_(this),
+  : 
+    alpha_(),      
     txsn(1),
     hrsn(0),
     pkts_recv(0),
     pkts_ooseq(0),
-    pkts_lost(0),
-    pkts_last_reset(0),
-    rftt(-1),
-    lrtime(0),
-    sthr(0),
-    sumrtt(0),
-    rttsamples(0),
-    sumftt(0),
-    fttsamples(0),
-    sumbytes(0),
+    addfd_(false),
+    fd_(0.0),
+    cr_(),
+    MOS(0),
     pob_(0),
     pob_time(0),
-    pkts_opt(0),
-    sumdt(0),
-    MOS(0),
+    pkts_opt(0),   
     first_pkt_rftt(-1),
     first_pkt_(-1),
-    addfd_(false),
-    fd_(0.0)
+    pkts_lost(0),  
+    pkts_invalid(0),
+    pkts_last_reset(0),
+    rftt(-1),       
+    srtt(),      
+    sftt(),
+    lrtime(0.0),
+    sthr(0.0),
+    period_(),
+    pktSize_(),
+    sendTmr_(this),
+    sumrtt(0),
+    sumrtt2(0),
+    rttsamples(0), 
+    sumftt(0),
+    sumftt2(0),
+    fttsamples(0),
+    sumbytes(0),
+    sumdt(0),
+    PoissonTraffic_()
 { // binding to TCL variables
   bind("period_", &period_);
   bind("destPort_", (int*)&dstPort_);
@@ -284,10 +295,7 @@ void CbrModule::stop()
 
 void CbrModule::recv(Packet* p, Handler* h)
 {
-	hdr_cmn* ch = hdr_cmn::access(p);
-  
   recv(p);
-
 }
 
 
@@ -579,13 +587,12 @@ double CbrModule::getMOS(double Pdrop, double delay, double rsource){
   
 
 
-  if (R<100 && R > 0)
+  if (R<=0.0)
+    MOS_ = 1;
+  else if (R<100 && R > 0)
     MOS_ = max(1+0.035*R+7e-6*R*(R-60)*(100-R),1.0);
-  if (R>=100)
+  else // (R>=100)
     MOS_=4.5;
-
-  if (R<=0)
-    MOS_=1;
   // cerr << "MOS_  " <<  MOS <<endl;
   return MOS_;
 }

@@ -56,17 +56,17 @@ int DinArray::count()
 
 void *DinArray::get(int i)
 {
-	if(i < 0 || i >= count_)
+	if(i < 0 || i >= (int)count_)
 		return 0;
 	return obj_[i];
 }
 
 void DinArray::set(int i, void *o)
 {
-	if(i >= count_)
+	if(i >= (int)count_)
 	{
 		void **tmp = new void*[i+1];
-		for(int j = 0; j < count_; j++){
+		for(int j = 0; j < (int)count_; j++){
 			tmp[j] = obj_[j];
 		}
 		if(count_ > 0){
@@ -198,11 +198,12 @@ void IntegerDinArray::sortDescending()
 void *realloc(void *array, int olddim, int newdim)
 {printf("old %d, new %d\n", olddim, newdim);
 	char *tmp = new char[newdim];
-	printf("tmp e' d %d p %p\n", tmp, tmp);
+	printf("tmp is d %s p %p\n", tmp, tmp);
 	if (olddim>0)
-	{printf("Ma qui entro?\n");
+	{
+		printf("[%s:%d] \n", __FUNCTION__, __LINE__);
 		memcpy(tmp, array, olddim);
-		delete [] array;
+		// delete [] array;
 		assert(false);
 	}
 	return tmp;

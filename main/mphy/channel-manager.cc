@@ -88,8 +88,6 @@ void ChannelManager::reallocateChannels()
   // carrier frequency 
   double fc = startFreq + chbw/2;
 
-  int chid = 0;
-
   while (iter != chlist.end())
     {
       MSpectralMask* sm = *iter;
@@ -102,8 +100,6 @@ void ChannelManager::reallocateChannels()
 
 int ChannelManager::command(int argc, const char*const* argv)
 { 
-  Tcl& tcl = Tcl::instance();
-
   if(argc == 2)
     {
       if(strcasecmp(argv[1], "print")==0)

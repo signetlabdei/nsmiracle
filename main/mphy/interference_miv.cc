@@ -167,7 +167,6 @@ const PowerChunkList& MInterferenceMIV::getInterferencePowerChunkList(double pow
 	
 	Function::reverse_iterator rit; 
   
-  double integral = 0;
   double lasttime = NOW;
 
   assert(starttime<= NOW);

@@ -40,7 +40,11 @@ public:
 	}
 } class_mrcl_routing_static;
 
-MrclRoutingStatic::MrclRoutingStatic() : tail_(0), routes_(0)
+MrclRoutingStatic::MrclRoutingStatic() 
+  : 
+    routes_(0),
+    tail_(0),
+    m_(0)
 {
 	m_ = new HopCountMetric*;
 	m_[0] = new HopCountMetric();
@@ -57,7 +61,7 @@ MrclRoutingStatic::~MrclRoutingStatic()
 
 int MrclRoutingStatic::command(int argc, const char*const* argv)
 {
-	Tcl& tcl = Tcl::instance();
+//	Tcl& tcl = Tcl::instance();
 // 	if(argc == 2)
 // 	{
 // 		if (strcasecmp(argv[1],"addr")==0)
@@ -138,8 +142,8 @@ int MrclRoutingStatic::command(int argc, const char*const* argv)
 
 char* MrclRoutingStatic::getNextHop(Packet *p)
 {
-	hdr_ip *iph = HDR_IP(p);
-	hdr_cmn *ch = HDR_CMN(p);
+//	hdr_ip *iph = HDR_IP(p);
+//	hdr_cmn *ch = HDR_CMN(p);
 	RoutingHdr *rhdr = HDR_ROUTING(p);
 	//printf("[MrclRoutingStatic::getNextHop] Ip %d Try to find nexthop for %d:\n", ipAddr_, iph->daddr());
 	for(MRS_RouteEntry *cur = routes_; cur; cur = cur->next)
@@ -209,7 +213,7 @@ int MrclRoutingStatic::canIReach(char *a, Metric ***m)
 		printf("cur->mak->AND(a)=%d cur->net->INT()=%d\n", cur->mask->AND(a), cur->net->INT());
 		if ( cur->mask->AND(a) == cur->net->INT())
 		{
-			Packet *p;
+			Packet *p = NULL;
 			printf("mrs I CAN REACH %f\n", m_[0]->value(p));
 			*m = (Metric **)m_;
 			return(1);
@@ -232,7 +236,7 @@ void MrclRoutingStatic::forward(Packet *p)
 	sprintf(destAddr,"%d.%d.%d.%d", (iph->daddr() & 0xff000000)>>24,(iph->daddr() & 0x00ff0000)>>16, (iph->daddr() & 0x0000ff00)>>8, (iph->daddr() & 0x000000ff));
 	memcpy(&ip, getAddress(0)->getAddr() + sizeof(int), sizeof(int));
 	sprintf(myaddr,"%d.%d.%d.%d", (ip & 0xff000000)>>24,(ip & 0x00ff0000)>>16, (ip & 0x0000ff00)>>8, (ip & 0x000000ff));
-	printf("[MrclRoutingStatic::forward] Ip %d Try to find nexthop for %d (%s):\n", myaddr, iph->daddr(), destAddr);
+	printf("[MrclRoutingStatic::forward] Ip %s Try to find nexthop for %d (%s):\n", myaddr, iph->daddr(), destAddr);
 
 	if (isMyAddress(mrhdr->daddr()))
 	{
@@ -257,7 +261,7 @@ void MrclRoutingStatic::resolve(Packet* p)
 	sprintf(destAddr,"%d.%d.%d.%d", (iph->daddr() & 0xff000000)>>24,(iph->daddr() & 0x00ff0000)>>16, (iph->daddr() & 0x0000ff00)>>8, (iph->daddr() & 0x000000ff));
 	memcpy(&ip, getAddress(0)->getAddr() + sizeof(int), sizeof(int));
 	sprintf(myaddr,"%d.%d.%d.%d", (ip & 0xff000000)>>24,(ip & 0x00ff0000)>>16, (ip & 0x0000ff00)>>8, (ip & 0x000000ff));
-	printf("[MrclRoutingStatic::resolve] Ip %d Try to find nexthop for %d (%s):\n", myaddr, iph->daddr(), destAddr);
+	printf("[MrclRoutingStatic::resolve] Ip %s Try to find nexthop for %d (%s):\n", myaddr, iph->daddr(), destAddr);
 	
 	int nRoute = getRoute(mrhdr->daddr(), p, 0);
 	if (nRoute>0)
@@ -289,9 +293,8 @@ void MrclRoutingStatic::resolve(Packet* p)
 // 				if((dest.getIpAddr() & cur->mask.getIpAddr()) == cur->net.getIpAddr())
 				if ( cur->mask->AND(mrhdr->daddr()) == cur->net->INT())
 				{
-					printf("[FORWARDING1] IP %d to %s module %d nexthop %d\n\n", myaddr, destAddr, cur->module, cur->next_hop->INT());
+					printf("[FORWARDING1] IP %s to %s module %d nexthop %d\n\n", myaddr, destAddr, cur->module, cur->next_hop->INT());
 					hdr_ip *iph = HDR_IP(p);
-					hdr_cmn *ch = HDR_CMN(p);
 					int id = 0;
 					for(MRS_RouteEntry *cur = routes_; cur; cur = cur->next)
 					{
@@ -308,7 +311,7 @@ void MrclRoutingStatic::resolve(Packet* p)
 		else
 		{
 			// this packet has to be forwarded to other routing module
-			printf("[FORWARDING2] IP %d sendUp to another routing module\n", myaddr);
+			printf("[FORWARDING2] IP %s sendUp to another routing module\n", myaddr);
 		// 				mrhdr->setSendup();
 			sendUp(p);
 		}

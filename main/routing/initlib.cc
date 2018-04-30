@@ -50,7 +50,7 @@ extern "C" int Miraclerouting_Init()
 {
 	RoutingHdrClass* mrh = new RoutingHdrClass;
 	mrh->bind();
-	PT_MRCL_ROUTING = p_info::addPacket("MRCL_ROUTING");
+	PT_MRCL_ROUTING = p_info::addPacket((char*)"MRCL_ROUTING");
 
 	CL_ROUTEMESSAGE = ClMessage::addClMessage();
 	SAP::addTracer(new MrclRoutingTracer);
@@ -59,7 +59,7 @@ extern "C" int Miraclerouting_Init()
 }
 extern "C" int  Cygmiraclerouting_Init()
 {
-  Miraclerouting_Init();
+  return Miraclerouting_Init();
 }
 
 

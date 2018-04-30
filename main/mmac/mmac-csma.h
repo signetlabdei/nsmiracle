@@ -165,6 +165,7 @@ protected:
   bool PendingPacket();
   bool FrozenBackoff();
   bool AckTimeoutExpired();
+
   const Packet* PktRx;
   Packet* PktTx;
   std::queue<Packet*> Q;   /// MAC queue used for packet scheduling 

@@ -52,7 +52,7 @@ ClMsgPhyMacStartRxTracer::ClMsgPhyMacStartRxTracer()
 
 void ClMsgPhyMacStartRxTracer::format(ClMessage *m, ConnectorTrace *sap)
 {
-  writeTrace(sap, "PHY2MAC_STARTRX");
+  writeTrace(sap, (char*)"PHY2MAC_STARTRX");
 }
 
 
@@ -63,7 +63,7 @@ ClMsgPhyMacEndTxTracer::ClMsgPhyMacEndTxTracer()
 
 void ClMsgPhyMacEndTxTracer::format(ClMessage *m, ConnectorTrace *sap)
 {
-  writeTrace(sap, "PHY2MAC_ENDTX");
+  writeTrace(sap, (char*)"PHY2MAC_ENDTX");
 }
 
 
@@ -75,7 +75,7 @@ ClMsgPhyMacCCATracer::ClMsgPhyMacCCATracer()
 
 void ClMsgPhyMacCCATracer::format(ClMessage *m, ConnectorTrace *sap)
 {
-  writeTrace(sap, "PHY2MAC_CCA");
+  writeTrace(sap, (char*)"PHY2MAC_CCA");
 }
 
 

@@ -56,7 +56,6 @@ void MPhyTracer::format(Packet *p, SAP *sap)
 {
 
   hdr_MPhy* ph = HDR_MPHY(p);
-  hdr_cmn* ch = HDR_CMN(p);
 
   // tracing only downward packets
   //if (ch->direction() == hdr_cmn::DOWN) return;
@@ -89,7 +88,7 @@ void MPhyTracer::format(Packet *p, SAP *sap)
       // 	     );
 
       // Watt (or whatever else... anyway, linear) version
-      writeTrace(sap, " %s Pt=%.2e Pr=%.2e Pn=%.2e Pi=%.2e tau=%.2es dur=%.5fs dist=%.1fm ",
+      writeTrace(sap, (char*)" %s Pt=%.2e Pr=%.2e Pn=%.2e Pi=%.2e tau=%.2es dur=%.5fs dist=%.1fm ",
 		 MPhy::getModulationName(ph->modulationType),
 		 ph->Pt,
 		 ph->Pr,
@@ -110,7 +109,7 @@ extern "C" int Mphytracer_Init()
 }
 extern "C" int  Cygmphytracer_Init()
 {
-  Mphytracer_Init();
+  return Mphytracer_Init();
 }
 
 

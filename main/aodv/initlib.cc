@@ -52,7 +52,7 @@ extern "C" int Miracleaodv_Init()
 {
 	MrclAODVHeaderClass* mah = new MrclAODVHeaderClass;
 	mah->bind();
-	PT_MRCL_AODV = p_info::addPacket("MRCL_AODV");
+	PT_MRCL_AODV = p_info::addPacket((char*)"MRCL_AODV");
 	SAP::addTracer(new MrclAodvTracer);
 	AodvInitTclCode.load();
 	return 0;

@@ -257,13 +257,13 @@ void ConnectorTrace::handle(Event *e)
 void ConnectorTrace::trace(ClMessage* m)
 {
 	if(m->direction() == TONODECORE)
-		writeTrace("%c %.9f %s ASYNC",dirToNodeCore_, Scheduler::instance().clock(), preambleToNodeCore_);
+		writeTrace((char*)"%c %.9f %s ASYNC",dirToNodeCore_, Scheduler::instance().clock(), preambleToNodeCore_);
 	else if(m->direction() == TOMODULE)
-		writeTrace("%c %.9f %s ASYNC",dirToPlugin_, Scheduler::instance().clock(), preambleToPlugin_);
+		writeTrace((char*)"%c %.9f %s ASYNC",dirToPlugin_, Scheduler::instance().clock(), preambleToPlugin_);
 	else if(m->direction() == UP)
-		writeTrace("%c %.9f %s ASYNC",dirUp_, Scheduler::instance().clock(), preambleUp_);
+		writeTrace((char*)"%c %.9f %s ASYNC",dirUp_, Scheduler::instance().clock(), preambleUp_);
 	else
-		writeTrace("%c %.9f %s ASYNC",dirDown_, Scheduler::instance().clock(), preambleDown_);
+		writeTrace((char*)"%c %.9f %s ASYNC",dirDown_, Scheduler::instance().clock(), preambleDown_);
 	if(clTr_)
 		clTr_->trace(m, this);
 	dump();
@@ -272,9 +272,9 @@ void ConnectorTrace::trace(ClMessage* m)
 void ConnectorTrace::traceSync(ClMessage* m)
 {
 	if(m->direction() == TONODECORE)
-		writeTrace("%c %.9f %s SYNC",dirToNodeCore_, Scheduler::instance().clock(), preambleToNodeCore_);
+		writeTrace((char*)"%c %.9f %s SYNC",dirToNodeCore_, Scheduler::instance().clock(), preambleToNodeCore_);
 	else
-		writeTrace("%c %.9f %s SYNC",dirToPlugin_, Scheduler::instance().clock(), preambleToPlugin_);
+		writeTrace((char*)"%c %.9f %s SYNC",dirToPlugin_, Scheduler::instance().clock(), preambleToPlugin_);
 	if(clTr_)
 		clTr_->trace(m, this);
 	dump();

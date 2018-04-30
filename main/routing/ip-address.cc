@@ -72,7 +72,7 @@ int IPAddress::toString(char *str, int strlen)
 	getAddr(&ip, sizeof(int));
 	sprintf(addr,"%d.%d.%d.%d", (ip & 0xff000000)>>24,(ip & 0x00ff0000)>>16, (ip & 0x0000ff00)>>8, (ip & 0x000000ff));
 	strncpy(str, addr, strlen);
-	if(::strlen(addr)>= strlen)
+	if((int) ::strlen(addr)>= strlen)
 		return 1;
 	return 0;
 }
@@ -136,7 +136,6 @@ int IPAddress::AND(char* str1, char *str2)
 {
 	int addr1;
 	int addr2;
-	int ret;
 	memcpy(&addr1, str1 + sizeof(int), sizeof(int));
 // 	addr->getAddr(&addr2, sizeof(int));
 // 	ret = (addr & addr2);
@@ -155,7 +154,6 @@ int IPAddress::OR(char* str1, char *str2)
 {
 	int addr1;
 	int addr2;
-	int ret;
 	memcpy(&addr1, str1 + sizeof(int), sizeof(int));
 // 	addr->getAddr(&addr2, sizeof(int));
 // 	ret = (addr & addr2);

@@ -277,9 +277,9 @@ void SAP::trace(Packet *p)
 		printf("%f --- SAP::trace(%p) --- pktTr_=%p -- [%c %.9f %s]\n", Scheduler::instance().clock(), p, pktTr_,dirDown_, Scheduler::instance().clock(), preambleDown_);
 	hdr_cmn *ch = HDR_CMN(p);
 	if(ch->direction() == hdr_cmn::DOWN)
-		writeTrace("%c %.9f %s",dirDown_, Scheduler::instance().clock(), preambleDown_);
+		writeTrace((char*)"%c %.9f %s",dirDown_, Scheduler::instance().clock(), preambleDown_);
 	else
-		writeTrace("%c %.9f %s",dirUp_, Scheduler::instance().clock(), preambleUp_);
+		writeTrace((char*)"%c %.9f %s",dirUp_, Scheduler::instance().clock(), preambleUp_);
 	if(debug_>10)
 		printf("SAP::trace(%p) --- pktTr_=%p\n", p, pktTr_);
 	if(pktTr_)

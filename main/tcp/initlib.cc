@@ -44,7 +44,7 @@ extern "C" int Miracletcp_Init()
 }
 extern "C" int  Cygmiracletcp_Init()
 {
-  Miracletcp_Init();
+  return Miracletcp_Init();
 }
 
 

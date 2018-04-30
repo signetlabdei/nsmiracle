@@ -47,23 +47,24 @@ static int mmac_addr_counter = 0;
 
 MMac::MMac()
   : mac2phy_delay_(1e-9),
+   addr(mmac_addr_counter++),
    up_data_pkts_rx(0),
    data_pkts_tx(0),
    data_pkts_rx(0),
-   xdata_pkts_rx(0),
    ack_pkts_tx(0),
    ack_pkts_rx(0),
+   xdata_pkts_rx(0),
+   xack_pkts_rx(0),
    ctrl_pkts_tx(0),
    ctrl_pkts_rx(0),
    xctrl_pkts_rx(0),
-   xack_pkts_rx(0),
+   backoff_times_no(0),
    dropped_pkts_tx(0),
    error_pkts_rx(0),
    discarded_data_pkts(0),
-   backoff_times_no(0),
    sum_wait_time(0),
    sum_backoff_time(0),
-   addr(mmac_addr_counter++)
+   queue_wait_time()
 {
 
 }

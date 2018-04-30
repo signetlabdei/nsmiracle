@@ -40,7 +40,7 @@ void Mac_802_11_Tracer::format(Packet *p, SAP *sap)
 	struct hdr_mac802_11 *mh = HDR_MAC802_11(p);
 	hdr_cmn *ch = hdr_cmn::access(p);
 	
-	writeTrace(sap, " --MAC-- [%d %.10f %d %d %x]",
+	writeTrace(sap, (char*)" --MAC-- [%d %.10f %d %d %x]",
 			mh->dh_duration,
 			ch->txtime(),
 			ETHER_ADDR(mh->dh_ra),
@@ -63,7 +63,7 @@ extern "C" int Mac_Init()
 }
 extern "C" int  Cygmac_Init()
 {
-  Mac_Init();
+  return Mac_Init();
 }
 
 
