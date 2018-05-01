@@ -180,9 +180,13 @@ puts "------------------------------------"
 # Many applications accept only a raw int32 as destAddr_
 $app(1,0) set destAddr_ [$ipif(4,0) addr]
 $app(1,0) set destPort_ $portnum(4,0)
-$app(4,1) set destAddr_ [$ipif(4,0) addr]
-$app(4,1) set destPort_ $portnum(1,1)
+$app(4,0) set destAddr_ [$ipif(1,0) addr]
+$app(4,0) set destPort_ $portnum(1,0)
 
+$app(4,1) set destAddr_ [$ipif(1,1) addr]
+$app(4,1) set destPort_ $portnum(1,1)
+$app(1,1) set destAddr_ [$ipif(4,1) addr]
+$app(1,1) set destPort_ $portnum(4,1)
 
 
 $ns at 0 "$app(1,0) start"

@@ -313,6 +313,11 @@ void CbrModule::recv(Packet* p)
     }
 
   hdr_ip* iph = hdr_ip::access(p);
+  
+  if (debug_ > 10)
+    printf("CbrModule(%d)::recv() saddr:%d, dstAddr_:%d, sport:%d, dstPort_:%d\n", 
+           getId(), iph->saddr(), dstAddr_, iph->sport(), dstPort_);
+  
   if (iph->saddr() != dstAddr_)
     {
       drop(p,1,CBR_DROP_REASON_WRONG_SADDR);
