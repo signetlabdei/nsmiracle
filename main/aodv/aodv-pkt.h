@@ -92,7 +92,11 @@ struct hdr_mrcl_aodv_request {
 					// used to compute route discovery latency
 	inline char *rq_dest() {return rq_dst;};
 	inline int size() {
-		return (3*sizeof(char)+3*sizeof(int)+sizeof(double)+*((int *)rq_dst)+*((int *)rq_src));
+        int rq_dst_int;
+        int rq_src_int;
+        memcpy(&rq_dst_int, rq_dst, sizeof(int));
+        memcpy(&rq_src_int, rq_src, sizeof(int));  
+        return (3*sizeof(char)+3*sizeof(int)+sizeof(double)+ rq_dst_int + rq_src_int);
 	}
 };
 
@@ -109,7 +113,11 @@ struct hdr_mrcl_aodv_reply {
 					    // used to compute route discovery latency
 						
 	inline int size() { 
-		return (3*sizeof(char)+sizeof(int)+2*sizeof(double)+*((int *)rp_dst)+*((int *)rp_src));
+		int rp_dst_int;
+        int rp_src_int;
+         memcpy(&rp_dst_int, rp_dst, sizeof(int));
+         memcpy(&rp_src_int, rp_src, sizeof(int));  
+        return (3*sizeof(char)+3*sizeof(int)+sizeof(double)+ rp_dst_int + rp_src_int);
 	}
 
 };
@@ -122,8 +130,10 @@ struct hdr_mrcl_aodv_error {
         char        unreachable_dst[AODV_MAX_DST_ERRORS];   
         int         unreachable_dst_seqno[AODV_MAX_ERRORS];   
 
-	inline int size() { 
-  		int sz = DestCount*2*(*((int *)unreachable_dst)) + sizeof(int);
+	inline int size() {
+	    int unreachable_dst_int;
+        memcpy(&unreachable_dst_int, unreachable_dst, sizeof(int));
+  		int sz = DestCount*2*(unreachable_dst_int) + sizeof(int);
 		assert(sz > 0);
         	return sz;
 	}
