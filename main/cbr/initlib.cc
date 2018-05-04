@@ -61,7 +61,7 @@ extern "C" int Miraclecbr_Init()
 	CbrPktClass* cbr_header_class = new CbrPktClass;  // <---
   cbr_header_class->bind();	
 	
-  PT_MCBR = p_info::addPacket("CBR");
+  PT_MCBR = p_info::addPacket((char*)"CBR");
 	
   MCbrInitTclCode.load();
  
@@ -70,7 +70,7 @@ extern "C" int Miraclecbr_Init()
 
 extern "C" int Cygmiraclecbr_Init()
 {
-  Miraclecbr_Init();
+  return Miraclecbr_Init();
 }
 
 

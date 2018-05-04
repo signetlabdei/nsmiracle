@@ -41,7 +41,7 @@ MrclRoutingTracer::MrclRoutingTracer() :  Tracer(3) {}
 void MrclRoutingTracer::format(Packet *p, SAP *sap)
 {
 
-	hdr_cmn* ch = hdr_cmn::access(p);
+//	hdr_cmn* ch = hdr_cmn::access(p);
 // 	if (ch->ptype()!=PT_MRCL_ROUTING)
 // 		return;
 
@@ -63,9 +63,9 @@ void MrclRoutingTracer::format(Packet *p, SAP *sap)
 	strcat(saddr,"\0");
 	char daddr[MRCL_ADDRESS_MAX_LEN] = "";
 	int daddrLen;
-	if (daddrLen>0)
+  memcpy(&daddrLen, h->daddr(), sizeof(int));
+  if (daddrLen>0)
 	{
-		memcpy(&daddrLen, h->daddr(), sizeof(int));
 		strcpy(temp,"");
 		for(int i=daddrLen-1; i>=0; i--)
 		{
@@ -96,7 +96,7 @@ void MrclRoutingTracer::format(Packet *p, SAP *sap)
 	strcat(nexthop,"\0");
 
 	
-	writeTrace(sap, " --mROUTING-- s%s d%s n%s", saddr, daddr, nexthop);
+	writeTrace(sap, (char*)" --mROUTING-- s%s d%s n%s", saddr, daddr, nexthop);
 
 }
 

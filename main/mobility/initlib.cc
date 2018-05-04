@@ -47,7 +47,7 @@ extern "C" int Miraclebasicmovement_Init()
 }
 extern "C" int  Cygmiraclebasicmovement_Init()
 {
-  Miraclebasicmovement_Init();
+  return Miraclebasicmovement_Init();
 }
 
 

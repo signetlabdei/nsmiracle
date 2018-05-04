@@ -62,18 +62,19 @@ MFullPropagation::MFullPropagation()
 	phases_(NULL),
 	fad_(NULL),
 	maxDopplerShift_(6.0),
-	xFieldWidth_(0),
-	yFieldWidth_(0),
 	d_(-1),
 	A2_(NULL),
+	nRays_(),
 	N0_(4),
-	shadowMat_(NULL),
-	beta_(3.4),
-	shadowSigma_(0.0),
 	refDistance_(1.0),
-	rayleighFading_(1),
+	beta_(3.4),
 	sampleTimer_(this),
 	timeUnit_(-100),
+	rayleighFading_(1),
+	xFieldWidth_(0),
+	yFieldWidth_(0),
+	shadowMat_(NULL),
+	shadowSigma_(0.0),
 	nodesNum_(0),
 	nodesIndexArray_(NULL),
 	debug_(0)
@@ -93,7 +94,6 @@ MFullPropagation::MFullPropagation()
 // TCL command interpreter
 int MFullPropagation::command(int argc, const char*const* argv)
 {
-	Tcl& tcl = Tcl::instance();
 	if(argc==2)
 	{
 		if(strcasecmp(argv[1], "Init")==0)
@@ -167,9 +167,6 @@ void MFullPropagation::initialize_common(unsigned long int N0, double d, double 
 {
 	unsigned long int i,N=4*N0+2;
 	
-	int n_users = nodesNum_;
-	int tot_bases =nodesNum_;
-	
 	nRays_ = 1;
   
 	for(i=0;i<=N0;i++){ 
@@ -203,8 +200,8 @@ void MFullPropagation::initialize_all_phases(unsigned long int N0,double ****pha
 	int tot_bases =nodesNum_;
 	unsigned long int i,c,l;
 
-	for(i=0;i<n_users;i++)
-		for(c=0;c<tot_bases;c++)
+	for(i=0;i<(unsigned long int)n_users;i++)
+		for(c=0;c<(unsigned long int)tot_bases;c++)
 			for(l=0;l<nRays_;l++)
 				initialize_phases(N0,phases[i][c][l]);
 }
@@ -237,8 +234,8 @@ void MFullPropagation::compute_fading(unsigned long int N0,double ****phases,dou
 	unsigned long int i,c,l;
 	double fading_comps[2];
 
-	for(i=0;i<n_users;i++)
-		for(c=0;c<tot_bases;c++)
+	for(i=0;i<(unsigned long int)n_users;i++)
+		for(c=0;c<(unsigned long int)tot_bases;c++)
 		{
 			fad[i][c]=0.0;
 			for(l=0;l<nRays_;l++){
@@ -267,7 +264,7 @@ unsigned int sourceX,sourceY,destX,destY;
 			{
 				for(destY=0; destY<SIDE_NUM; destY++)
 				{
-					bool flag=FALSE;
+					bool flag = false;
 					unsigned int temp;
 				
 					if(sourceX-destX<0)
@@ -275,15 +272,15 @@ unsigned int sourceX,sourceY,destX,destY;
 					else 
 						temp = sourceX - destX;
 					if(temp<=3)
-						flag=TRUE;
+						flag = true;
 					if(sourceY-destY<0)
 						temp = destY - sourceY;
 					else
-						temp= sourceY - destY;
+						temp = sourceY - destY;
 					if(temp<=3)
-						flag=TRUE;
+						flag = true;
 
-					if(temp==TRUE)
+					if(flag==true)
 						shadowMat_[sourceX*SIDE_NUM*SIDE_NUM*SIDE_NUM+
 						sourceY*SIDE_NUM*SIDE_NUM+destX*SIDE_NUM+destY]=
 						0.0;
@@ -346,7 +343,7 @@ void MFullPropagation::FadingInit() {
 		fprintf(stderr, "MFullPropagation::FadingInit, malloc error (incr)\n");
 		exit(1);  
 	}
-	for(i=0;i<=N0_;i++){ 
+	for(i=0;i<=(unsigned long int)N0_;i++){ 
 		//amp_[i]=(double *)malloc(2*sizeof(double));
 		amp_[i] = new double[2];
 		if(amp_[i]==NULL) {

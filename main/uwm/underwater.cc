@@ -48,8 +48,9 @@
 
 
 Underwater::Underwater()
-: windspeed(0.0),
+: 
   shipping(0.5),
+  windspeed(0.0),
   practical_spreading(1.75),
   prop_speed(1500.0)
 {
@@ -88,7 +89,7 @@ void Underwater::getBand(double dist, double* cfreq, double* lfreq, double* rfre
 {
   double AN[NUM_FREQ];
   double max_AN = -1e100; /* -infinity */
-  int max_index;
+  int max_index = 0;
   int edge_index;
 
   // calculate the 1/AN factor vector 
@@ -97,10 +98,10 @@ void Underwater::getBand(double dist, double* cfreq, double* lfreq, double* rfre
       AN[i] = - (getAttenuation(dist, freq[i]) + getNoise(freq[i]));
       // also, track the best AN factor
       if(AN[i] > max_AN)
-	{
-          max_index = i;
-	  max_AN = AN[max_index];
-	}
+      {
+        max_index = i;
+        max_AN = AN[max_index];
+      }
     }
   
   //  printf("max_index=%d freq[max_index]=%lf dist=%lf\n", max_index, freq[max_index], dist);

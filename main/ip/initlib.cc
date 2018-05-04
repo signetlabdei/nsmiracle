@@ -54,7 +54,7 @@ extern "C" int Miracleip_Init()
 }
 extern "C" int  Cygmiracleip_Init()
 {
-  Miracleip_Init();
+  return Miracleip_Init();
 }
 
 

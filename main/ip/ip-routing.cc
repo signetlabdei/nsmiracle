@@ -171,7 +171,7 @@ void IPRoutingModule::recv(Packet *p)
        * will forward the packet to upper layers!
        */ 
 
-      if(iph->daddr() == ch->next_hop_ || iph->daddr() == IP_BROADCAST)
+      if(iph->daddr() == ch->next_hop_ || iph->daddr() == (nsaddr_t)IP_BROADCAST)
 	{ /* Packet is arrived at its destination */
 	  ch->size() -= IP_HDR_LEN;
 	  sendUp(p);
@@ -236,7 +236,7 @@ void IPRoutingModule::recv(Packet *p)
 nsaddr_t IPRoutingModule::GetNextHop(Packet *p)
 {
   hdr_ip *iph = HDR_IP(p);
-  GetNextHop(iph->daddr());
+  return GetNextHop(iph->daddr());
 }
 
 

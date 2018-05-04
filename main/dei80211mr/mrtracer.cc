@@ -57,18 +57,18 @@
 MultirateTracer::MultirateTracer() :  Tracer(1) {}
 
 
-static char* PhyModeStr[NumPhyModes]={"  1Mbps",
-				      "  2Mbps",
-				      "5.5Mbps",
-				      " 11Mbps",
-				      "  6Mbps",
-				      "  9Mbps",
-				      " 12Mbps",
-				      " 18Mbps",
-				      " 24Mbps",
-				      " 36Mbps",
-				      " 48Mbps",
-				      " 54Mbps"};
+static char* PhyModeStr[NumPhyModes]={(char*)"  1Mbps",
+				      (char*)"  2Mbps",
+				      (char*)"5.5Mbps",
+				      (char*)" 11Mbps",
+				      (char*)"  6Mbps",
+				      (char*)"  9Mbps",
+				      (char*)" 12Mbps",
+				      (char*)" 18Mbps",
+				      (char*)" 24Mbps",
+				      (char*)" 36Mbps",
+				      (char*)" 48Mbps",
+				      (char*)" 54Mbps"};
 
 
 void MultirateTracer::format(Packet *p, SAP *sap)
@@ -79,7 +79,7 @@ void MultirateTracer::format(Packet *p, SAP *sap)
   if((mrh->mode_ >=0) && (mrh->mode_ < NumPhyModes))
     {
       
-      writeTrace(sap, " %s ",PhyModeStr[mrh->mode_]);
+      writeTrace(sap, (char*)" %s ",PhyModeStr[mrh->mode_]);
   
     }
 }
@@ -92,7 +92,7 @@ extern "C" int Multiratetracer_Init()
 }
 extern "C" int  Cygmultiratetracer_Init()
 {
-  Multiratetracer_Init();
+  return Multiratetracer_Init();
 }
 
 

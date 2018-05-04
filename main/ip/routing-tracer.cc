@@ -53,7 +53,7 @@ void RoutingTracer::format(Packet *p, SAP *sap)
   hdr_cmn *ch = hdr_cmn::access(p);
   hdr_ip *iph = hdr_ip::access(p);
   
-  writeTrace(sap, " %d.%d.%d.%d --> %d.%d.%d.%d  SRC %d.%d.%d.%d:%d DST %d.%d.%d.%d:%d",
+  writeTrace(sap, (char*)" %d.%d.%d.%d --> %d.%d.%d.%d  SRC %d.%d.%d.%d:%d DST %d.%d.%d.%d:%d",
 	     (ch->prev_hop_ & 0xff000000)>>24,
 	     (ch->prev_hop_ & 0x00ff0000)>>16,
 	     (ch->prev_hop_ & 0x0000ff00)>>8,
@@ -82,7 +82,7 @@ extern "C" int Routingtracer_Init()
 }
 extern "C" int  Cygroutingtracer_Init()
 {
-  Routingtracer_Init();
+  return Routingtracer_Init();
 }
 
 

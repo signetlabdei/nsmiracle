@@ -57,7 +57,7 @@ void ARP_Tracer::format(Packet *p, SAP *sap)
 	switch (ah->arp_op) 
 	  {
 	  case ARPOP_REQUEST:
-	    writeTrace(sap, " -- ARP -- [Who has %d.%d.%d.%d? Tell %d.%d.%d.%d at %02x:%02x:%02x:%02x]",
+	    writeTrace(sap, (char*)" -- ARP -- [Who has %d.%d.%d.%d? Tell %d.%d.%d.%d at %02x:%02x:%02x:%02x]",
 		       (ah->arp_tpa & 0xff000000)>>24,
 		       (ah->arp_tpa & 0x00ff0000)>>16,
 		       (ah->arp_tpa & 0x0000ff00)>>8,
@@ -74,7 +74,7 @@ void ARP_Tracer::format(Packet *p, SAP *sap)
 	    break;
 
 	  case ARPOP_REPLY: 
-	    writeTrace(sap, " -- ARP -- [%d.%d.%d.%d is at %02x:%02x:%02x:%02x]",
+	    writeTrace(sap, (char*)" -- ARP -- [%d.%d.%d.%d is at %02x:%02x:%02x:%02x]",
 		       (ah->arp_spa & 0xff000000)>>24,
 		       (ah->arp_spa & 0x00ff0000)>>16,
 		       (ah->arp_spa & 0x0000ff00)>>8,
@@ -87,20 +87,20 @@ void ARP_Tracer::format(Packet *p, SAP *sap)
 	    break;
 	    
 	  case ARPOP_REVREQUEST:
-	    writeTrace(sap, " -- ARP -- [REVREQUEST]");
+	    writeTrace(sap, (char*)" -- ARP -- [REVREQUEST]");
 	    break;
 
 	  case ARPOP_REVREPLY:
-	    writeTrace(sap, " -- ARP -- [REVREPLY]");
+	    writeTrace(sap, (char*)" -- ARP -- [REVREPLY]");
 	    break;
 	    
 	  case ARPOP_INVREQUEST:
-	    writeTrace(sap, " -- ARP -- [INVREQUEST]");
+	    writeTrace(sap, (char*)" -- ARP -- [INVREQUEST]");
 	    break;
 	    
 
 	  case ARPOP_INVREPLY:
-	    writeTrace(sap, " -- ARP -- [INVREPLY]");
+	    writeTrace(sap, (char*)" -- ARP -- [INVREPLY]");
 	    break;
 	  }
 	    
@@ -120,7 +120,7 @@ extern "C" int Arptracer_Init()
 }
 extern "C" int  Cygarptracer_Init()
 {
-  Arptracer_Init();
+  return Arptracer_Init();
 }
 
 

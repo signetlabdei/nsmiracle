@@ -35,7 +35,7 @@ extern "C" int Miracleiprouting_Init()
 }
 extern "C" int  Cygmiracleiprouting_Init()
 {
-  Miracleiprouting_Init();
+  return Miracleiprouting_Init();
 }
 
 

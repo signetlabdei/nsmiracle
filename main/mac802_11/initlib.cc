@@ -49,7 +49,7 @@ extern "C" int Miraclemac_Init()
 }
 extern "C" int  Cygmiraclemac_Init()
 {
-  Miraclemac_Init();
+  return Miraclemac_Init();
 }
 
 

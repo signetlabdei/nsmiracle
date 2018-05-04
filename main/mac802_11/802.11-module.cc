@@ -156,7 +156,14 @@ public:
 }
 } class_module802_11;
 
-MacModule802_11::MacModule802_11() : Module(), mac_(0), queue_(0), logif_(0), macif_(0), llif_(0)
+MacModule802_11::MacModule802_11() 
+  : Module(), 
+    mac_(0),
+    queue_(0), 
+    ll_(0),
+    macif_(0),
+    logif_(0),
+    llif_(0)
 {
 }
 

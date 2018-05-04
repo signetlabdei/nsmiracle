@@ -56,7 +56,7 @@ void CbrTracer::format(Packet *p, SAP *sap)
 
   if (cbrh->rftt_valid)
     {      
-      writeTrace(sap, " SN=%d TS=%f SZ=%d RFTT=%f",
+      writeTrace(sap, (char*)" SN=%d TS=%f SZ=%d RFTT=%f",
 		 cbrh->sn,
 		 cbrh->ts,
 		 ch->size(),
@@ -64,7 +64,7 @@ void CbrTracer::format(Packet *p, SAP *sap)
     }
   else
     {      
-      writeTrace(sap, " SN=%d TS=%f SZ=%d",
+      writeTrace(sap, (char*)" SN=%d TS=%f SZ=%d",
 		 cbrh->sn,
 		 cbrh->ts,
 		 ch->size());
@@ -78,7 +78,7 @@ extern "C" int Cbrtracer_Init()
 }
 extern "C" int  Cygcbrtracer_Init()
 {
-  Cbrtracer_Init();
+  return Cbrtracer_Init();
 }
 
 

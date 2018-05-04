@@ -48,7 +48,6 @@ AltTracerMac80211::AltTracerMac80211() : Tracer(2) {}
 void AltTracerMac80211::format(Packet *p, SAP *sap)
 {
   struct hdr_mac802_11 *mh = HDR_MAC802_11(p);
-  hdr_cmn *ch = hdr_cmn::access(p);
 
   u_int32_t src = ETHER_ADDR(mh->dh_ta); 
   u_int32_t dst = ETHER_ADDR(mh->dh_ra);
@@ -62,22 +61,22 @@ void AltTracerMac80211::format(Packet *p, SAP *sap)
   switch(type) 
     {
     case MAC_Type_Management:
-      typestr = "MGMT";
-      subtypestr = "";
+      typestr = (char*)"MGMT";
+      subtypestr = (char*)"";
       break;
 
     case MAC_Type_Control:
-      typestr = "CTRL";
+      typestr = (char*)"CTRL";
       switch(subtype) 
 	{
 	case MAC_Subtype_RTS:
-	  subtypestr = "RTS";
+	  subtypestr = (char*)"RTS";
 	  break;
 	case MAC_Subtype_CTS:
-	  subtypestr = "CTS";
+	  subtypestr = (char*)"CTS";
 	  break;
 	case MAC_Subtype_ACK:
-	  subtypestr = "ACK";
+	  subtypestr = (char*)"ACK";
 	  break;
 	default:
 	  subtypestr = NULL;
@@ -86,11 +85,11 @@ void AltTracerMac80211::format(Packet *p, SAP *sap)
       break;
 
     case MAC_Type_Data:
-      typestr = "DATA";
+      typestr = (char*)"DATA";
       switch(subtype) 
 	{
 	case MAC_Subtype_Data:
-	  subtypestr = "";
+	  subtypestr = (char*)"";
 	  break;
 	default:
 	  subtypestr = NULL;
@@ -105,7 +104,7 @@ void AltTracerMac80211::format(Packet *p, SAP *sap)
 	
   if (typestr && subtypestr)
     {
-      writeTrace(sap, " --MAC-- %d -> %d %s %s ",
+      writeTrace(sap, (char*)" --MAC-- %d -> %d %s %s ",
 		 src,
 		 dst,
 		 typestr,
@@ -127,7 +126,7 @@ extern "C" int Alttracermac_Init()
 }
 extern "C" int  Cygalttracermac_Init()
 {
-  Alttracermac_Init();
+  return Alttracermac_Init();
 }
 
 

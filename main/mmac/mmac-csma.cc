@@ -82,12 +82,18 @@ public:
 int MMacCsma::uidcnt = 1000;
 
 MMacCsma::MMacCsma()
-  : backoff_timer(this),
-    ack_timer(this),
-    ConsecutiveFailedTxAttempts(0),
+  : 
+    state(STATE_IDLE),
+    PktRx(0),    
     PktTx(0),
-    PktRx(0),
-    state(STATE_IDLE)
+    Q(),
+    ConsecutiveFailedTxAttempts(0),
+    backoff_timer(this),
+    ack_timer(this),
+    HeaderSize_(),
+    BaseBackoffTime_(),
+    AckTimeout_(),
+    debug_states_()
 {
   bind("HeaderSize_",&HeaderSize_);
   bind("BaseBackoffTime_",&BaseBackoffTime_);
@@ -448,8 +454,9 @@ void MMacCsma::enterState_TX_FAILED()
 
 
 Backoff_Timer::Backoff_Timer(MMacCsma *m)
-  : status(STATUS_STOPPED),
-    mac(m)
+  : TimerHandler(),
+    mac(m),
+    status(STATUS_STOPPED)
 {  
 }
 
@@ -497,8 +504,9 @@ bool Backoff_Timer::isFrozen()
 
 
 Ack_Timer::Ack_Timer(MMacCsma *m)
-  : status(STATUS_STOPPED),
-    mac(m)
+  : TimerHandler(),
+    mac(m),
+    status(STATUS_STOPPED)
 {  
 }
 

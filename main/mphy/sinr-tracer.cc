@@ -64,7 +64,7 @@ void SinrTracer::format(Packet *p, SAP *sap)
       
       
       // linear version
-      writeTrace(sap, " SINR=%05.2f %s ",
+      writeTrace(sap, (char*)" SINR=%05.2f %s ",
 		 sinr,
 		 ch->error() ? "ERR" : "OK "
 		 );
@@ -85,7 +85,7 @@ extern "C" int Sinrtracer_Init()
 }
 extern "C" int  Cygsinrtracer_Init()
 {
-  Sinrtracer_Init();
+  return Sinrtracer_Init();
 }
 
 

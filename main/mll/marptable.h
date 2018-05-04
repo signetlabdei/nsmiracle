@@ -53,7 +53,7 @@ class MARPEntry {
 		 * Constructor
 		 * @param dst Destination network address
 		 */
-		MARPEntry(nsaddr_t dst) : up_(0), macaddr_(0), ipaddr_(dst), hold_(0), count_(0) { }
+		MARPEntry(nsaddr_t dst) : up_(0), ipaddr_(dst), macaddr_(0), hold_(0), count_(0) { }
 
 		/** Is address up? */
 		int		up_;

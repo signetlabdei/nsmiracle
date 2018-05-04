@@ -56,7 +56,7 @@ void UWMPhyTracer::format(Packet *p, SAP *sap)
 {
 
   hdr_MPhy* ph = HDR_MPHY(p);
-  hdr_cmn* ch = HDR_CMN(p);
+  //hdr_cmn* ch = HDR_CMN(p);
 
   // tracing only downward packets
   //if (ch->direction() == hdr_cmn::DOWN) return;
@@ -77,7 +77,7 @@ void UWMPhyTracer::format(Packet *p, SAP *sap)
 
       assert(ph->srcSpectralMask);
 
-      writeTrace(sap, " d: %7.1f  fc: %5.0f  bw: %5.0f  Pt: %.2e  Pr: %.2e  Pn: %.2e  Pi: %2.e SNR: %4.1f  SINR: %4.1f  tau: %.2e  dur: %.5f",
+      writeTrace(sap, (char*)" d: %7.1f  fc: %5.0f  bw: %5.0f  Pt: %.2e  Pr: %.2e  Pn: %.2e  Pi: %2.e SNR: %4.1f  SINR: %4.1f  tau: %.2e  dur: %.5f",
 		 dist,
 		 ph->srcSpectralMask->getFreq(),
 		 ph->srcSpectralMask->getBandwidth(),
@@ -103,7 +103,7 @@ extern "C" int Uwmstdphybpsktracer_Init()
 
 extern "C" int  Cyguwmstdphybpsktracer_Init()
 {
-  Uwmstdphybpsktracer_Init();
+  return Uwmstdphybpsktracer_Init();
 }
 
 

@@ -72,13 +72,8 @@ load libcbrtracer.so
 #load libClTrace.so
 #load libverboseclcmntracer.so
 
-#load ../src/.libs/libuwm.so
-#load ../src/.libs/libuwmphytracer.so
-
-load ../src/.libs/libuwm.so
-
-# load ../src/.libs/libuwm.so
-# load ../src/.libs/libuwmphybpsktracer.so
+load libUwmStd.so
+#load libUwmStdPhyBpskTracer.so
 
 
 #load libmphymaccltracer.so

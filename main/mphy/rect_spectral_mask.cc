@@ -92,54 +92,47 @@ int RectSpectralMask::command(int argc, const char*const* argv)
   //printf("MPhy::command -- %s (%d)\n", argv[1], argc);
   Tcl& tcl = Tcl::instance();
 
-  if(argc == 2)
+  if(argc == 2) {
+    if(strcasecmp(argv[1], "getFreq")==0)
     {
-      if(strcasecmp(argv[1], "getFreq")==0)
-	{
-	  tcl.resultf("%f",getFreq());
-	  return TCL_OK;
-	}
-
-      if(strcasecmp(argv[1], "getPropagationSpeed")==0)
-	{
-	  tcl.resultf("%f",getPropagationSpeed());
-	  return TCL_OK;
-	}
-
-      if(strcasecmp(argv[1], "getLambda")==0)
-	{
-	  tcl.resultf("%f",getLambda());
-	  return TCL_OK;
-	}
-
-      if(strcasecmp(argv[1], "getBandwidth")==0)
-	{
-	  tcl.resultf("%f",getBandwidth());
-	  return TCL_OK;
-	}
-
+      tcl.resultf("%f",getFreq());
+      return TCL_OK;
     }
-  if(argc == 3)
+    else if(strcasecmp(argv[1], "getPropagationSpeed")==0)
     {
-      if(strcasecmp(argv[1], "setFreq")==0)
-	{
-	  setFreq(atof(argv[2]));
-	  return TCL_OK;
-	}
-
-      if(strcasecmp(argv[1], "setPropagationSpeed")==0)
-	{
-	  setPropagationSpeed(atof(argv[2]));
-	  return TCL_OK;
-	}
-
-      if(strcasecmp(argv[1], "setBandwidth")==0)
-	{	  
-	  setBandwidth(atof(argv[2]));
-	  return TCL_OK;
-	}
-
+      tcl.resultf("%f",getPropagationSpeed());
+      return TCL_OK;
     }
+    else if(strcasecmp(argv[1], "getLambda")==0)
+    {
+      tcl.resultf("%f",getLambda());
+      return TCL_OK;
+    }
+    else if(strcasecmp(argv[1], "getBandwidth")==0)
+    {
+      tcl.resultf("%f",getBandwidth());
+      return TCL_OK;
+    }
+
+  }
+  else if(argc == 3) {
+    if(strcasecmp(argv[1], "setFreq")==0)
+    {
+      setFreq(atof(argv[2]));
+      return TCL_OK;
+    }
+    else if(strcasecmp(argv[1], "setPropagationSpeed")==0)
+    {
+      setPropagationSpeed(atof(argv[2]));
+      return TCL_OK;
+    }
+    else if(strcasecmp(argv[1], "setBandwidth")==0)
+    {
+      setBandwidth(atof(argv[2]));
+      return TCL_OK;
+    }
+  }
+  return MSpectralMask::command(argc, argv);
 }
 
 

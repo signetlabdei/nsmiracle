@@ -51,10 +51,13 @@ void ClCommonTracer::format(ClMessage *m, ConnectorTrace *sap)
 		case DOWN:
 			dir = 'D';
 			break;
+		default:
+			dir = '-';
+			break;
 	}
 	
 	
-	writeTrace(sap, " [CMN: %d %d %s %d %c]",
+	writeTrace(sap, (char*)" [CMN: %d %d %s %d %c]",
 				m->uid(),
 				m->getSource(),
 				m->getDestType()==UNICAST?"UNI":"BRD",
@@ -75,7 +78,7 @@ extern "C" int Cltrace_Init()
 }
 extern "C" int  Cygcltrace_Init()
 {
-  Cltrace_Init();
+  return Cltrace_Init();
 }
 
 

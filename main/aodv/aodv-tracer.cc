@@ -67,9 +67,10 @@ void MrclAodvTracer::format(Packet *p, SAP *sap)
 			strcat(saddr,temp);
 		}
 		strcat(saddr,"\0");
+
+		memcpy(&daddrLen, rq->rq_dst, sizeof(int));
 		if (daddrLen>0)
 		{
-			memcpy(&daddrLen, rq->rq_dst, sizeof(int));
 			strcpy(temp,"");
 			for(int i=daddrLen-1; i>=0; i--)
 			{
@@ -97,9 +98,10 @@ void MrclAodvTracer::format(Packet *p, SAP *sap)
 			strcat(saddr,temp);
 		}
 		strcat(saddr,"\0");
+
+		memcpy(&daddrLen, rp->rp_dst, sizeof(int));
 		if (daddrLen>0)
 		{
-			memcpy(&daddrLen, rp->rp_dst, sizeof(int));
 			strcpy(temp,"");
 			for(int i=daddrLen-1; i>=0; i--)
 			{
@@ -123,6 +125,6 @@ void MrclAodvTracer::format(Packet *p, SAP *sap)
 	}
 	else strcat(pktinfo, "UNKNW");
 
-	writeTrace(sap, " --mAODV-- %s", pktinfo);
+	writeTrace(sap, (char*)" --mAODV-- %s", pktinfo);
 
 }

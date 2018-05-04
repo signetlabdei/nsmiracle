@@ -40,9 +40,6 @@ WirelessPhyTracer::WirelessPhyTracer() :  Tracer(1) {}
 
 void WirelessPhyTracer::format(Packet *p, SAP *sap)
 {
-
-  hdr_cmn* ch = hdr_cmn::access(p);
-
   hdr_MrclWrlPhy* ph = HDR_MRCLWRLPHY(p);
 
   if (ph->sourcePos_ && ph->destPos_)
@@ -51,7 +48,7 @@ void WirelessPhyTracer::format(Packet *p, SAP *sap)
       double dY = ph->sourcePos_->getY() - ph->destPos_->getY();
       double dist = sqrt(dX*dX + dY*dY);
       
-      writeTrace(sap, " -PHY- TX:%4.1fdBm RX:%4.1fdBm d:%4.1fm ",
+      writeTrace(sap, (char*)" -PHY- TX:%4.1fdBm RX:%4.1fdBm d:%4.1fm ",
 		p->txinfo_.getTxPr() > 0 ?  WtodBm(p->txinfo_.getTxPr()) : 999,
 		p->txinfo_.RxPr > 0 ?  WtodBm(p->txinfo_.RxPr) : 999,
 		 dist
@@ -68,7 +65,7 @@ extern "C" int Phytracer_Init()
 }
 extern "C" int  Cygphytracer_Init()
 {
-  Phytracer_Init();
+  return Phytracer_Init();
 }
 
 

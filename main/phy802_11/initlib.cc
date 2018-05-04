@@ -57,7 +57,7 @@ extern "C" int Miraclephy_Init()
 }
 extern "C" int  Cygmiraclephy_Init()
 {
-  Miraclephy_Init();
+  return Miraclephy_Init();
 }
 
 

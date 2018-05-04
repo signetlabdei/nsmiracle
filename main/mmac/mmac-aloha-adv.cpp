@@ -118,31 +118,46 @@ map< MMacAlohaAdv::ALOHA_REASON_STATUS, string> MMacAlohaAdv::reason_info;
 map< MMacAlohaAdv::ALOHA_PKT_TYPE, string> MMacAlohaAdv::pkt_type_info;
 
 MMacAlohaAdv::MMacAlohaAdv() 
-: ack_timer(this),
-  listen_timer(this),
-  backoff_timer(this),
-  txsn(1),
+: 
+  max_tx_tries(),
+  backoff_tuner(),
+  wait_costant(),
+  max_payload(), 
+  HDR_size(),
+  ACK_size(),
+  ACK_timeout(),
+  buffer_pkts(),
+  alpha_(),
+  max_backoff_counter(),
+  listen_time(),
+  Q(),
+  data_sn_queue(),
   u_data_id(0),
   last_sent_data_id(0),
-  session_distance(SESSION_DISTANCE_NOT_SET),
-  curr_data_pkt(0),
-  last_data_id_rx(NOT_SET),
-  curr_tx_rounds(0),
   TxActive(false),
   RxActive(false),
   session_active(false),
   print_transitions(false),
   has_buffer_queue(true),
-  curr_state(ALOHA_STATE_IDLE), 
-  prev_state(ALOHA_STATE_IDLE),
-  prev_prev_state(ALOHA_STATE_IDLE),
-  ack_mode(ALOHA_ACK_MODE),
-  last_reason(ALOHA_REASON_NOT_SET),
-  start_tx_time(0),       
+  start_tx_time(0),   
   srtt(0),      
   sumrtt(0),      
   sumrtt2(0),     
-  rttsamples(0)
+  rttsamples(0),
+  curr_tx_rounds(0),
+  last_data_id_rx(NOT_SET),
+  curr_data_pkt(0),
+  session_distance(SESSION_DISTANCE_NOT_SET),
+  txsn(1),
+  ack_timer(this),
+  backoff_timer(this),
+  listen_timer(this),
+  last_reason(ALOHA_REASON_NOT_SET),
+  curr_state(ALOHA_STATE_IDLE), 
+  prev_state(ALOHA_STATE_IDLE),
+  prev_prev_state(ALOHA_STATE_IDLE), 
+  ack_mode(ALOHA_ACK_MODE),
+  fout() 
 { 
   u_pkt_id = 0;
   mac2phy_delay_ = 1e-19;
@@ -229,8 +244,14 @@ void MMacAlohaAdv::initInfo()
   initialized = true;
 
   if ( (print_transitions) && (system(NULL)) ) {
-      system("rm -f /tmp/ALOHAstateTransitions.txt");
-      system("touch /tmp/ALOHAstateTransitions.txt");
+      int ret_val = system("rm -f /tmp/ALOHAstateTransitions.txt");
+      if (ret_val != 0) {
+          if (debug_) cout << NOW << "  MMacAlohaAdv(" << addr << ")::initInfo() error with rm" << endl;
+      }
+      ret_val = system("touch /tmp/ALOHAstateTransitions.txt");
+      if (ret_val != 0) {
+         if (debug_) cout << NOW << "  MMacAlohaAdv(" << addr << ")::initInfo() error with touch" << endl; 
+      }
   }
 
   status_info[ALOHA_STATE_IDLE] = "Idle state";
@@ -369,7 +390,7 @@ double MMacAlohaAdv::getBackoffTime()
 
 void MMacAlohaAdv::recvFromUpperLayers(Packet* p)
 { 
-  if ( ((has_buffer_queue == true) && (Q.size() < buffer_pkts)) || (has_buffer_queue == false) ) {
+  if ( ((has_buffer_queue == true) && (Q.size() < (unsigned int)buffer_pkts)) || (has_buffer_queue == false) ) {
      initPkt(p , ALOHA_DATA_PKT);
      Q.push(p);
      incrUpperDataRx();
@@ -409,6 +430,7 @@ void MMacAlohaAdv::initPkt( Packet* p, ALOHA_PKT_TYPE type, int dest_addr ) {
 
   switch(type) {
   
+    case(ALOHA_DATAMAX_PKT): // fallthrough
     case(ALOHA_DATA_PKT): {
       ch->size() = curr_size + HDR_size;
       data_sn_queue.push(u_data_id);
@@ -556,7 +578,6 @@ void MMacAlohaAdv::Phy2MacEndRx(Packet* p) {
   hdr_mac* mach = HDR_MAC(p);
   hdr_MPhy* ph = HDR_MPHY(p);
 
-  int source_mac = mach->macSA();
   int dest_mac = mach->macDA();
 
   double gen_time = ph->txtime;
@@ -581,7 +602,7 @@ void MMacAlohaAdv::Phy2MacEndRx(Packet* p) {
     stateRxPacketNotForMe(NULL);
   }
   else {
-    if ( dest_mac == addr || dest_mac == MAC_BROADCAST ) {
+    if ( dest_mac == addr || dest_mac == (int)MAC_BROADCAST ) {
       if ( rx_pkt_type == PT_MMAC_ACK ) {
         refreshReason(ALOHA_REASON_ACK_RX);
         stateRxAck(p);
@@ -821,7 +842,7 @@ void MMacAlohaAdv::stateTxData()
 //      session_distance = SESSION_DISTANCE_NOT_SET;
   }
   if ( curr_tx_rounds < max_tx_tries ) { 
-     hdr_mac* mach = HDR_MAC(curr_data_pkt);
+//     hdr_mac* mach = HDR_MAC(curr_data_pkt);
 //      setDestAddr(mach->macDA()); // indirizzo destinazione
      start_tx_time = NOW; // we set curr RTT
      last_sent_data_id = data_sn_queue.front();

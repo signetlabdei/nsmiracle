@@ -638,7 +638,6 @@ MrclMac802_11::collision(Packet *p)
 void
 MrclMac802_11::tx_resume()
 {
-	double rTime;
 	assert(mhSend_.busy() == 0);
 	assert(mhDefer_.busy() == 0);
 
@@ -1252,7 +1251,6 @@ MrclMac802_11::RetransmitDATA()
 void
 MrclMac802_11::send(Packet *p, Handler *h)
 {
-	double rTime;
 	struct hdr_mac802_11* dh = HDR_MAC802_11(p);
 
 // 	EnergyModel *em = netif_->node()->energy_model();
@@ -1355,7 +1353,6 @@ MrclMac802_11::recv(Packet *p, Handler *h)
 void
 MrclMac802_11::recv_timer()
 {
-	u_int32_t src; 
 	hdr_cmn *ch = HDR_CMN(pktRx_);
 	hdr_mac802_11 *mh = HDR_MAC802_11(pktRx_);
 	u_int32_t dst = ETHER_ADDR(mh->dh_ra);

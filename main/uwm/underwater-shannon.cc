@@ -81,8 +81,6 @@ UnderwaterMPhyShannon::UnderwaterMPhyShannon()
 
 int UnderwaterMPhyShannon::command(int argc, const char*const* argv)
 {
-  Tcl& tcl = Tcl::instance();
-	
   if (argc==3)
     {
       if (strcasecmp(argv[1],"setDestPosition")==0)
@@ -274,8 +272,6 @@ void UnderwaterMPhyShannon::endRx(Packet* p)
 	
 	  hdr_MPhy* ph = HDR_MPHY(p);
 	  		  
-	  double ber, per;
-
 	  // We assume that if interference is non-negligible,
 	  // i.e., if it is not at least 3dB below noise power,
 	  // the packet will be dropped because of errors

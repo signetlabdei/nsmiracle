@@ -60,9 +60,12 @@ void CommonHeaderTracer::format(Packet *p, SAP *sap)
 		case 0:
 			dir = 'n';
 			break;
+		default:
+			dir = '-';
+			break;
 	}
 	
-	writeTrace(sap, " %d %s %d %c",
+	writeTrace(sap, (char*)" %d %s %d %c",
 				ch->uid(),													// unique packet id
 				((ch->ptype() == PT_MAC) ? (
 					(mh->dh_fc.fc_subtype == MAC_Subtype_RTS) ? "RTS"  :
@@ -99,7 +102,7 @@ void IpHeaderTracer::format(Packet *p, SAP *sap)
 	int next_hop = 0;
    if (ch->next_hop_ > 0) next_hop = ch->next_hop_;
 
-	writeTrace(sap, " --IP-- [%d.%d.%d.%d:%d %d.%d.%d.%d:%d %d %d.%d.%d.%d]",
+	writeTrace(sap, (char*)" --IP-- [%d.%d.%d.%d:%d %d.%d.%d.%d:%d %d %d.%d.%d.%d]",
 			((src & 0xff000000)>>24), 
          ((src & 0x00ff0000)>>16),
          ((src & 0x0000ff00)>>8), 
@@ -129,7 +132,7 @@ extern "C" int Trace_Init()
 }
 extern "C" int  Cygtrace_Init()
 {
-  Trace_Init();
+  return Trace_Init();
 }
 
 

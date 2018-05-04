@@ -44,7 +44,7 @@ extern "C" int Miraclelink_Init()
 }
 extern "C" int  Cygmiraclelink_Init()
 {
-  Miraclelink_Init();
+  return Miraclelink_Init();
 }
 
 

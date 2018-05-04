@@ -86,6 +86,5 @@ int MPhyChSense::recvSyncClMsg(ClMessage* m)
 double MPhyChSense::getNoiseChannel() 
 {
   assert(spectralmask_);
-  double noise = NoiseSPD_ * spectralmask_->getBandwidth();
   return (NoiseSPD_ * spectralmask_->getBandwidth());
 }

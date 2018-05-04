@@ -47,7 +47,7 @@ MrclAddress::~MrclAddress()
 
 void MrclAddress::setAddr(void *addr, int addrLen)
 {
-	assert(addrLen <= MRCL_ADDRESS_MAX_LEN - sizeof(int));
+	assert(addrLen <= (int)MRCL_ADDRESS_MAX_LEN - (int)sizeof(int));
 	memset(addr_, 0, MRCL_ADDRESS_MAX_LEN);
 	memcpy(addr_, &addrLen, sizeof(int));
 	memcpy(addr_ + sizeof(int), addr, addrLen);
@@ -57,12 +57,12 @@ void MrclAddress::write(void *addr, int addrLen)
 {
 	int len;
 	memcpy(&len, addr_, sizeof(int));
-	memcpy(addr, addr_, addrLen > len + sizeof(int) ? len + sizeof(int): addrLen);
+	memcpy(addr, addr_, addrLen > (int)len + (int)sizeof(int) ? len + (int)sizeof(int): addrLen);
 }
 
 void MrclAddress::getAddr(void *addr, int addrLen, int offset)
 {
-	assert(offset + addrLen <= MRCL_ADDRESS_MAX_LEN - sizeof(int));
+	assert(offset + addrLen <= (int)MRCL_ADDRESS_MAX_LEN - (int)sizeof(int));
 	memcpy(addr, addr_ + sizeof(int) + offset, addrLen);
 	
 }

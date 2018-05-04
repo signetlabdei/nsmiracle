@@ -42,7 +42,7 @@
  * \brief Defines the behaviour of the node when it reaches an edge of the simulation field
  *
  **/
-typedef enum BoundType
+enum BoundType
 {
 	SPHERIC,
 	THOROIDAL,

@@ -69,7 +69,9 @@ class MArqTimer : public TimerHandler {
   
   
   virtual void freeze() { assert(timer_status == RUNNING); left_duration = NOW - start_time; 
-                          if (left_duration <= 0.0) left_duration = 1e-15; force_cancel();
+                          if (left_duration <= 0.0) 
+                            left_duration = 1e-15; 
+                          force_cancel();
                           timer_status = FROZEN; }
   
   virtual void unFreeze() { assert(timer_status == FROZEN); start_time = NOW; assert(left_duration > 0);
@@ -415,22 +417,21 @@ class MArq {
   
     
   protected:
-  
-  
-  GiveTxWindowHandler* tx_win_handler;
-  
-  GiveRxWindowHandler* rx_win_handler;
-  
-  GiveAckWindowHandler* ack_win_handler;
-    
     
   TxWinTimer* tx_win_timer; 
   
   RxWinTimer* rx_win_timer;
   
   AckWinTimer* ack_win_timer;
-     
-    
+
+  
+  GiveTxWindowHandler* tx_win_handler;
+  
+  GiveRxWindowHandler* rx_win_handler;
+  
+  GiveAckWindowHandler* ack_win_handler;
+  
+
   int curr_window_size;
   
   int max_window_size;

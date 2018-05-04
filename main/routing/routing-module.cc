@@ -32,11 +32,20 @@
 
 #define DEBUG
 
-RouteReachable::RouteReachable(int source) : ClMessage(ROUTEREACHABLE_VERBOSITY, CL_ROUTEMESSAGE, UNICAST, 0), info_(0), nInfo_(0), infoLen_(0), modules_(0), nModules_(0), myIP_(0), processed_(0)
+RouteReachable::RouteReachable(int source) 
+: ClMessage(ROUTEREACHABLE_VERBOSITY, CL_ROUTEMESSAGE, UNICAST, 0), 
+  info_(0), 
+  nInfo_(0),
+  modules_(0),
+  nModules_(0),
+  infoLen_(0),
+  addr_(),
+  myIP_(0),
+  processed_(0)
 {
 	memset(addr_, 0, MRCL_ADDRESS_MAX_LEN);
 	setSource(source);
-	printf("[RR Constr] setto addr_ a 0 (%d)\n", addr_);
+	printf("[RR Constr] setting addr_ to 0 (%s)\n", addr_);
 }
 
 RouteReachable::~RouteReachable()
@@ -67,7 +76,7 @@ void RouteReachable::addRouteInfo(RouteInfo *i)
 	if(id < nModules_ && modules_[id]>=0)
 	{
 		info_[modules_[id]] = i;
-		printf("modules_[%d] %d - info_[modules_[id]] = %d\n",id, modules_[id], info_[modules_[id]]);
+		printf("modules_[%d] %d - info_[modules_[id]] = %p\n",id, modules_[id], info_[modules_[id]]);
 		return;
 	}
 	if(nInfo_ >= infoLen_)
@@ -187,7 +196,15 @@ int RouteReachable::getIndex(int id)
 
 
 
-MrclRouting::MrclRouting() : rr_(0), lastGetConfiguration_(-1), delayUp_(0.0), delayDown_(0.0), nAddresses_(0)
+MrclRouting::MrclRouting() 
+  : 
+    addresses_(0),
+    nAddresses_(0),
+    rr_(0),
+    lastGetConfiguration_(-1),
+    routes_(),
+    delayUp_(0.0),
+    delayDown_(0.0)
 {
 	bind("overheadLength_", &overheadLength_);
 }
@@ -416,7 +433,7 @@ int MrclRouting::recvSyncClMsg(ClMessage *m)
 		#ifdef DEBUG
 			printf("RoutingModule %d has rx a CL_ROUTEMESSAGE\n", getId());
 									/// ATTENZIONE!
-			printf("recvSyncClMsg. Call getConfiguration with addr %d\n", ((RouteReachable *)m)->getAddress());
+			printf("recvSyncClMsg. Call getConfiguration with addr %s\n", ((RouteReachable *)m)->getAddress());
 		#endif
 		int nInfo = getConfiguration(((RouteReachable *)m)->getAddress(), m->getSource());
 		#ifdef DEBUG
@@ -467,7 +484,7 @@ public:
 
 int MrclRouting::getRoute(MrclAddress *a, Packet *p, int i)
 {
-	getRoute(a->getAddr(), p, i);
+	return getRoute(a->getAddr(), p, i);
 }
 
 int MrclRouting::getRoute(char *a, Packet *p, int i)
@@ -490,9 +507,9 @@ int MrclRouting::getRoute(char *a, Packet *p, int i)
 	strcat(saddr,"\0");
 	char daddr[MRCL_ADDRESS_MAX_LEN] = "";
 	int daddrLen;
+	memcpy(&daddrLen, rr_->getAddress(), sizeof(int));
 	if (daddrLen>0)
 	{
-		memcpy(&daddrLen, rr_->getAddress(), sizeof(int));
 		strcpy(temp,"");
 		for(int ki=daddrLen-1; ki>=0; ki--)
 		{
@@ -541,7 +558,6 @@ int MrclRouting::getRoute(char *a, Packet *p, int i)
 	#endif
 
 	//routes_.clear();
-	int nm = getConfiguration(a);
 
 	lastGetConfiguration_ = Scheduler::instance().clock();
 
@@ -674,7 +690,6 @@ void MrclRouting::recv(Packet *p)
 
 	RoutingHdr* mrhdr = HDR_ROUTING(p);
 	hdr_cmn* ch = hdr_cmn::access(p);
-	hdr_ip* iph = hdr_ip::access(p);
 
 #ifdef DEBUG
 //////////////////////////////////////////////////////////////////////////////
@@ -692,11 +707,12 @@ void MrclRouting::recv(Packet *p)
 		strcat(saddr,temp);
 	}
 	strcat(saddr,"\0");
+
 	char daddr[MRCL_ADDRESS_MAX_LEN] = "";
 	int daddrLen;
+	memcpy(&daddrLen, mrhdr->daddr(), sizeof(int));
 	if (daddrLen>0)
 	{
-		memcpy(&daddrLen, mrhdr->daddr(), sizeof(int));
 		strcpy(temp,"");
 		for(int i=daddrLen-1; i>=0; i--)
 		{
@@ -712,9 +728,9 @@ void MrclRouting::recv(Packet *p)
 	char raddr[MRCL_ADDRESS_MAX_LEN] = "";
 	int raddrLen;
 	char temp1[10];
+	memcpy(&raddrLen, rr_->getAddress(), sizeof(int));
 	if (raddrLen>0)
 	{
-		memcpy(&raddrLen, rr_->getAddress(), sizeof(int));
 		strcpy(temp1,"");
 		for(int i=raddrLen-1; i>=0; i--)
 		{
@@ -738,7 +754,7 @@ void MrclRouting::recv(Packet *p)
 
 	// Mior, 12 2008
 	if(!MrclAddress::areEqual(mrhdr->daddr(), rr_->getAddress())){
-		printf("Maybe I have a path (nMod %d),\nbut for another destination: daddr -%d-  raddr -%d-\n\n", nModule, mrhdr->daddr(), rr_->getAddress());
+		printf("Maybe I have a path (nMod %d),\nbut for another destination: daddr -%s-  raddr -%s-\n\n", nModule, mrhdr->daddr(), rr_->getAddress());
 		// I have to restart the discovery, reset parameters regarding the old path
 		nModule=0;
 		routes_.clear();
@@ -852,7 +868,7 @@ void MrclRouting::recv(Packet *p)
 					{	
 						MrclAddress::storeAddr(mrhdr->nexthop(), nextHop);
 						/// NOTE store ch->next_hop();
-						char *nh;
+						//char *nh;
 						//MrclAddress::storeAddr(, nextHop);
 						//printf("next hop nh %d, %d\n", nh, mrhdr->nexthop());
 						//############
@@ -896,7 +912,7 @@ void MrclRouting::recv(Packet *p)
 						
  						ch->next_hop() = (nsaddr_t)(ip);
 						//mrhdr->nexthop() = (nsaddr_t)(ip);
-						printf("\tSetto il next hop mh %d, ch %d\n", mrhdr->nexthop(), ch->next_hop());
+						printf("\tSetting next hop mh %s, ch %d\n", mrhdr->nexthop(), ch->next_hop());
 						//################
 						//ch->next_hop() = (nsaddr_t)Address::instance().get_nodeaddr(nextHop);
 // 						setOldAddresses(p);
