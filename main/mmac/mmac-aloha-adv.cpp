@@ -351,6 +351,11 @@ double MMacAlohaAdv::computeTxTime(ALOHA_PKT_TYPE type)
         hdr_cmn *ch = HDR_CMN(temp_data_pkt);
         ch->size() = ACK_size;
   }
+  else {
+        ::std::cerr << "unkown packet type" << ::std::endl;
+        assert(false);
+  }
+
   duration = Mac2PhyTxDuration(temp_data_pkt );
   Packet::free(temp_data_pkt);
   return(duration);

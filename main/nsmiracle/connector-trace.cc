@@ -245,8 +245,10 @@ void ConnectorTrace::vWriteTrace(char* s, va_list ap)
 void ConnectorTrace::dump()
 {
 	if(pt_)
+	{
 		pt_->dump();
-	pt_->buffer()[0] = 0;
+		pt_->buffer()[0] = 0;
+	}
 }
 
 
