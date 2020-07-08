@@ -32,9 +32,8 @@
 #include <clmessage.h>
 #include <mmac-csma.h>
 #include <mmac-aloha-adv.h>
+#include <mmac-clmsg.h>
 
-
-ClMessage_t MAC_CLMSG_GET_ADDR = 0;
 
 packet_t PT_MMAC_ACK;
 
@@ -43,13 +42,13 @@ extern EmbeddedTcl MMacInitTclCode;
 
 extern "C" int Mmac_Init()
 {
-	MAC_CLMSG_GET_ADDR = ClMessage::addClMessage();
-	PT_MMAC_ACK = p_info::addPacket((char*)"MMAC_ACK");
+   MAC_CLMSG_GET_ADDR = ClMessage::addClMessage();
+   PT_MMAC_ACK = p_info::addPacket((char*)"MMAC_ACK");
    MMacInitTclCode.load();
-	return 0;
+   return 0;
 }
 
 extern "C" int  Cygmmac_Init()
 {
-  return Mmac_Init();
+   return Mmac_Init();
 }
