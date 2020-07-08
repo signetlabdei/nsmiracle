@@ -33,6 +33,8 @@
 
 #include"mmac-clmsg.h"
 
+ClMessage_t MAC_CLMSG_GET_ADDR;
+
 /**
  * Message to get the address of the mac module
  */
