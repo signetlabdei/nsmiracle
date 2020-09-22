@@ -33,7 +33,7 @@
 
 #include"mmac-clmsg.h"
 
-ClMessage_t CLMSG_MAC2PHY_GETTXDURATION = 0;
+ClMessage_t MAC_CLMSG_GET_ADDR;
 
 /**
  * Message to get the address of the mac module
