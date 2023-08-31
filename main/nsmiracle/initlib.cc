@@ -47,7 +47,7 @@ extern "C" int Miracle_Init()
 }
 extern "C" int  Cygmiracle_Init()
 {
-  Miracle_Init();
+  return Miracle_Init();
 }
 
 

@@ -50,32 +50,32 @@ static unsigned int lastId = 0;
 */
 
 ClMessage::ClMessage(int verbosity, ClMessage_t type) 
-: verbosity_(verbosity), 
-  type_(type), 
+: type_(type), 
   destType_(BROADCAST), 
   source_(0), 
-  dest_(CLBROADCASTADDR) 
+  dest_(CLBROADCASTADDR), 
+  verbosity_(verbosity)
 {
 	uid_ = lastId++;
 }
 
 ClMessage::ClMessage(int verbosity, ClMessage_t type, DestinationType dtype, int source, int value)
-: verbosity_(verbosity), 
-  type_(type), 
-  source_(source), 
+: type_(type), 
   destType_(dtype), 
-  dest_(value) 
+  source_(source), 
+  dest_(value),
+  verbosity_(verbosity)
 {
   PRINT_WARNING_DEPRECATED_FUNCTION;
   uid_ = lastId++;
 }
 
 ClMessage::ClMessage(int verbosity, ClMessage_t type, DestinationType dtype, int value)
-: verbosity_(verbosity), 
-  type_(type), 
-  source_(-1), 
+: type_(type), 
   destType_(dtype), 
-  dest_(value) 
+  source_(-1), 
+  dest_(value),
+  verbosity_(verbosity)
 {
 	uid_ = lastId++;
 }
