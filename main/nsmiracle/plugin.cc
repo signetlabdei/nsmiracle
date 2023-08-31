@@ -46,7 +46,7 @@ public:
 	}
 } class_plugin;
 
-PlugIn::PlugIn() :  clsap_(0), binPtr_(0), uLayerId_(0), stack_id(0), stats_ptr(NULL)
+PlugIn::PlugIn() : binPtr_(NULL), stack_id(0), stats_ptr(NULL), clsap_(NULL), uLayerId_(0)
 {
 	sprintf(tag_, "---");
 }

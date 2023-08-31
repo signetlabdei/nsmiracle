@@ -56,7 +56,6 @@ Module::~Module()
 // // TCL command intepreter
 int Module::command(int argc, const char* const* argv)
 {
-	Tcl& tcl = Tcl::instance();
 	if (argc==3)
 	{
 		// install a SAP to an above module

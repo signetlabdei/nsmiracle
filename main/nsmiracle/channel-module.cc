@@ -42,7 +42,6 @@ ChannelModule::~ChannelModule()
 // // TCL command intepreter
 int ChannelModule::command(int argc, const char* const* argv)
 {
-	Tcl& tcl = Tcl::instance();
 	if (argc==3)
 	{
 		// install a SAP to an above module
@@ -62,7 +61,7 @@ int ChannelModule::command(int argc, const char* const* argv)
 
 int ChannelModule::getChSAPnum()
 {
-	Module::getUpLaySAPnum();
+	return Module::getUpLaySAPnum();
 }
 
 ChSAP* ChannelModule::getChSAP(int i)
