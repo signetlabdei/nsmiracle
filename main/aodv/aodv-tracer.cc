@@ -45,7 +45,7 @@ void MrclAodvTracer::format(Packet *p, SAP *sap)
 	if (ch->ptype()!=PT_AODV)
 		return;
 	
-	char pktinfo[50] = "";
+	char pktinfo[606] = "";
 	hdr_mrcl_aodv *ah = HDR_MRCL_AODV(p);
 	int saddrLen;
 	char saddr[MRCL_ADDRESS_MAX_LEN] = "";
@@ -61,10 +61,10 @@ void MrclAodvTracer::format(Packet *p, SAP *sap)
 		for(int i=saddrLen-1; i>=0; i--)
 		{
 			if (i==0)
-				sprintf(temp,"%d", rq->rq_src[i+sizeof(int)]);
+				snprintf(temp, sizeof(temp), "%d", rq->rq_src[i+sizeof(int)]);
 			else
-				sprintf(temp,"%d.", rq->rq_src[i+sizeof(int)]);
-			strcat(saddr,temp);
+				snprintf(temp, sizeof(temp), "%d.", rq->rq_src[i+sizeof(int)]);
+			strncat(saddr, temp, sizeof(saddr));
 		}
 		strcat(saddr,"\0");
 
@@ -75,14 +75,14 @@ void MrclAodvTracer::format(Packet *p, SAP *sap)
 			for(int i=daddrLen-1; i>=0; i--)
 			{
 				if (i==0)
-					sprintf(temp,"%d", rq->rq_dst[i+sizeof(int)]);
+					snprintf(temp, sizeof(temp), "%d", rq->rq_dst[i+sizeof(int)]);
 				else
-					sprintf(temp,"%d.", rq->rq_dst[i+sizeof(int)]);
-				strcat(daddr,temp);
+					snprintf(temp, sizeof(temp), "%d.", rq->rq_dst[i+sizeof(int)]);
+				strncat(daddr, temp, sizeof(daddr));
 			}
 		}
 		strcat(daddr,"\0");
-		sprintf(pktinfo, "RREQ s%s d%s id%d hc%d ", saddr, daddr, rq->rq_bcast_id, rq->rq_hop_count);
+		snprintf(pktinfo, sizeof(pktinfo), "RREQ s%s d%s id%d hc%d ", saddr, daddr, rq->rq_bcast_id, rq->rq_hop_count);
 		
 	}else if (ah->ah_type == AODVTYPE_RREP)
 	{
@@ -92,10 +92,10 @@ void MrclAodvTracer::format(Packet *p, SAP *sap)
 		for(int i=saddrLen-1; i>=0; i--)
 		{
 			if (i==0)
-				sprintf(temp,"%d", rp->rp_src[i+sizeof(int)]);
+				snprintf(temp, sizeof(temp), "%d", rp->rp_src[i+sizeof(int)]);
 			else
-				sprintf(temp,"%d.", rp->rp_src[i+sizeof(int)]);
-			strcat(saddr,temp);
+				snprintf(temp, sizeof(temp), "%d.", rp->rp_src[i+sizeof(int)]);
+			strncat(saddr,temp, sizeof(saddr));
 		}
 		strcat(saddr,"\0");
 
@@ -106,24 +106,24 @@ void MrclAodvTracer::format(Packet *p, SAP *sap)
 			for(int i=daddrLen-1; i>=0; i--)
 			{
 				if (i==0)
-					sprintf(temp,"%d", rp->rp_dst[i+sizeof(int)]);
+					snprintf(temp, sizeof(temp), "%d", rp->rp_dst[i+sizeof(int)]);
 				else
-					sprintf(temp,"%d.", rp->rp_dst[i+sizeof(int)]);
-				strcat(daddr,temp);
+					snprintf(temp, sizeof(temp), "%d.", rp->rp_dst[i+sizeof(int)]);
+				strncat(daddr,temp, sizeof(daddr));
 			}
 		}
 		strcat(daddr,"\0");
-		sprintf(pktinfo, "RREP s%s d%s sno%d hc%d", saddr, daddr, rp->rp_dst_seqno, rp->rp_hop_count);
+		snprintf(pktinfo, sizeof(pktinfo), "RREP s%s d%s sno%d hc%d", saddr, daddr, rp->rp_dst_seqno, rp->rp_hop_count);
 	}else if (ah->ah_type == AODVTYPE_RERR)
 	{
-		strcat(pktinfo, "RERR");
+		snprintf(pktinfo, sizeof(pktinfo), "%s", "RERR");
 	}
 	else if (ah->ah_type == AODVTYPE_HELLO)
 	{
 		hdr_mrcl_aodv_reply *rp = HDR_MRCL_AODV_REPLY(p);
-		sprintf(pktinfo, "HELLO sno%d", rp->rp_dst_seqno);
+		snprintf(pktinfo, sizeof(pktinfo), "HELLO sno%d", rp->rp_dst_seqno);
 	}
-	else strcat(pktinfo, "UNKNW");
+	else snprintf(pktinfo, sizeof(pktinfo), "%s", "UNKNW");
 
 	writeTrace(sap, (char*)" --mAODV-- %s", pktinfo);
 
