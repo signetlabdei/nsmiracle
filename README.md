@@ -17,7 +17,7 @@ Its main features are:
    communications with respect to the well-known shortcomings of the
    current NS release (2.31 at the time of this writing)
  - further info and documentation can be found at
-   http://telecom.dei.unipd.it/pages/read/58/
+   https://nsmiracle.dei.unipd.it/
 
 ------------------
  Contents
