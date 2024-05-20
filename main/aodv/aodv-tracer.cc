@@ -64,7 +64,7 @@ void MrclAodvTracer::format(Packet *p, SAP *sap)
 				snprintf(temp, sizeof(temp), "%d", rq->rq_src[i+sizeof(int)]);
 			else
 				snprintf(temp, sizeof(temp), "%d.", rq->rq_src[i+sizeof(int)]);
-			strncat(saddr, temp, sizeof(saddr));
+			strncat(saddr, temp, sizeof(saddr)-1);
 		}
 		strcat(saddr,"\0");
 
@@ -78,7 +78,7 @@ void MrclAodvTracer::format(Packet *p, SAP *sap)
 					snprintf(temp, sizeof(temp), "%d", rq->rq_dst[i+sizeof(int)]);
 				else
 					snprintf(temp, sizeof(temp), "%d.", rq->rq_dst[i+sizeof(int)]);
-				strncat(daddr, temp, sizeof(daddr));
+				strncat(daddr, temp, sizeof(daddr)-1);
 			}
 		}
 		strcat(daddr,"\0");
@@ -95,7 +95,7 @@ void MrclAodvTracer::format(Packet *p, SAP *sap)
 				snprintf(temp, sizeof(temp), "%d", rp->rp_src[i+sizeof(int)]);
 			else
 				snprintf(temp, sizeof(temp), "%d.", rp->rp_src[i+sizeof(int)]);
-			strncat(saddr,temp, sizeof(saddr));
+			strncat(saddr,temp, sizeof(saddr)-1);
 		}
 		strcat(saddr,"\0");
 
@@ -109,7 +109,7 @@ void MrclAodvTracer::format(Packet *p, SAP *sap)
 					snprintf(temp, sizeof(temp), "%d", rp->rp_dst[i+sizeof(int)]);
 				else
 					snprintf(temp, sizeof(temp), "%d.", rp->rp_dst[i+sizeof(int)]);
-				strncat(daddr,temp, sizeof(daddr));
+				strncat(daddr,temp, sizeof(daddr)-1);
 			}
 		}
 		strcat(daddr,"\0");
