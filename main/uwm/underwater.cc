@@ -205,121 +205,121 @@ double Underwater::getPropagationDelay(double tX, double tY, double tZ, double r
   // to the simulation compared to the bandwidth calculation
 
 
-  double T; 
-  // temp in C
-  // from 1000m to 4500 m, the temp is in [2,4]
-  // from 750m to 1000m [4,8]
-  // from 250 to 750 [8,22]
-  // 0 - 250 it is 22C
+//   double T; 
+//   // temp in C
+//   // from 1000m to 4500 m, the temp is in [2,4]
+//   // from 750m to 1000m [4,8]
+//   // from 250 to 750 [8,22]
+//   // 0 - 250 it is 22C
   
-//   rZ = ::std::abs(rZ);
-//   tZ = ::std::abs(tZ);
+// //   rZ = ::std::abs(rZ);
+// //   tZ = ::std::abs(tZ);
   
-  double t, z, S; // temp comp, depth, salinity
-  double lZ, hZ;
-  double prop_delay = 0;
-  double dist;
-  double totalZ;
+//   double t, z, S; // temp comp, depth, salinity
+//   double lZ, hZ;
+//   double prop_delay = 0;
+//   double dist;
+//   double totalZ;
 
-  double total_dist = sqrt((rX - tX) * (rX - tX) 
-                  + (rY - tY) * (rY - tY) 
-                  + (rZ - tZ) * (rZ - tZ));
+//   double total_dist = sqrt((rX - tX) * (rX - tX) 
+//                   + (rY - tY) * (rY - tY) 
+//                   + (rZ - tZ) * (rZ - tZ));
          
-  prop_delay = total_dist / 1500.0;
+//   prop_delay = total_dist / 1500.0;
   
-	S = 35; // for the ocean, it is in [32,37] with average at 35
+// 	S = 35; // for the ocean, it is in [32,37] with average at 35
 
-	lZ = tZ > rZ?tZ:rZ;
-	hZ = tZ < rZ?tZ:rZ; 
+// 	lZ = tZ > rZ?tZ:rZ;
+// 	hZ = tZ < rZ?tZ:rZ; 
 
-	totalZ = lZ - hZ;
-	if(totalZ <= 0)
-	{
-			z = lZ;
-			//put a temp
-			T = z>4500?2.0:lZ>1000?((4500 - z) * 0.00057142) + 2.0:
-					z>750?((1000 - z) * 0.016) + 4.0:
-					z>250?((750 - z) * 0.028) + 8:22.0;
-			t = T/10.0;
-			prop_delay += (total_dist) / 
-					(1449.05 + 45.7 * t - 5.21 * pow(t,2) +
-					0.23 * pow(t,3) +
-					(1.333 - 0.126 * t + 0.009 * pow(t,2)) * (S - 35) +
-					16.3 * (z / 1000.0) + 0.18 * pow((z / 1000),2));
+// 	totalZ = lZ - hZ;
+// 	if(totalZ <= 0)
+// 	{
+// 			z = lZ;
+// 			//put a temp
+// 			T = z>4500?2.0:lZ>1000?((4500 - z) * 0.00057142) + 2.0:
+// 					z>750?((1000 - z) * 0.016) + 4.0:
+// 					z>250?((750 - z) * 0.028) + 8:22.0;
+// 			t = T/10.0;
+// 			prop_delay += (total_dist) / 
+// 					(1449.05 + 45.7 * t - 5.21 * pow(t,2) +
+// 					0.23 * pow(t,3) +
+// 					(1.333 - 0.126 * t + 0.009 * pow(t,2)) * (S - 35) +
+// 					16.3 * (z / 1000.0) + 0.18 * pow((z / 1000),2));
 
-	}
-	else
-	{
-		if(lZ > 4500 && lZ > hZ)
-		{
-				dist = lZ - (hZ > 4500?4500:hZ);
-				z = lZ - dist / 2;
-				lZ -= dist;
-				T = 2.0;
-				t = T/10.0;
-				prop_delay += (total_dist * dist / totalZ) / 
-						(1449.05 + 45.7 * t - 5.21 * pow(t,2) +
-						0.23 * pow(t,3) +
-						(1.333 - 0.126 * t + 0.009 * pow(t,2)) * (S - 35) +
-						16.3 * (z / 1000.0) + 0.18 * pow((z / 1000),2));
-		}
-		if(lZ > 1000 && lZ > hZ)
-		{
-			dist = lZ - (hZ > 1000?1000:hZ);
-			z = lZ - dist / 2;
-			lZ -= dist;
-			T = ((4500 - z) * 0.00057142) + 2.0; 
-			t = T/10.0;
-			prop_delay += (total_dist * dist / totalZ) / 
-					(1449.05 + 45.7 * t - 5.21 * pow(t,2) +
-					0.23 * pow(t,3) +
-					(1.333 - 0.126 * t + 0.009 * pow(t,2)) * (S - 35) +
-					16.3 * (z / 1000.0) + 0.18 * pow((z / 1000),2));
-		}	
-		else if(lZ > 750)
-		{
-			dist = lZ - (hZ > 750?750:hZ);
-			z = lZ - dist / 2;
-			lZ -= dist;
-			T = ((1000 - z) * 0.016) + 4.0;
-			t = T/10.0;
-			prop_delay += (total_dist * dist / totalZ) / 
-					(1449.05 + 45.7 * t - 5.21 * pow(t,2) +
-					0.23 * pow(t,3) +
-					(1.333 - 0.126 * t + 0.009 * pow(t,2)) * (S - 35) +
-					16.3 * (z / 1000.0) + 0.18 * pow((z / 1000),2));
-		}
-		else if(lZ > 250)
-		{
-			dist = lZ - (hZ > 250?250:hZ);
-			z = lZ - dist / 2;
-			lZ -= dist;
-			T = ((750 - z) * 0.028) + 8;
-			t = T/10.0;
-			prop_delay += (total_dist * dist / totalZ) / 
-					(1449.05 + 45.7 * t - 5.21 * pow(t,2) +
-					0.23 * pow(t,3) +
-					(1.333 - 0.126 * t + 0.009 * pow(t,2)) * (S - 35) +
-					16.3 * (z / 1000.0) + 0.18 * pow((z / 1000),2));
-		}
-		else
-		{
-			dist = lZ - (hZ > 750?750:hZ);
-			z = lZ - dist / 2;
-			lZ -= dist;
-			t = 22/10.0;
-			prop_delay += (total_dist * dist / totalZ) / 
-					(1449.05 + 45.7 * t - 5.21 * pow(t,2) +
-					0.23 * pow(t,3) +
-					(1.333 - 0.126 * t + 0.009 * pow(t,2)) * (S - 35) +
-					16.3 * (z / 1000.0) + 0.18 * pow((z / 1000),2));
-		}
-	}
+// 	}
+// 	else
+// 	{
+// 		if(lZ > 4500 && lZ > hZ)
+// 		{
+// 				dist = lZ - (hZ > 4500?4500:hZ);
+// 				z = lZ - dist / 2;
+// 				lZ -= dist;
+// 				T = 2.0;
+// 				t = T/10.0;
+// 				prop_delay += (total_dist * dist / totalZ) / 
+// 						(1449.05 + 45.7 * t - 5.21 * pow(t,2) +
+// 						0.23 * pow(t,3) +
+// 						(1.333 - 0.126 * t + 0.009 * pow(t,2)) * (S - 35) +
+// 						16.3 * (z / 1000.0) + 0.18 * pow((z / 1000),2));
+// 		}
+// 		if(lZ > 1000 && lZ > hZ)
+// 		{
+// 			dist = lZ - (hZ > 1000?1000:hZ);
+// 			z = lZ - dist / 2;
+// 			lZ -= dist;
+// 			T = ((4500 - z) * 0.00057142) + 2.0; 
+// 			t = T/10.0;
+// 			prop_delay += (total_dist * dist / totalZ) / 
+// 					(1449.05 + 45.7 * t - 5.21 * pow(t,2) +
+// 					0.23 * pow(t,3) +
+// 					(1.333 - 0.126 * t + 0.009 * pow(t,2)) * (S - 35) +
+// 					16.3 * (z / 1000.0) + 0.18 * pow((z / 1000),2));
+// 		}	
+// 		else if(lZ > 750)
+// 		{
+// 			dist = lZ - (hZ > 750?750:hZ);
+// 			z = lZ - dist / 2;
+// 			lZ -= dist;
+// 			T = ((1000 - z) * 0.016) + 4.0;
+// 			t = T/10.0;
+// 			prop_delay += (total_dist * dist / totalZ) / 
+// 					(1449.05 + 45.7 * t - 5.21 * pow(t,2) +
+// 					0.23 * pow(t,3) +
+// 					(1.333 - 0.126 * t + 0.009 * pow(t,2)) * (S - 35) +
+// 					16.3 * (z / 1000.0) + 0.18 * pow((z / 1000),2));
+// 		}
+// 		else if(lZ > 250)
+// 		{
+// 			dist = lZ - (hZ > 250?250:hZ);
+// 			z = lZ - dist / 2;
+// 			lZ -= dist;
+// 			T = ((750 - z) * 0.028) + 8;
+// 			t = T/10.0;
+// 			prop_delay += (total_dist * dist / totalZ) / 
+// 					(1449.05 + 45.7 * t - 5.21 * pow(t,2) +
+// 					0.23 * pow(t,3) +
+// 					(1.333 - 0.126 * t + 0.009 * pow(t,2)) * (S - 35) +
+// 					16.3 * (z / 1000.0) + 0.18 * pow((z / 1000),2));
+// 		}
+// 		else
+// 		{
+// 			dist = lZ - (hZ > 750?750:hZ);
+// 			z = lZ - dist / 2;
+// 			lZ -= dist;
+// 			t = 22/10.0;
+// 			prop_delay += (total_dist * dist / totalZ) / 
+// 					(1449.05 + 45.7 * t - 5.21 * pow(t,2) +
+// 					0.23 * pow(t,3) +
+// 					(1.333 - 0.126 * t + 0.009 * pow(t,2)) * (S - 35) +
+// 					16.3 * (z / 1000.0) + 0.18 * pow((z / 1000),2));
+// 		}
+// 	}
 
-//   printf("Total_dist: %f, prop_delay: %f, def_prop_delay: %f, speed: %f \n",total_dist, prop_delay, 
-//          total_dist/1500.0, total_dist / prop_delay );
+// //   printf("Total_dist: %f, prop_delay: %f, def_prop_delay: %f, speed: %f \n",total_dist, prop_delay, 
+// //          total_dist/1500.0, total_dist / prop_delay );
 
-//   ::std::cout << " speed = " << prop_speed << ::std::endl;
+// //   ::std::cout << " speed = " << prop_speed << ::std::endl;
 
   if (prop_speed > 0.0)
   {
