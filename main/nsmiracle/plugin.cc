@@ -152,6 +152,33 @@ PlugIn::command(int argc, const char *const *argv)
 			logger->setLogFile(argv[2]);
 			return TCL_OK;
 		}
+	} else if (argc == 4) {
+		if (strcasecmp(argv[1], "setLog") == 0) {
+			int node_id = std::atoi(argv[2]);
+			if (node_id < 0) {
+				tcl.resultf("Error PlugIn::command = %s: Node id must be >= 0",
+						argv[1]);
+				return TCL_ERROR;
+			}
+
+			logger->setLogNodeId(node_id);
+			logger->setLogLevel(argv[3]);
+			return TCL_OK;
+		}
+	} else if (argc == 5) {
+		if (strcasecmp(argv[1], "setLog") == 0) {
+			int node_id = std::atoi(argv[2]);
+			if (node_id < 0) {
+				tcl.resultf("Error PlugIn::command = %s: Node id must be >= 0",
+						argv[1]);
+				return TCL_ERROR;
+			}
+
+			logger->setLogNodeId(node_id);
+			logger->setLogLevel(argv[3]);
+			logger->setLogFile(argv[4]);
+			return TCL_OK;
+		}
 	}
 	return NsObject::command(argc, argv);
 }
