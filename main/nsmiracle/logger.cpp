@@ -27,20 +27,19 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /**
- * @file   uwlogger.cpp
+ * @file   logger.cpp
  * @author Vincenzo Cimino
  * @version 1.0.0
  *
  */
 
 #include "logger.h"
-#include <chrono>
-#include <iomanip>
-
+#include "object.h"
+#include <cstring>
+#include <iostream>
 
 Logger::Logger()
-	: node_id_(0)
-	, log_level_(LogLevel::NONE)
+	: log_level_(LogLevel::NONE)
 	, log_file_()
 	, log_out_()
 {
@@ -55,36 +54,66 @@ Logger::~Logger()
 }
 
 void
-Logger::printOnLog(const std::string &log_level, const std::string &module,
-		const std::string &message)
+Logger::setLogLevel(int log_level)
 {
-	if (log_level_ == LogLevel::NONE || log_level_ < strToLog(log_level))
+	switch (log_level) {
+		case 1:
+			log_level_ = LogLevel::ERROR;
+			break;
+		case 2:
+			log_level_ = LogLevel::INFO;
+			break;
+		case 3:
+			log_level_ = LogLevel::DEBUG;
+			break;
+		default:
+			log_level_ = LogLevel::NONE;
+	}
+}
+
+void
+Logger::setLogFile(const std::string &log_file)
+{
+	log_file_ = log_file;
+
+	if (!log_out_.is_open()) {
+		log_out_.open(log_file_.c_str(), std::ios::app);
+		if (log_out_.fail()) {
+			std::cout << "[" << NOW
+					  << "]::Logger::setLogFile::FAILED open log file with "
+					  << "error : " << strerror(errno) << std::endl;
+			return;
+		}
+	}
+}
+
+void
+Logger::printOnLog(Logger::LogLevel log_level, const std::string &message)
+{
+	if (log_level_ == LogLevel::NONE || log_level_ < log_level)
 		return;
 
-	const double timestamp =
-			(double) (std::chrono::duration_cast<std::chrono::milliseconds>(
-					std::chrono::system_clock::now().time_since_epoch())
-							.count()) /
-			1000.0;
+	auto level_str{""};
+	switch (log_level) {
+		case LogLevel::ERROR:
+			level_str = "ERR";
+			break;
+		case LogLevel::INFO:
+			level_str = "INFO";
+			break;
+		case LogLevel::DEBUG:
+			level_str = "DBG";
+			break;
+		default:
+			return;
+	}
 
-	if (!log_file_.empty()) {
-		if (!log_out_.is_open()) {
-			log_out_.open(log_file_.c_str(), ios::app);
-			if (log_out_.fail()) {
-				std::cerr << "[" << NOW
-						  << "]::FAILED open log file with error : "
-						  << strerror(errno) << std::endl;
-				return;
-			}
-		}
-
-		log_out_ << std::setprecision(15) << std::left << log_level << "::[" << timestamp
-				<< "]::[" << NOW << "]::" << module << "(" << node_id_
-				<< ")::" << message << endl;
+	if (log_out_.is_open()) {
+		log_out_ << "[" << NOW << "]::" << level_str << "::" << message
+				 << std::endl;
 		log_out_.flush();
 	} else {
-		std::cout << std::setprecision(15) << std::left << log_level << "::["
-				  << timestamp << "]::[" << NOW << "]::" << module << "("
-				  << node_id_ << ")::" << message << std::endl;
+		std::cout << "[" << NOW << "]::" << level_str << "::" << message
+				  << std::endl;
 	}
 }

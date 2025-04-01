@@ -90,6 +90,7 @@ M_Node instproc addModule {layer module param1 {param2 ""} {param3 ""}} {
 
 	$module Id_ $nPlugin_
 	$module setlayer $layer
+	$module setNodeID $id_
 
 	set clsap [new ConnectorTrace/ClSAP]
 	$module addBin $bin_
@@ -133,6 +134,7 @@ M_Node instproc addPlugin {plugin param1 {param2 ""} {param3 ""}} {
 	$self instvar nPlugin_ bin_ nodeCore_ traceCLfd_ modules_ layer_ id_
 	
 	$plugin Id_ $nPlugin_
+	$plugin setNodeID $id_
 	
 	set clsap [new ConnectorTrace/ClSAP]
 	$plugin addBin $bin_

@@ -153,6 +153,16 @@ public:
 	virtual int recvSyncClMsg(ClMessage *m);
 
 	/**
+	 * Method to send the log message to the logger.
+	 *
+	 * @param log_level LogLevel representing the amout of logs.
+	 * @param module String name of the plugin/module.
+	 * @param message String log message.
+	 *
+	 */
+	virtual void printOnLog(Logger::LogLevel log_level, const std::string &module, const std::string &message) const;
+
+	/**
 	 * Method inherited from NsObject, it is not used in this level of
 	 *inheritance since PlugIn Class use only cross-layer messages to
 	 *communicate with the other entities in the architecture
@@ -273,19 +283,16 @@ protected:
 	 **/
 	void drop(ClMessage *m, const char *reason = "---");
 
-	/** Pointer to the instance of the global Bin */
-	Bin *binPtr_;
-
-	/** String identifies the plug-in in the bin-tracing */
-	char tag_[MAX_TAG_LENGTH];
-
+	int uLayerId_; /**< PlugIn layer identifier. */
 	int stack_id; /**< Sub-stack identifier, useful in multi-stack case*/
-
+	int node_id; /**< Node identifier. */
+	int enable_log; /**< Enable the log of a specific module/plugin. */
+	Bin *binPtr_; /**< Pointer to the instance of the global Bin. */
 	Stats *stats_ptr; /**< Pointer to the metrics container. By default it is
 					   * null, it should be dynamically allocatated in the
 					   * derived classes */
-	std::unique_ptr<Logger> logger; /**< Pointer to the Logger class. By default
-									   the log level is set to NONE. */
+	/** String identifies the plug-in in the bin-tracing */
+	char tag_[MAX_TAG_LENGTH];
 
 private:
 	/** PlugIn id */
@@ -295,15 +302,13 @@ private:
 	ClSAP *clsap_;
 
 protected:
-	/** PlugIn Layer */
-	int uLayerId_;
+	static Logger logger; /**< Logger class used to print log messages. By
+						   * default the log level is set to NONE. */
 
 	/******************************
 	 * Deprecated Methods
 	 *
 	 */
-
-protected:
 	/**
 	 * \deprecated use sendAsyncClMsg(ClMessage* m, double delay) instead
 	 *

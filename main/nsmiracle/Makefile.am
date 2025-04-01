@@ -55,7 +55,7 @@ libMiracle_la_SOURCES = bin.cc bin.h \
 			channel-module.cc channel-module.h \
 			deprecated.h \
 			clmsg-stats.cc clmsg-stats.h \
-			logger.cpp \
+			logger.cpp logger.h \
 			initlib.cc 
 
 nodist_libMiracle_la_SOURCES = Miraclesuptcl.cc

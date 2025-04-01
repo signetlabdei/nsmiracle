@@ -35,7 +35,10 @@
 #include "deprecated.h"
 #include <cstdlib>
 #include <cstring>
+#include <logger.h>
 #include <memory>
+#include <sstream>
+#include <string>
 // #include <string>
 
 /* ======================================================================
@@ -55,13 +58,16 @@ public:
 	}
 } class_plugin;
 
+Logger PlugIn::logger = Logger();
+
 PlugIn::PlugIn()
-	: binPtr_(NULL)
+	: uLayerId_(0)
 	, stack_id(0)
+	, node_id(-1)
+	, enable_log(0)
+	, binPtr_(NULL)
 	, stats_ptr(NULL)
-	, logger(std::make_unique<Logger>())
 	, clsap_(NULL)
-	, uLayerId_(0)
 {
 	sprintf(tag_, "---");
 }
@@ -133,54 +139,62 @@ PlugIn::command(int argc, const char *const *argv)
 			strcpy(tag_, argv[2]);
 			return TCL_OK;
 		}
-		if (strcasecmp(argv[1], "setLogID") == 0) {
-			int node_id = std::atoi(argv[2]);
-			if (node_id < 0) {
-				tcl.resultf("Error PlugIn::command = %s: Node id must be >= 0",
-						argv[1]);
-				return TCL_ERROR;
+		if (strcasecmp(argv[1], "setNodeID") == 0) {
+			std::stringstream ss(argv[2]);
+			int id;
+
+			if (ss >> id && id >= 0) {
+				node_id = id;
+				return TCL_OK;
 			}
 
-			logger->setLogNodeId(node_id);
-			return TCL_OK;
+			tcl.resultf("Error PlugIn::command = %s: Node id must be >= 0",
+					argv[1]);
+
+			return TCL_ERROR;
 		}
 		if (strcasecmp(argv[1], "setLogLevel") == 0) {
-			logger->setLogLevel(argv[2]);
-			return TCL_OK;
+			std::stringstream ss(argv[2]);
+			int level;
+
+			if (ss >> level) {
+				enable_log = 1;
+				logger.setLogLevel(level);
+				return TCL_OK;
+			}
+
+			return TCL_ERROR;
 		}
 		if (strcasecmp(argv[1], "setLogFile") == 0) {
-			logger->setLogFile(argv[2]);
+			logger.setLogFile(argv[2]);
+
 			return TCL_OK;
 		}
 	} else if (argc == 4) {
 		if (strcasecmp(argv[1], "setLog") == 0) {
-			int node_id = std::atoi(argv[2]);
-			if (node_id < 0) {
-				tcl.resultf("Error PlugIn::command = %s: Node id must be >= 0",
-						argv[1]);
-				return TCL_ERROR;
+			std::stringstream ss(argv[2]);
+			int level;
+
+			if (ss >> level) {
+				enable_log = 1;
+				logger.setLogLevel(level);
+				logger.setLogFile(argv[4]);
+				return TCL_OK;
 			}
 
-			logger->setLogNodeId(node_id);
-			logger->setLogLevel(argv[3]);
-			return TCL_OK;
-		}
-	} else if (argc == 5) {
-		if (strcasecmp(argv[1], "setLog") == 0) {
-			int node_id = std::atoi(argv[2]);
-			if (node_id < 0) {
-				tcl.resultf("Error PlugIn::command = %s: Node id must be >= 0",
-						argv[1]);
-				return TCL_ERROR;
-			}
-
-			logger->setLogNodeId(node_id);
-			logger->setLogLevel(argv[3]);
-			logger->setLogFile(argv[4]);
 			return TCL_OK;
 		}
 	}
 	return NsObject::command(argc, argv);
+}
+
+void
+PlugIn::printOnLog(Logger::LogLevel log_level, const std::string &module,
+		const std::string &message) const
+{
+	if (enable_log)
+		logger.printOnLog(
+				log_level, module + "(" + to_string(node_id) + ")::" + message);
 }
 
 int

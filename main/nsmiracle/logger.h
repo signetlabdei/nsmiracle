@@ -32,22 +32,30 @@
  * @version 1.0.0
  *
  * @brief A Logger class represents an object used to print log messages from a
- * given module of a node.
+ * given plugin/module of a node.
  *
  */
 
 #ifndef LOGGER
 #define LOGGER
 
-#include "object.h"
 #include <fstream>
-#include <iostream>
 #include <string>
-#include <unordered_map>
 
 class Logger
 {
 public:
+	/**
+	 * Enum representing the amount of logs being generated.
+	 * NONE: no logs will be generated
+	 * ERROR: only errors will be generated
+	 * INFO : general info about the algorithms running and ERROR
+	 * DEBUG: details that allow to understand the execution flow and ERROR +
+	 * INFO
+	 *
+	 */
+	enum class LogLevel { NONE = 0, ERROR = 1, INFO = 2, DEBUG = 3 };
+
 	/**
 	 * Logger constructor.
 	 *
@@ -61,104 +69,38 @@ public:
 	~Logger();
 
 	/**
-	 * Set the Logger node id.
-	 *
-	 * @param node_id the integer value that will be the logger node id.
-	 *
-	 **/
-	inline void
-	setLogNodeId(size_t node_id)
-	{
-		node_id_ = node_id;
-	}
-
-	/**
 	 * Set the Logger log level.
 	 *
-	 * @param log_level the string representings the amount of logs being
-	 *generated. Valid values are ERR,INFO,DBG.
+	 * @param log_level a integer representings the amount of logs being
+	 * generated. Valid values are 1 = ERR, 2 = INFO, 3 = DBG.
 	 *
 	 **/
-	inline void
-	setLogLevel(const std::string &log_level)
-	{
-		log_level_ = strToLog(log_level);
-	}
+	void setLogLevel(int log_level);
 
 	/**
 	 * Set the Logger file name.
 	 *
 	 * @param log_file the string representings the name of the file where to
-	 *store log messages.
+	 * store log messages.
 	 *
 	 **/
-	inline void
-	setLogFile(const std::string &log_file)
-	{
-		log_file_ = log_file;
-	}
+	void setLogFile(const std::string &log_file);
 
 	/**
 	 * Method to print the provided log message either to the console
 	 * or to a file if a log_file name is specified.
 	 * The log message is printed only if log_level_ >= log_level.
 	 *
-	 * @param log_level String of valid log level (ERR/INFO/DBG).
-	 * @param module String representing the name of the module.
+	 * @param log_level LogLevel representing the amout of logs.
 	 * @param message String log message.
 	 *
 	 */
-	void printOnLog(const std::string &log_level, const std::string &module,
-			const std::string &message);
+	void printOnLog(LogLevel log_level, const std::string &message);
 
 protected:
-	/**
-	 * Enum representing the amount of logs being generated.
-	 * NONE: no logs will be generated
-	 * ERROR: only errors will be generated
-	 * INFO : general info about the algorithms running and ERROR
-	 * DEBUG: details that allow to understand the execution flow and ERROR +
-	 * INFO
-	 *
-	 */
-	enum class LogLevel { NONE = 0, ERROR = 1, INFO = 2, DEBUG = 3 };
-
-	/**
-	 * Dictionary of log levels.
-	 *
-	 */
-	const std::unordered_map<std::string, LogLevel> log_dict = {
-			{"ERR", LogLevel::ERROR},
-			{"INFO", LogLevel::INFO},
-			{"DBG", LogLevel::DEBUG}};
-
-	/**
-	 * Method that converts a string representing the loglevel
-	 * into the enum type of loglevel.
-	 *
-	 * @param log_level string to be converted
-	 *
-	 * @return LogLevel converted enum type of loglevel
-	 */
-	LogLevel
-	strToLog(const std::string &log_level) const
-	{
-		auto ll = log_dict.find(log_level);
-
-		if (ll != log_dict.end())
-			return ll->second;
-
-		std::cerr << "[" << NOW
-				  << "]::Logger::INVALID Log Level. Default to NONE"
-				  << std::endl;
-
-		return LogLevel::NONE;
-	}
-
-	size_t node_id_; /**< Id of the node to which log messages are associated.*/
 	LogLevel log_level_; /**< Log level of log messages.*/
 	std::string log_file_; /**< Name of the file where to write log messages.*/
-	std::ofstream log_out_; /**< Output stream to print into file log messages.*/
+	std::ofstream log_out_; /**< Output stream to file for log messages.*/
 };
 
 #endif
