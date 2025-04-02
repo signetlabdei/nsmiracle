@@ -93,12 +93,12 @@ AC_CONFIG_FILES([
 		trace/Makefile
 		wirelessch/Makefile	
 		mphy/Makefile
-    marq/Makefile
+		marq/Makefile
 		mmac/Makefile	
 		mll/Makefile
 		routing/Makefile
 		aodv/Makefile
-    uwm/Makefile
+		uwm/Makefile
 		m4/Makefile
 		samples/Makefile
 		])
