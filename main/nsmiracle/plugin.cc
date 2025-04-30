@@ -92,6 +92,12 @@ PlugIn::command(int argc, const char *const *argv)
 		} else if (strcasecmp(argv[1], "getstackid") == 0) {
 			tcl.resultf("%d", getStackId());
 			return (TCL_OK);
+		} else if (strcasecmp(argv[1], "enableLog") == 0) {
+			enable_log = 1;
+			return TCL_OK;
+		} else if (strcasecmp(argv[1], "disableLog") == 0) {
+			enable_log = 0;
+			return TCL_OK;
 		}
 	} else if (argc == 3) {
 		if (strcasecmp(argv[1], "Id_") == 0) {
@@ -178,7 +184,7 @@ PlugIn::command(int argc, const char *const *argv)
 			if (ss >> level) {
 				enable_log = 1;
 				logger.setLogLevel(level);
-				logger.setLogFile(argv[4]);
+				logger.setLogFile(argv[3]);
 				return TCL_OK;
 			}
 
