@@ -58,7 +58,7 @@ public:
 	}
 } class_plugin;
 
-Logger PlugIn::logger = Logger();
+Logger PlugIn::logger;
 
 PlugIn::PlugIn()
 	: uLayerId_(0)
