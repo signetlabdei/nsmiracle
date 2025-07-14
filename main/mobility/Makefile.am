@@ -41,6 +41,7 @@ libMiracleBasicMovement_la_SOURCES = bmposition.h bmposition.cc\
 				positiondb.h positiondb.cc \
 				initlib.cc
 
+libMiracleBasicMovement_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libMiracleBasicMovement_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libMiracleBasicMovement_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@
 libMiracleBasicMovement_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@

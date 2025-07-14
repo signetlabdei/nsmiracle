@@ -43,13 +43,14 @@ libMiraclePhy802_11_la_SOURCES = wirelessphy-module.cc wirelessphy-module.h \
 				simplepathloss.cc simplepathloss.h \
 				initlib.cc
 
+libMiraclePhy802_11_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libMiraclePhy802_11_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libMiraclePhy802_11_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@
 libMiraclePhy802_11_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@
 
 nodist_libMiraclePhy802_11_la_SOURCES = MiraclePhy80211InitTcl.cc
 
-
+libphytracer_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libphytracer_la_SOURCES = phy-tracer.cc phy-tracer.h
 libphytracer_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libphytracer_la_LDFLAGS = @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@ -L./

@@ -39,12 +39,15 @@ libmiracletcp_la_SOURCES = tcp-module.cc \
 			tcp-module.h \
 			initlib.cc 
 
+libmiracletcp_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libmiracletcp_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libmiracletcp_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@  -L../ip/ 
 libmiracletcp_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@ -lMiracleIp 
 
 
 libtcptracer_la_SOURCES = tcp-tracer.cc tcp-tracer.h 
+
+libtcptracer_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libtcptracer_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libtcptracer_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@  -L../ip/ -L./
 libtcptracer_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@ -lMiracleIp -lmiracletcp

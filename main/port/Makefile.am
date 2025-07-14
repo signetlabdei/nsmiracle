@@ -39,6 +39,7 @@ libmiracleport_la_SOURCES = port-mux.cc port-mux.h \
 			port-map.cc port-map.h \
 			initlib.cc 
 
+libmiracleport_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libmiracleport_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libmiracleport_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@
 libmiracleport_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@

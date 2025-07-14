@@ -45,6 +45,7 @@ libmmac_la_SOURCES = initlib.cc \
                 mmac-csma.h mmac-csma.cc \
                 mmac-aloha-adv.h mmac-aloha-adv.cpp 
 
+libmmac_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libmmac_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libmmac_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@
 libmmac_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@

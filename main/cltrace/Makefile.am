@@ -40,6 +40,7 @@ TESTS =
 
 libClTrace_la_SOURCES = clcommontracer.cc clcommontracer.h
 
+libClTrace_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libClTrace_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libClTrace_la_LDFLAGS = @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@
 libClTrace_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@
@@ -47,6 +48,7 @@ libClTrace_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@
 
 libverboseclcmntracer_la_SOURCES = verboseclcmntracer.cc verboseclcmntracer.h
 
+libverboseclcmntracer_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libverboseclcmntracer_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libverboseclcmntracer_la_LDFLAGS = @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@
 libverboseclcmntracer_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@
