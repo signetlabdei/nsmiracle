@@ -92,6 +92,16 @@ class ChannelModule : public Module {
 		**/
 		virtual void recv(Packet* p);
 		/**
+		* Method that intefaces the basic <i>recv</i> method (with only packet as parameter) with the specific
+		* Channel Module <i>recv</i> method, which uses the <i>ChSAP</i> to have knowledges about the source
+		* 
+		* @param p pointer to the packet will be received
+		* @param idSrc unique id of the module that has sent the packet
+		* 
+		* @see ChSAP
+		**/
+		virtual void recv(Packet *p, int idSrc);
+		/**
 		* Abstract method used to receive packet from the module of the above layer, it gives also knowledges about
 		* the source through the instance of <i>ChSAP</i> which connected them
 		* 

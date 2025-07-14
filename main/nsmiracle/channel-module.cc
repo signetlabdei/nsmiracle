@@ -85,3 +85,8 @@ void ChannelModule::recv(Packet* p)
 {
 	recv(p,(ChSAP*)0);
 }
+
+void ChannelModule::recv(Packet *p, int idSrc)
+{
+	recv(p,(ChSAP*)0);
+}

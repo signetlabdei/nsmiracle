@@ -233,7 +233,7 @@ PlugIn::setStackId(int val)
 int
 PlugIn::getTag(char *buf, int size)
 {
-	if ((buf == 0) || (size <= 0) || (tag_ == 0)) {
+	if ((buf == 0) || (size <= 0) || (tag_[0] == 0)) {
 		return (-1);
 	}
 
