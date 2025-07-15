@@ -64,6 +64,7 @@ BUILT_SOURCES = Miraclesuptcl.cc
 
 CLEANFILES = Miraclesuptcl.cc
 
+libMiracle_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libMiracle_la_CPPFLAGS = @NS_CPPFLAGS@ 
 libMiracle_la_LDFLAGS = @NS_LDFLAGS@ 
 libMiracle_la_LIBADD = @NS_LIBADD@

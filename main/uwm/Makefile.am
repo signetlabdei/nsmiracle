@@ -35,6 +35,7 @@ libUwmStd_la_SOURCES =  underwater.cc underwater.h \
 			initlib.cc
 
 
+libUwmStd_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libUwmStd_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libUwmStd_la_LDFLAGS =  @NS_LDFLAGS@  @NSMIRACLE_LDFLAGS@
 libUwmStd_la_LIBADD =   @NS_LIBADD@   @NSMIRACLE_LIBADD@
@@ -42,6 +43,7 @@ libUwmStd_la_LIBADD =   @NS_LIBADD@   @NSMIRACLE_LIBADD@
 
 libUwmStdPhyBpskTracer_la_SOURCES =  uwmphybpsk-tracer.cc
 
+libUwmStdPhyBpskTracer_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libUwmStdPhyBpskTracer_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@ 
 libUwmStdPhyBpskTracer_la_LDFLAGS =  @NS_LDFLAGS@  @NSMIRACLE_LDFLAGS@ -L./
 libUwmStdPhyBpskTracer_la_LIBADD =   @NS_LIBADD@   @NSMIRACLE_LIBADD@ -lUwmStd

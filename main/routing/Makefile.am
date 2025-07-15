@@ -50,6 +50,7 @@ libMiracleRouting_la_SOURCES = mrcl-address.cc mrcl-address.h \
 				mrcl-routing-static.h mrcl-routing-static.cc \
 				initlib.cc
 
+libMiracleRouting_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libMiracleRouting_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@ 
 libMiracleRouting_la_LDFLAGS = @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@
 libMiracleRouting_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@

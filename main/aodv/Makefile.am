@@ -43,6 +43,7 @@ libMiracleAodv_la_SOURCES = module-aodv.h module-aodv.cc\
 				aodv-tracer.h aodv-tracer.cc \
 				aodv-pkt.h initlib.cc
 
+libMiracleAodv_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libMiracleAodv_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libMiracleAodv_la_LDFLAGS = @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@
 libMiracleAodv_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@

@@ -36,6 +36,8 @@ if HAVE_DEI80211MR
 lib_LTLIBRARIES = libmultiratetracer.la  
 
 libmultiratetracer_la_SOURCES = mrtracer.cc mrtracer.h
+
+libmultiratetracer_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libmultiratetracer_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@ @DEI80211MR_CPPFLAGS@
 libmultiratetracer_la_LDFLAGS = @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@ @DEI80211MR_LDFLAGS@
 libmultiratetracer_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@ @DEI80211MR_LIBADD@

@@ -40,7 +40,7 @@ libmiraclelink_la_SOURCES = link_channel.cc \
 			dropinterface.h dropinterface.cc \
 			initlib.cc
 
-
+libmiraclelink_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libmiraclelink_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libmiraclelink_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@
 libmiraclelink_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@

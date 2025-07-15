@@ -62,6 +62,7 @@ libmphy_la_SOURCES = initlib.cc \
 		clmsg-phy-on-off-switch.h clmsg-phy-on-off-switch.cc 
 
 
+libmphy_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libmphy_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libmphy_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@
 libmphy_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@
@@ -72,6 +73,7 @@ nodist_libmphy_la_SOURCES = MPhyInitTcl.cc
 
 libmphytracer_la_SOURCES = mphy-tracer.cc
 
+libmphytracer_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libmphytracer_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libmphytracer_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@ -L./
 libmphytracer_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@ -lmphy
@@ -79,6 +81,7 @@ libmphytracer_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@ -lmphy
 
 libsinrtracer_la_SOURCES = sinr-tracer.cc
 
+libsinrtracer_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libsinrtracer_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libsinrtracer_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@  -L./
 libsinrtracer_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@ -lmphy
@@ -86,6 +89,7 @@ libsinrtracer_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@ -lmphy
 
 libmphymaccltracer_la_SOURCES = phymac-clmsg-tracer.h phymac-clmsg-tracer.cc
 
+libmphymaccltracer_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libmphymaccltracer_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libmphymaccltracer_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@  -L./
 libmphymaccltracer_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@ -lmphy

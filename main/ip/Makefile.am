@@ -42,6 +42,7 @@ libMiracleIp_la_SOURCES = ipmodule.cc ipmodule.h \
 			ip-clmsg.h ip-clmsg.cc \
 			initlib.cc
 
+libMiracleIp_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libMiracleIp_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libMiracleIp_la_LDFLAGS = @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@
 libMiracleIp_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@
@@ -52,11 +53,14 @@ libMiracleIpRouting_la_SOURCES = ip-interface.h ip-interface.cc\
 				ip-routing.h ip-routing.cc \
 				mrinit.cc
 
+libMiracleIpRouting_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libMiracleIpRouting_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libMiracleIpRouting_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@ -L./
 libMiracleIpRouting_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@ -lMiracleIp
 
 libroutingtracer_la_SOURCES = routing-tracer.cc
+
+libroutingtracer_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libroutingtracer_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libroutingtracer_la_LDFLAGS = @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@ -L./
 libroutingtracer_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@ -lMiracleIp

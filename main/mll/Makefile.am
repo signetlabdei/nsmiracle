@@ -12,6 +12,7 @@ libmll_la_SOURCES = mll-module.cc mll-module.h \
 		marptable.cc marptable.h \
 		initlib.cc
 
+libmll_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libmll_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@ 
 libmll_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@ 
 libmll_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@ 
@@ -20,6 +21,7 @@ nodist_libmll_la_SOURCES = MllInitTcl.cc
 
 libmlltracer_la_SOURCES = mll-tracer.cc mll-tracer.h
 
+libmlltracer_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libmlltracer_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libmlltracer_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@ -L./
 libmlltracer_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@ -lmll

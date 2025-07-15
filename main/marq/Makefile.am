@@ -40,6 +40,7 @@ TESTS =
 libmarq_la_SOURCES = initlib.cc marq.h 
 
 
+libmarq_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libmarq_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libmarq_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@
 libmarq_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@

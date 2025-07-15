@@ -40,7 +40,7 @@ TESTS =
 libmiraclecbr_la_SOURCES = cbr-module.cc cbr-module.h \
 			initlib.cc 
 
-
+libmiraclecbr_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libmiraclecbr_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libmiraclecbr_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@
 libmiraclecbr_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@
@@ -49,7 +49,7 @@ nodist_libmiraclecbr_la_SOURCES = InitTcl.cc
 
 libcbrtracer_la_SOURCES = cbr-tracer.cc
 
-
+libcbrtracer_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libcbrtracer_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libcbrtracer_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@ -L./
 libcbrtracer_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@ -lmiraclecbr

@@ -44,6 +44,7 @@ libMiracleMac802_11_la_SOURCES = 802.11-module.cc 802.11-module.h \
 				initlib.cc \
 				802_11-tracer.cc 802_11-tracer.h
 
+libMiracleMac802_11_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libMiracleMac802_11_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libMiracleMac802_11_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@
 libMiracleMac802_11_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@
@@ -54,6 +55,7 @@ nodist_libMiracleMac802_11_la_SOURCES = InitTcl.cc
 
 libmac80211tracer_la_SOURCES = 	802_11-tracer.cc 802_11-tracer.h 
 
+libmac80211tracer_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libmac80211tracer_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libmac80211tracer_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@
 libmac80211tracer_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@
@@ -61,6 +63,7 @@ libmac80211tracer_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@
 
 libarptracer_la_SOURCES = arp-tracer.h arp-tracer.cc 
 
+libarptracer_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libarptracer_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libarptracer_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@
 libarptracer_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@
@@ -68,6 +71,7 @@ libarptracer_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@
 
 libalttracermac80211_la_SOURCES = alttracermac80211.cc 
 
+libalttracermac80211_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libalttracermac80211_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libalttracermac80211_la_LDFLAGS =  @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@
 libalttracermac80211_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@

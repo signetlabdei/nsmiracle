@@ -39,6 +39,7 @@ libMiracleWirelessCh_la_SOURCES = wirelessch-module.cc wirelessch-module.h \
 				initlib.cc \
 				 wirelessch-dumb.cc wirelessch-dumb.h 
 
+libMiracleWirelessCh_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libMiracleWirelessCh_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libMiracleWirelessCh_la_LDFLAGS = @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@
 libMiracleWirelessCh_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@

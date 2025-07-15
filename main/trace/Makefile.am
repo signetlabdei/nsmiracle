@@ -40,6 +40,7 @@ TESTS =
 
 libTrace_la_SOURCES = headertracer.cc headertracer.h
 
+libTrace_la_CXXFLAGS = @NSMIRACLE_CXXFLAGS@
 libTrace_la_CPPFLAGS = @NS_CPPFLAGS@ @NSMIRACLE_CPPFLAGS@
 libTrace_la_LDFLAGS = @NS_LDFLAGS@ @NSMIRACLE_LDFLAGS@
 libTrace_la_LIBADD = @NS_LIBADD@ @NSMIRACLE_LIBADD@
