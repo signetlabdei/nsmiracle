@@ -1,5 +1,4 @@
-------------------
-⚠️ Note
+⚠️ Note ⚠️
 ------------------
 This branch contains only the dependencies required by the [DESERT Underwater Framework](https://github.com/signetlabdei/DESERT_Underwater).
 If you are looking for the full version of nsmiracle (including all standard modules and addons), please refer to the [master](https://github.com/signetlabdei/nsmiracle/tree/master) branch.
@@ -55,7 +54,9 @@ The nsmiracle library for the Network Simulator 2 has been developed
 by (in alfabetical order):
 
 Nicola Baldo         (baldo@dei.unipd.it)
+
 Federico Maguolo     (maguolof@dei.unipd.it)
+
 Marco Miozzo         (miozzo@dei.unipd.it)
 
 At the time of this release (April 2007), all authors are with the
@@ -63,10 +64,10 @@ Department of Information Engineering, University of Padova, Italy.
 
 
 -----------------------
- Further reading
+Documentation
 -----------------------
 
-See the NS-Miracle web page at
-http://www.dei.unipd.it/~maguolof/doc-ns-miracle/index.html
+See the nsmiracle web page at
+https://signet.dei.unipd.it/dgt/ns/miracle/nsmiracle-howto/index.html
 
 
