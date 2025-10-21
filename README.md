@@ -1,14 +1,20 @@
-About nsmiracle
+⚠️ Note ⚠️
+------------------
+This branch contains only the dependencies required by the [DESERT Underwater Framework](https://github.com/signetlabdei/DESERT_Underwater).
+If you are looking for the full version of nsmiracle (including all standard modules and addons), please refer to the [master](https://github.com/signetlabdei/nsmiracle/tree/master) branch.
+
+------------------
+ About nsmiracle
 ------------------
 
 NSMIRACLE is a Multi-InteRfAce Cross-Layer Extension for the Network
-Simulator version 2.
+Simulator version 2.  
 
 Its main features are:
  - to allow researches to re-define and extend the protocol stack in a
    flexible and modular way
  - to provide support for inter-protocol and inter-layer interaction,
-   by providing means to exchange cross-layer messages
+   by providing means to exchange cross-layer messages 
  - to provide effective support for multiple and heterogeneous
    interfaces
  - to allow easy, modular and hence flexible implementation of
@@ -16,8 +22,7 @@ Its main features are:
  - to provide support for improved modeling and simulation of wireless
    communications with respect to the well-known shortcomings of the
    current NS release (2.31 at the time of this writing)
- - further info and documentation can be found at
-   https://nsmiracle.dei.unipd.it/
+
 
 ------------------
  Contents
@@ -26,39 +31,43 @@ Its main features are:
 The nsmiracle distribution contains the following software:
 
  - the nsmiracle core library
- - several additional libraries which provide:
+ - several additional libraries which provide: 
    + CBR applications
    + Cross-layer message tracers
    + IP functionality (ip-interface correspondance and routing support)
    + TCP (wrapper for ns2 TCP modules)
    + Miracle PHY - a library and API for the implementation of
-     wireless technologies
+     wireless technologies  
    + port multiplexers
    + UMTS PHY, MAC and RLC
    + 80211 (wrapper for ns2 implementations, including dei80211mr)
    + additional tools for dei80211mr use in nsmiracle
    + mobility  models (e.g., Gauss-Markov mobility)
-
+   
 
 
 -----------------------
  Authors
 ----------------------
 
-The nsmiracle library has been developed in 2007 by 
-(in alfabetical order):
+The nsmiracle library for the Network Simulator 2 has been developed
+by (in alfabetical order):
 
-Nicola Baldo         (baldo@dei.unipd.it)  
-Federico Maguolo     (maguolof@dei.unipd.it)  
-Marco Miozzo         (miozzo@dei.unipd.it)  
+Nicola Baldo         (baldo@dei.unipd.it)
 
-At that time, all authors were with the
-Department of Information Engineering, University of Padova, Italy.
+Federico Maguolo     (maguolof@dei.unipd.it)
 
-Further contributions and improvements have been developed 
-through the years by (in alfabetical order):
+Marco Miozzo         (miozzo@dei.unipd.it)
 
-Federico Guerra      (federico@guerra-tlc.com)  
-Andrea Mior          (andrmior@dei.unipd.it)  
-Michele Rossi        (michele.rossi@dei.unipd.it)  
+At the time of this release (April 2007), all authors are with the
+Department of Information Engineering, University of Padova, Italy. 
+
+
+-----------------------
+Documentation
+-----------------------
+
+See the nsmiracle web page at
+https://signet.dei.unipd.it/dgt/ns/miracle/nsmiracle-howto/index.html
+
 
