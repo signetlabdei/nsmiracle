@@ -263,7 +263,7 @@ PlugIn::recvAsyncClMsg(ClMessage *m)
 int
 PlugIn::crLayCommand(ClMessage *m)
 {
-	delete m;
+	// delete m;
 	return RETVAL_NOT_IMPLEMENTED;
 }
 
