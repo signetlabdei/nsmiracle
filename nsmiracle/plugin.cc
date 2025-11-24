@@ -286,19 +286,27 @@ PlugIn::recvSyncClMsg(ClMessage *m)
 		Tcl &tcl = Tcl::instance();
 		tcl.evalf("%s info class", name());
 		const char *class_name = tcl.result();
-		(dynamic_cast<ClMsgDiscovery *>(m))
-				->addData((const PlugIn *) this,
-						getLayer(),
-						getStackId(),
-						getId(),
-						class_name,
-						getTag());
-		return 0;
+
+		auto dyn_msg = dynamic_cast<ClMsgDiscovery *>(m);
+		if (dyn_msg != nullptr) {
+			dyn_msg->addData((const PlugIn *) this,
+							getLayer(),
+							getStackId(),
+							getId(),
+							class_name,
+							getTag());
+			return 0;
+		}
 	} else if (m->type() == CLMSG_STATS) {
-		(dynamic_cast<ClMsgStats *>(m))->setStats(stats_ptr);
-		return 0;
-	} else
-		return RETVAL_NOT_IMPLEMENTED;
+		auto dyn_msg = dynamic_cast<ClMsgStats *>(m);
+		if (dyn_msg != nullptr) {
+			dyn_msg->setStats(stats_ptr);
+			return 0;
+		}
+	}
+
+	// return error in case of wrong type id or dynamic cast error
+	return RETVAL_NOT_IMPLEMENTED;
 }
 
 int
