@@ -49,6 +49,8 @@
  */
 #define MAX_TAG_LENGTH 10
 
+using LogLev = Logger::LogLevel;
+
 class ClSAP;
 
 class Stats;
@@ -158,10 +160,22 @@ public:
 	 *
 	 * @param log_level LogLevel representing the amout of logs.
 	 * @param module String name of the plugin/module.
+	 * @param message Stringstream log message.
+	 *
+	 */
+	virtual void printOnLog(LogLev log_level, std::string &&module,
+			const std::stringstream &message) const;
+
+	/**
+	 * Method to send the log message to the logger.
+	 *
+	 * @param log_level LogLevel representing the amout of logs.
+	 * @param module String name of the plugin/module.
 	 * @param message String log message.
 	 *
 	 */
-	virtual void printOnLog(Logger::LogLevel log_level, const std::string &module, const std::string &message) const;
+	virtual void printOnLog(LogLev log_level, std::string &&module,
+			std::string &&message) const;
 
 	/**
 	 * Method inherited from NsObject, it is not used in this level of

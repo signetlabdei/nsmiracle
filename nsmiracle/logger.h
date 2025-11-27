@@ -95,7 +95,7 @@ public:
 	 * @param message String log message.
 	 *
 	 */
-	void printOnLog(LogLevel log_level, const std::string &message);
+	void printOnLog(LogLevel log_level, std::string &&message);
 
 protected:
 	LogLevel log_level_; /**< Log level of log messages.*/

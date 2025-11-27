@@ -88,7 +88,7 @@ Logger::setLogFile(const std::string &log_file)
 }
 
 void
-Logger::printOnLog(Logger::LogLevel log_level, const std::string &message)
+Logger::printOnLog(Logger::LogLevel log_level, std::string &&message)
 {
 	if (log_level_ == LogLevel::NONE || log_level_ < log_level)
 		return;
