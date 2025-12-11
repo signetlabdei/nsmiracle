@@ -188,15 +188,24 @@ PlugIn::command(int argc, const char *const *argv)
 				return TCL_OK;
 			}
 
-			return TCL_OK;
+			return TCL_ERROR;
 		}
 	}
 	return NsObject::command(argc, argv);
 }
 
 void
-PlugIn::printOnLog(Logger::LogLevel log_level, const std::string &module,
-		const std::string &message) const
+PlugIn::printOnLog(LogLev log_level, const std::string &module,
+		const std::stringstream &message) const
+{
+	if (enable_log)
+		logger.printOnLog(log_level,
+				module + "(" + to_string(node_id) + ")::" + message.str());
+}
+
+void
+PlugIn::printOnLog(
+		LogLev log_level, const std::string &module, const std::string &message) const
 {
 	if (enable_log)
 		logger.printOnLog(
@@ -290,11 +299,11 @@ PlugIn::recvSyncClMsg(ClMessage *m)
 		auto dyn_msg = dynamic_cast<ClMsgDiscovery *>(m);
 		if (dyn_msg != nullptr) {
 			dyn_msg->addData((const PlugIn *) this,
-							getLayer(),
-							getStackId(),
-							getId(),
-							class_name,
-							getTag());
+					getLayer(),
+					getStackId(),
+					getId(),
+					class_name,
+					getTag());
 			return 0;
 		}
 	} else if (m->type() == CLMSG_STATS) {
