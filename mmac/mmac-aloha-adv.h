@@ -44,6 +44,7 @@
 #ifndef MMAC_ALOHA_ADV_H 
 #define MMAC_ALOHA_ADV_H
 
+#include <timer-handler.h>
 #include <mmac.h>
 #include <iostream>
 #include <string>

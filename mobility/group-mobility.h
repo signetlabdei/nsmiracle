@@ -31,6 +31,7 @@
 #define _GROUPMOBMODEL_
 
 #include "node-core.h"
+#include <timer-handler.h>
 
 
 #define sgn(x) ( ((x)==0.0) ? 0.0 : ((x)/fabs(x)) )
