@@ -33,6 +33,7 @@
 #define CBR_MODULE_H
 
 #include <module.h>
+#include <timer-handler.h>
 
 #define CBR_DROP_REASON_UNKNOWN_TYPE "UKT"
 #define CBR_DROP_REASON_RECEIVED "RCV"
