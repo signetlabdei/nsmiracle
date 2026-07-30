@@ -48,7 +48,7 @@ AC_ARG_WITH_DEI80211MR
 AC_CHECK_DEI80211MR(AC_MSG_NOTICE([Tracer for dei80211mr will be built]),
 		    AC_MSG_WARN([Tracer for dei80211mr will NOT be built]))
 
-NSMIRACLE_CXXFLAGS='-Wall -Werror -Wno-overloaded-virtual'
+NSMIRACLE_CXXFLAGS='-Wall -Werror -Wno-overloaded-virtual -Wno-header-guard'
 AC_SUBST(NSMIRACLE_CXXFLAGS)
 
 NSMIRACLE_CPPFLAGS='-I$(top_srcdir)/nsmiracle'
