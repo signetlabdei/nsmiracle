@@ -28,7 +28,7 @@
 #
 aclocaldir = $(datadir)/aclocal
 
-M4_FILES = nsallinone.m4 nsmiracle.m4
+M4_FILES = nsuwsignet.m4 nsmiracle.m4
 
 aclocal_DATA = $(M4_FILES)
 

@@ -1,7 +1,7 @@
 ⚠️ Note ⚠️
 ------------------
 This branch contains only the dependencies required by the [DESERT Underwater Framework](https://github.com/signetlabdei/DESERT_Underwater).
-If you are looking for the full version of nsmiracle (including all standard modules and addons), please refer to the [master](https://github.com/signetlabdei/nsmiracle/tree/master) branch.
+If you are looking for the full version of nsmiracle (including all standard modules and addons), which unlike this one is compatible with ns-allinone, please refer to the [master](https://github.com/signetlabdei/nsmiracle/tree/master) branch.
 
 ------------------
  About nsmiracle
